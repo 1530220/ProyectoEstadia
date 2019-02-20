@@ -331,6 +331,9 @@ $.ajax({
     <script src="{{ asset('bower_components/stroll/js/stroll.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/pages/list-scroll/list-custom.js') }}"></script>
 
+    <script type="text/javascript" src="{{ asset('assets/pages/chart/knob/knob-custom-chart.js') }}"></script>
+    <script src="{{ asset('assets/pages/chart/knob/jquery.knob.js') }}"></script>
+
     <script type="text/javascript" src="{{ asset('assets/js/dropdown.js') }}"></script>
     <!-- Modal -->
 	<div id="loading_modal_pdf" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

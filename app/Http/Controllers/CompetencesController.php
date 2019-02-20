@@ -183,14 +183,30 @@ class CompetencesController extends Controller
         return redirect()->route('competences.list');
     }
 
-    public function editStudentCompetence(competences $competence)
+    public function editStudentCompetence(students_competences $competence)
     {
-       
+      $data_competence = DB::table('students_competences')
+            ->join('competences','students_competences.competence_id','=','competences.id')
+            ->select('students_competences.student_id as matricula','students_competences.id as id','students_competences.score as score','students_competences.updated_at as updated','students_competences.deleted as deleted','competences.name as name')
+            ->where('students_competences.id','=',$competence->id)->first();
+      return view('competences.student_competence_edit', ['data_competence' => $data_competence]);
     }
 
-    public function updateStudentCompetence(competences $competence)
+    public function updateStudentCompetence(students_competences $competence)
     {
-      
+      $competence->score = Input::get('points');
+
+      if ($competence->update()) {
+        Alert::success('Exitosamente','Puntuación Modificada');
+
+        insertToLog(Auth::user()->id, 'updated', Input::get($competence->id), "puntuacion");
+
+        return redirect()->route('students.show', ['id' => $competence->student_id]);
+      } else {
+        Alert::error('No se modifico la puntuación', 'Error');
+        return redirect()->route('students.show', ['id' => $competence->student_id]);
+      }
+
     }
 
     public function destroyStudentCompetence(students_competences $competence)

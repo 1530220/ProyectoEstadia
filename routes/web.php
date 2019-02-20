@@ -174,8 +174,7 @@ Route::group(['middleware'=>['auth']], function () {
         Route::post('/competences/restore', 'CompetencesController@restore')->name('competences.restore');
 
         Route::get('/competence/{competence}/edit', 'CompetencesController@editStudentCompetence')->where('id', '[0-9]+')->name('competence.edit');
-        Route::put('/competence/{competence}', 'CompetencesController@updateStudentCompetence');
-        
+        Route::put('/competence/{competence}', 'CompetencesController@updateStudentCompetence')->name('competence.update');
         Route::delete('/competence/{competence}', 'CompetencesController@destroyStudentCompetence')->name('competence.destroy');
         Route::post('/competence/restore', 'CompetencesController@restoreStudentCompetence')->name('competence.restore');
 

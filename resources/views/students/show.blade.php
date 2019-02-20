@@ -215,7 +215,9 @@
 			<div class="col-sm-12">
 				<div class="card">
 					<div class="card-block">
-						<h4 class="sub-title">Competencias que posee el estudiante</h4>
+					<h4 class="sub-title">Competencias que posee el estudiante</h4>
+
+					@if ($projects->isNotEmpty())
 						<div class="row">
 							<div class="col-sm-3">
 								<h6><strong>Competencia</strong></h6>
@@ -256,7 +258,7 @@
 												{{ csrf_field() }}
 										@endif
 											<center>
-												<a href="{{ route('competence.edit', ['id' => $competence->id]) }}" class="btn btn-primary" title="Editar puntuación de la competencia" style="margin: 3px;"><span class="icofont icofont-ui-edit"></span></a>
+												<a href="{{ route('competence.edit', ['id' => $competence->id]) }}" class="btn btn-primary" title="Editar puntuación de la competencia {{$competence->name}}" style="margin: 3px;"><span class="icofont icofont-ui-edit"></span></a>
 
 												@if($competence->deleted=='0')
 													<button type="submit" class="btn btn-danger" style="margin: 3px;" id="eliminar" name="eliminar" onclick="archiveFunction()" title="Eliminar competencia del estudiante"><span class="icofont icofont-ui-delete"></span></button>
@@ -268,14 +270,18 @@
 								</div>	
 							</div>
 						@endforeach	
-						
+					@else
+					<center>
+						<div class="alert alert-primary icons-alert">
+							<p>El estudiante no posee ninguna competencia asignada.</p>
+						</div>
+
+					</center>
+					@endif	
 					</div>
 				</div>
 			</div>
 		</div>
-
-
-
 
 		<div class="row">
 			<div class="col-sm-12">
