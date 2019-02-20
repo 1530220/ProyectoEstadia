@@ -1,0 +1,12 @@
+ID_usuario,Num_empleado,Nombre,AP_Paterno,AP_Materno,Username,Password,Tipo_usuario
+8000,950,ALICIA,MARTINEZ,MORALES,amartinezm,secret,Salud
+8001,951,ROSA,MORALES,LOPEZ,rmoralesl,secret,Tutorias
+8002,952,MARTHA,LOPEZ,INFANTE,mlopezi,secret,Psicologia
+8003,953,FRANCISCO,INFANTE,PEREZ,finfantep,secret,Tutorias
+8004,954,ROBERTO,PEREZ,RODRIGUEZ,rperezr,secret,Psicologia
+8005,955,FELIX,RODRIGUEZ,MEDINA,frodriguezm,secret,Salud
+8006,956,GERARDO,MEDINA,HERNANDEZ,gmedinah,secret,Saludo
+8007,957,JARED,CAVAZOS,GONZALEZ,jcavazozg,secret,Tutorias
+8008,958,LUIS,GONZALEZ,QUIRARTE,lgonzalezq,secret,Tutorias
+8009,959,ELIZABETH,QUIRARTE,HINOJOSA,equirarteh,secret,Tutorias
+8010,960,ANA,HINOJOSA,MARTINEZ,ahinojosam,secret,Tutorias

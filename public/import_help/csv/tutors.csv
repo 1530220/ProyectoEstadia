@@ -1,0 +1,11 @@
+ID_profesor,Num_empleado,Nombre,AP_Paterno,AP_Materno,Username,Password,ID_carrera,Tutor
+1,23,MIGUEL,HERRERA,MARTINEZ,mherreram,secret,2,si
+2,24,GREGORIO,MARTINEZ,CÉSPEDES,gmartinezc,secret,2,si
+3,25,ANTONIO,CÉSPEDES,LOPEZ,acespedesl,secret,9,no
+4,26,IGNACIO,LOPEZ,MENDEZ,ilopezm,secret,2,no
+5,27,LUZ,MENDEZ,SANCHEZ,lmendezs,secret,1,si
+6,28,HUMBERTO,SANCHEZ,SANDOVAL,hsanchezs,secret,2,si
+7,29,CARLOS,SANDOVAL,PULIDO,csandovalp,secret,9,no
+8,30,SIMONA,PULIDO,ORTIZ,spulidoo,secret,2,no
+9,31,JUAN,ORTIZ,GATICA,jortizg,secret,1,si
+10,32,JOSEFINA,GATICA,HERRERA,jgaticah,secret,2,no
