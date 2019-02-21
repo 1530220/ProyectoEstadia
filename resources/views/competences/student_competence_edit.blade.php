@@ -44,6 +44,12 @@
 			<div class="col-sm-12">
 				<div class="card">
 					<div class="card-block">
+                        @if($data_competence->evaluated==0)
+							<div class="alert alert-warning icons-alert">
+								<p><strong>Competencia no rankeada</strong></p>
+								<p> La puntuación mostrada es una puntuación por defecto, no ha sido rankeada.</p>
+							</div>
+						@endif
 						@if($data_competence->deleted==1)
 							<div class="alert alert-danger icons-alert">
 								<p><strong>Competencia no asignada al alumno</strong></p>

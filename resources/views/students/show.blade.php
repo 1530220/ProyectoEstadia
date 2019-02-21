@@ -217,7 +217,7 @@
 					<div class="card-block">
 					<h4 class="sub-title">Competencias que posee el estudiante</h4>
 
-					@if ($projects->isNotEmpty())
+					@if ($competences->isNotEmpty())
 						<div class="row">
 							<div class="col-sm-3">
 								<h6><strong>Competencia</strong></h6>
@@ -228,6 +228,7 @@
 							<div class="col-sm-5">
 								<h6><strong>Puntuación</strong></h6>
 							</div>
+							
 							<div class="col-sm-2">
 								<h6><strong>Acciones</strong></h6>
 							</div>
@@ -242,12 +243,13 @@
 								</div>
 								<div class="col-sm-4">
 									<div class="progress progress-xl">
-										<div class="progress-bar progress-bar-striped progress-bar-success" role="progressbar" style="width: {{$competence->score}}%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+										<div class="progress-bar progress-bar-striped progress-bar-warning" role="progressbar" style="width: {{$competence->score}}%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
 									</div>
 								</div>	
 								<div class="col-sm-1">
 									<h6><strong>{{$competence->score}}%</strong></h6>
 								</div>
+							
 								<div class="col-sm-2">
 										@if($competence->deleted=='0')
 											<form id="form" name="form" action="{{ route('competence.destroy', ['id' => $competence->id])}}" method="POST">
@@ -273,11 +275,18 @@
 					@else
 					<center>
 						<div class="alert alert-primary icons-alert">
+							<p><strong>Competencias no asignadas</strong></p>
 							<p>El estudiante no posee ninguna competencia asignada.</p>
 						</div>
 
 					</center>
 					@endif	
+					</div>
+					<div class="card-footer">
+						<div class="row">
+							<div class="col-sm-4"></div>
+							<a href="{{ route('competences.asignar', ['id' => $student->university_id]) }}" class="col-sm-4 btn btn-primary"><strong> Asignar Competencias</strong></a>
+						</div>
 					</div>
 				</div>
 			</div>

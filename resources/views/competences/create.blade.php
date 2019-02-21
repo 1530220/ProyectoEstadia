@@ -27,7 +27,7 @@
 						</li>
 						<li class="breadcrumb-item"><a href="{{ route('competences.list') }}">Competencias</a>
 						</li>
-						<li class="breadcrumb-item">Crear Habilidad
+						<li class="breadcrumb-item">Crear Competencia
 						</li>
 					</ul>
 				</div>

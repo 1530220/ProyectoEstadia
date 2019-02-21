@@ -69,10 +69,10 @@ $.ajax({
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/jquery.mCustomScrollbar.css') }}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-
+    <link rel="stylesheet" type="text/css" href="{{ asset('bower_components/bootstrap-tagsinput/css/bootstrap-tagsinput.css') }}" />
     <!-- Chartlist chart css -->
     <link rel="stylesheet" href="{{ asset('bower_components/chartist/css/chartist.css') }}" type="text/css" media="all">
-
+    <link rel="stylesheet" type="text/css" href="{{ asset('bower_components/switchery/css/switchery.min.css') }}">
     <!--Sweetalert css-->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/sweetalert.min.css') }}" />
 
@@ -333,6 +333,10 @@ $.ajax({
 
     <script type="text/javascript" src="{{ asset('assets/pages/chart/knob/knob-custom-chart.js') }}"></script>
     <script src="{{ asset('assets/pages/chart/knob/jquery.knob.js') }}"></script>
+
+
+    <script type="text/javascript" src="{{ asset('bower_components/bootstrap-tagsinput/js/bootstrap-tagsinput.js') }}"></script>
+
 
     <script type="text/javascript" src="{{ asset('assets/js/dropdown.js') }}"></script>
     <!-- Modal -->

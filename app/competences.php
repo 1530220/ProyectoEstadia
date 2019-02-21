@@ -9,4 +9,5 @@ class competences extends Model
     protected $fillable = [
         'id', 'name'
     ];
+    
 }

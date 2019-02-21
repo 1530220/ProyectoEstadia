@@ -12,6 +12,7 @@ use App\Helpers\DeleteHelper;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Collection;
 class CompetencesController extends Controller
 {
     /**
@@ -187,7 +188,13 @@ class CompetencesController extends Controller
     {
       $data_competence = DB::table('students_competences')
             ->join('competences','students_competences.competence_id','=','competences.id')
-            ->select('students_competences.student_id as matricula','students_competences.id as id','students_competences.score as score','students_competences.updated_at as updated','students_competences.deleted as deleted','competences.name as name')
+            ->select('students_competences.student_id as matricula',
+                    'students_competences.id as id',
+                    'students_competences.score as score',
+                    'students_competences.updated_at as updated',
+                    'students_competences.deleted as deleted',
+                    'students_competences.evaluated as evaluated',
+                    'competences.name as name')
             ->where('students_competences.id','=',$competence->id)->first();
       return view('competences.student_competence_edit', ['data_competence' => $data_competence]);
     }
@@ -195,6 +202,7 @@ class CompetencesController extends Controller
     public function updateStudentCompetence(students_competences $competence)
     {
       $competence->score = Input::get('points');
+      $competence->evaluated = 1;
 
       if ($competence->update()) {
         Alert::success('Exitosamente','Puntuación Modificada');
@@ -222,6 +230,54 @@ class CompetencesController extends Controller
 
     public function restoreStudentCompetence(Request $request)
     {
+        DeleteHelper::instance()->restoreLogicalDelete('students_competences','id',$request->id);
+
+        Alert::success('Exitosamente','Competencia restaurada en el estudiante');
+
+        insertToLog(Auth::user()->id, 'recover', $request->id, "competencia del estudiante");
+        $student = students_competences::find($request->id);
+        return redirect()->route('students.show', ['id' => $student->student_id]);
+    }
+
+    public function asignar($id){
+      $competences_asigned = DB::table('competences')
+              ->join('students_competences','competences.id','=','students_competences.competence_id')
+              ->where('students_competences.student_id','=',$id)
+              ->get();
+
+      $competences_not_asigned = competences::whereNotExists(function($query) use ($id){
+             $query->select(DB::raw(1))
+                ->from('students_competences')
+                ->whereRaw('competences.id = students_competences.competence_id')
+                ->where('students_competences.student_id','=',$id);
+              })->get();
+
+      $num_student_competences = students_competences::where('student_id','=',$id)->count();
+      $num_competences = competences::count();
+
+      return view('competences.asignar')->with('id',$id)
+                                        ->with('competences_asigned',$competences_asigned)
+                                        ->with('competences_not_asigned',$competences_not_asigned)
+                                        ->with('num_student_competences',$num_student_competences)
+                                        ->with('num_competences',$num_competences);
+    }
+
+    public function guardarAsignaciones(Request $request,$id){
+      $competences_ids = $request->competences_not_asigned;
+
+      foreach ($competences_ids as $competence) {
+
+        $student_competences = new students_competences();
+        $student_competences->student_id = $id;
+        $student_competences->competence_id = $competence;
+        $student_competences->save();
+      }
+
+      Alert::success('Exitosamente','Competencias asignadas');
+      return redirect()->route('students.show', ['id' => $id]);
+    }
+
+    public function solicitudes(){
 
     }
 }

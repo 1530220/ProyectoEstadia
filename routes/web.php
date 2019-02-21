@@ -172,11 +172,14 @@ Route::group(['middleware'=>['auth']], function () {
         Route::put('/competences/{competence}', 'CompetencesController@update')->name('competences.update');
         Route::delete('/competences/{competence}', 'CompetencesController@destroy')->name('competences.destroy');
         Route::post('/competences/restore', 'CompetencesController@restore')->name('competences.restore');
-
         Route::get('/competence/{competence}/edit', 'CompetencesController@editStudentCompetence')->where('id', '[0-9]+')->name('competence.edit');
         Route::put('/competence/{competence}', 'CompetencesController@updateStudentCompetence')->name('competence.update');
         Route::delete('/competence/{competence}', 'CompetencesController@destroyStudentCompetence')->name('competence.destroy');
         Route::post('/competence/restore', 'CompetencesController@restoreStudentCompetence')->name('competence.restore');
+
+        Route::get('/competences/asignar/{id}', 'CompetencesController@asignar')->name('competences.asignar');
+        Route::get('/competences/solicitudes', 'CompetencesController@solicitudes')->name('competences.solicitudes');
+        Route::post('/competences/asignar/{id}','CompetencesController@guardarAsignaciones')->name('competences.guardarAsignaciones');
 
         Route::get('/sectors', 'SectorController@index')->name('sectors.list');
         Route::get('/sectors/new', 'SectorController@create')->name('sectors.create');
