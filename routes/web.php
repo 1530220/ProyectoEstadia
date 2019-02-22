@@ -164,6 +164,15 @@ Route::group(['middleware'=>['auth']], function () {
         Route::delete('/skills/{skill}', 'SkillsController@destroy')->name('skills.destroy');
         Route::post('/skills/restore', 'SkillsController@restore')->name('skills.restore');
 
+        Route::get('/skill/{id}/edit', 'SkillsController@editStudentSkill')->where('id', '[0-9]+')->name('skill.edit');
+        Route::put('/skill/{id}', 'SkillsController@updateStudentSkill')->name('skill.update');
+        Route::delete('/skill/{skill}', 'SkillsController@destroyStudentSkill')->name('skill.destroy');
+        Route::post('/skill/restore', 'SkillsController@restoreStudentSkill')->name('skill.restore');
+
+        Route::get('/skills/asignar/{id}', 'SkillsController@asignar')->name('skills.asignar');
+        Route::post('/skills/asignar/{id}','SkillsController@guardarAsignaciones')->name('skills.guardarAsignaciones');
+
+
         Route::get('/competences', 'CompetencesController@index')->name('competences.list');
         Route::get('/competences/new', 'CompetencesController@create')->name('competences.create');
         Route::post('/competences', 'CompetencesController@store');

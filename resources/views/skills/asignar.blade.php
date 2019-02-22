@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title',"Bolsa de Trabajo - Asignar Competencia")
+@section('title',"Bolsa de Trabajo - Asignar Habilidades")
 
 @section('body')
 <!-- Main-body start -->
@@ -10,10 +10,10 @@
 		<div class="row align-items-end">
 			<div class="col-lg-8">
 				<div class="page-header-title">
-					<i class="fa fa-check" style="background-color:darkcyan;"></i>
+					<i class="fa fa-check" style="background-color:firebrick;"></i>
 					<div class="d-inline">
-						<h4 style="text-transform: none;">Asignar Competencias</h4>
-                        <span style="text-transform: none;">Seleccione las competencias que desea asignar al estudiante con matricula <strong>{{$id}}</strong>.</span>
+						<h4 style="text-transform: none;">Asignar Habilidades</h4>
+                        <span style="text-transform: none;">Seleccione las habilidades que desea asignar al estudiante con matricula <strong>{{$id}}</strong>.</span>
 					</div>
 				</div>
 			</div>
@@ -29,7 +29,7 @@
 						</li>
                         <li class="breadcrumb-item"><a href="{{route('students.show', ['id' => $id])}}">Detalles del Alumno</a>
                         </li>
-                        <li class="breadcrumb-item">Asignar Competencias</li>
+                        <li class="breadcrumb-item">Asignar Habilidades</li>
 					</ul>
 				</div>
 			</div>
@@ -43,38 +43,38 @@
 			<div class="col-sm-12">
 				<div class="card">
 					<div class="card-block">
-						<form id="form" method="POST" action="{{ route('competences.guardarAsignaciones',['id' => $id]) }}">
+						<form id="form" method="POST" action="{{ route('skills.guardarAsignaciones',['id' => $id]) }}">
 							{!! csrf_field() !!}
 
-                            <h6>Competencias asignadas anteriormente:</h6><br>
-							@if ($num_student_competences == 0)
-								<div class="alert alert-primary icons-alert">
-									<p><strong>Sin Competencias</strong></p>
-									<p>El estudiante no posee ninguna competencia.</p>
-								</div>
-							@endif
-                            @foreach ($competences_asigned as $competences)
+                            <h6>Habilidades asignadas anteriormente:</h6><br>
+                            @if ($num_student_skills == 0)
+                                <div class="alert alert-primary icons-alert">
+                                    <p><strong>Sin habilidades</strong></p>
+                                    <p>El estudiante no posee ninguna habilidad.</p>
+                                </div>
+                            @endif
+                            @foreach ($skills_asigned as $skills)
                                 <div class="col-sm-5 checkbox-fade fade-in-disable">
                                     <label>
                                         <input type="checkbox" value="" name="" disabled checked="checked">
                                         <span class="cr">
                                             <i class="cr-icon icofont icofont-ui-check txt-default"></i>
                                         </span>
-                                    <span> {{$competences->name}}</span>
+                                    <span> {{$skills->name}}</span>
                                     </label>
                                 </div>
                             @endforeach
                             <br><br>
-                            <h6>Competencias que pueden ser asignadas:</h6><br>
+                            <h6>Habilidades que pueden ser asignadas:</h6><br>
 
-                            @foreach ($competences_not_asigned as $competences)
+                            @foreach ($skills_not_asigned as $skills)
                                 <div class="col-sm-5 checkbox-fade fade-in-inverse">
                                     <label>
-                                        <input type="checkbox" value="{{ $competences->id }}" name="competences_not_asigned[]">
+                                        <input type="checkbox" value="{{ $skills->id }}" name="skills_not_asigned[]">
                                         <span class="cr">
                                             <i class="cr-icon icofont icofont-ui-check txt-inverse"></i>
                                         </span>
-                                    <span> {{$competences->name}}</span>
+                                    <span> {{$skills->name}}</span>
                                     </label>
                                 </div>
                             @endforeach
@@ -82,7 +82,7 @@
 							<br><br><br>
 							<center>
 								<a style="color:white" onclick="returnURL('{{ url()->previous() }}')"  class="btn btn-primary"><i class="icofont icofont-arrow-left"></i>Regresar</a>
-								<button type="submit" class="btn btn-success"><i class="icofont icofont-check-circled"></i>Asignar Competencias</button>
+								<button type="submit" class="btn btn-success"><i class="icofont icofont-check-circled"></i>Asignar Habilidades</button>
 							</center>
 						</form>
 					</div>

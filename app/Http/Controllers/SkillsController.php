@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Alert;
 use App\Skills;
+use App\students_skills;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Helpers\DeleteHelper;
@@ -181,4 +182,102 @@ class SkillsController extends Controller
 
         return redirect()->route('skills.list');
     }
+
+
+
+
+    public function editStudentSkill($id)
+    {
+      $skills = DB::table('students_skills')
+        ->join('skills','students_skills.skill_id','=','skills.id')
+        ->select('students_skills.*',
+                'skills.name')
+                ->where('students_skills.user_id','=',$id)->get();
+      $num_skills = DB::table('students_skills')->where('user_id','=',$id)->count();
+      return view('skills.student_skills_edit', ['skills' => $skills,'id'=>$id,'num_skills'=>$num_skills]);
+    }
+
+   
+
+    public function updateStudentSkill(Request $request,$id)
+    {
+      $num_skills = DB::table('students_skills')->where('user_id','=',$id)->count();
+
+      $skills = DB::table('students_skills')->where('user_id','=',$id)->get();
+
+      foreach ($skills as $skill) {
+        $update_skill = students_skills::find($skill->id);
+        $update_skill->score = Input::get($skill->id);
+        $update_skill->update();
+        insertToLog(Auth::user()->id, 'updated', $skill->id, "puntuacion de habilidad");
+      }
+        Alert::success('Exitosamente','Puntuaciones Modificadas');
+
+        return redirect()->route('students.show', ['id' => $id]);
+    }
+
+    
+    public function destroyStudentSkill(students_skills $skill)
+    {
+      DeleteHelper::instance()->onCascadeLogicalDelete('students_skills','id',$skill->id);
+
+        Alert::success('Exitosamente','Habilidad eliminada del estudiante');
+
+        insertToLog(Auth::user()->id, 'deleted', $skill->id, "habilidad del estudiante");
+        $student = students_skills::where('id','=',$skill->id)->first();
+        return redirect()->route('students.show', ['id' => $student->user_id]);
+    }
+
+    public function restoreStudentSkill(Request $request)
+    {
+        DeleteHelper::instance()->restoreLogicalDelete('students_skills','id',$request->id);
+
+        Alert::success('Exitosamente','Habilidad restaurada en el estudiante');
+
+        insertToLog(Auth::user()->id, 'recover', $request->id, "habilidad del estudiante");
+        $student = students_skills::find($request->id);
+        return redirect()->route('students.show', ['id' => $student->user_id]);
+    }
+
+    public function asignar($id){
+      $skills_asigned = DB::table('skills')
+              ->join('students_skills','skills.id','=','students_skills.skill_id')
+              ->where('students_skills.user_id','=',$id)
+              ->get();
+
+      $skills_not_asigned = Skills::whereNotExists(function($query) use ($id){
+             $query->select(DB::raw(1))
+                ->from('students_skills')
+                ->whereRaw('skills.id = students_skills.skill_id')
+                ->where('students_skills.user_id','=',$id);
+              })->where('skills.deleted','=',0)
+              ->get();
+
+      $num_student_skills = students_skills::where('user_id','=',$id)->count();
+      $num_skills = Skills::count();
+
+      return view('skills.asignar')->with('id',$id)
+                                        ->with('skills_asigned',$skills_asigned)
+                                        ->with('skills_not_asigned',$skills_not_asigned)
+                                        ->with('num_student_skills',$num_student_skills)
+                                        ->with('num_skills',$num_skills);
+    }
+
+    public function guardarAsignaciones(Request $request,$id){
+      $skills_ids = $request->skills_not_asigned;
+
+      foreach ($skills_ids as $skill) {
+
+        $student_skills = new students_skills();
+        $student_skills->user_id = $id;
+        $student_skills->skill_id = $skill;
+        $student_skills->save();
+        insertToLog(Auth::user()->id, 'added', $skill, "habilidad del estudiante");
+
+      }
+
+      Alert::success('Exitosamente','Habilidades asignadas');
+      return redirect()->route('students.show', ['id' => $id]);
+    }
+
 }

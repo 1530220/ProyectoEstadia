@@ -250,7 +250,7 @@ class CompetencesController extends Controller
                 ->from('students_competences')
                 ->whereRaw('competences.id = students_competences.competence_id')
                 ->where('students_competences.student_id','=',$id);
-              })->get();
+              })->where('competences.deleted','=',0)->get();
 
       $num_student_competences = students_competences::where('student_id','=',$id)->count();
       $num_competences = competences::count();
