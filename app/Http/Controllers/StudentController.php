@@ -111,11 +111,16 @@ class StudentController extends Controller
         $competences = DB::table('students_competences')
             ->join('competences','students_competences.competence_id','=','competences.id')
             ->select('students_competences.id as id','students_competences.score as score','students_competences.updated_at as updated','students_competences.deleted as deleted','competences.name as name')
-            ->where('students_competences.student_id','=',$id)->get();
+            ->where('students_competences.student_id','=',$id)->where('students_competences.status','=',1)->get();
 
+        $skills = DB::table('students_skills')
+            ->join('skills','students_skills.skill_id','=','skills.id')
+            ->select('students_skills.*',
+                    'skills.name as name')
+            ->where('students_skills.user_id','=',$id)->get();
 
         //Retorna a la vista de detalles de alumno
-        return view('students.show', compact('student','projects','acknowledgments','work_experiences','competences'));
+        return view('students.show', compact('student','projects','acknowledgments','work_experiences','competences','skills'));
     }
 
     /**

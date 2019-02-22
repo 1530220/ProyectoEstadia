@@ -247,7 +247,7 @@
             <li class="{{ Route::currentRouteNamed('competences.solicitudes') ? 'active' : '' }}">
                 <a href="{{ route('competences.solicitudes') }}">
                     <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                    <span class="pcoded-mtext" data-i18n="nav.job-search.job-detailed">Solicitudes</span>
+                    <span class="pcoded-mtext" data-i18n="nav.job-search.job-detailed">Solicitudes de Competencias</span>
                     <span class="pcoded-mcaret"></span>
                 </a>
             </li>

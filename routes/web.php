@@ -178,8 +178,11 @@ Route::group(['middleware'=>['auth']], function () {
         Route::post('/competence/restore', 'CompetencesController@restoreStudentCompetence')->name('competence.restore');
 
         Route::get('/competences/asignar/{id}', 'CompetencesController@asignar')->name('competences.asignar');
-        Route::get('/competences/solicitudes', 'CompetencesController@solicitudes')->name('competences.solicitudes');
         Route::post('/competences/asignar/{id}','CompetencesController@guardarAsignaciones')->name('competences.guardarAsignaciones');
+
+        Route::get('/competences/solicitudes', 'CompetencesController@solicitudes')->name('competences.solicitudes');
+        Route::get('/competences/solicitudes/{competence}', 'CompetencesController@answerAccepted')->name('competences.answerAccepted');
+        Route::get('/competences/solicitudes/answer/{competence}', 'CompetencesController@answerRejected')->name('competences.answerRejected');
 
         Route::get('/sectors', 'SectorController@index')->name('sectors.list');
         Route::get('/sectors/new', 'SectorController@create')->name('sectors.create');

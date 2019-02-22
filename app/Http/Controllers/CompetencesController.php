@@ -270,7 +270,10 @@ class CompetencesController extends Controller
         $student_competences = new students_competences();
         $student_competences->student_id = $id;
         $student_competences->competence_id = $competence;
+        $student_competences->status = 1;
         $student_competences->save();
+        insertToLog(Auth::user()->id, 'added', $competence, "competencia del estudiante");
+
       }
 
       Alert::success('Exitosamente','Competencias asignadas');
@@ -278,6 +281,45 @@ class CompetencesController extends Controller
     }
 
     public function solicitudes(){
+      $students_competences = DB::table('students_competences as solicitudes')
+          ->join('siita_db.users as users','solicitudes.student_id','=','users.university_id')
+          ->join('competences','solicitudes.competence_id','=','competences.id')
+          ->select('solicitudes.*',
+                  'users.first_name',
+                  'users.last_name',
+                  'users.second_last_name',
+                  'competences.name')
+                  ->where('solicitudes.status','=',0)
+                  ->get();
+      return view('competences.solicitudes')->with('students_competences',$students_competences);
+    }
 
+    public function answerAccepted(students_competences $competence){
+      $competence->status = 1;
+      if($competence->update()){
+        Alert::success('Exitosamente','Solicitud aceptada');
+        insertToLog(Auth::user()->id, 'added', $competence->id, "competencia del estudiante");
+
+        return redirect()->route('students.show', ['id' => $competence->student_id]);
+      }else{
+        Alert::error('No se pudo aceptar la solicitud', 'Error');        
+        return redirect()->route('students.show', ['id' => $competence->student_id]);
+      }
+    }
+
+    public function answerRejected(students_competences $competence){
+
+      if($competence->delete()){
+        Alert::success('Exitosamente','Solicitud rechazada');
+        insertToLog(Auth::user()->id, 'deleted', $competence->id, "competencia del estudiante");
+
+        return redirect()->route('students.show', ['id' => $competence->student_id]);
+      }else{
+        Alert::error('No se pudo rechazar la solicitud', 'Error');        
+        return redirect()->route('students.show', ['id' => $competence->student_id]);
+      }
     }
 }
+
+
+

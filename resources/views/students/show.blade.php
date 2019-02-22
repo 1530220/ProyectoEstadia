@@ -205,7 +205,76 @@
 					<div class="card-block">
 						<h4 class="sub-title">Habilidades</h4>
 
-					
+						@if ($skills->isNotEmpty())
+							<div class="row">
+								<div class="col-sm-3">
+									<h6><strong>Competencia</strong></h6>
+								</div>
+								<div class="col-sm-2">
+									<h6><strong>Ultima Actualización</strong></h6>
+								</div>
+								<div class="col-sm-5">
+									<h6><strong>Puntuación</strong></h6>
+								</div>
+								
+								<div class="col-sm-2">
+									<h6><strong>Acciones</strong></h6>
+								</div>
+							</div>
+							@foreach ($competences as $competence)
+								<div class="row">
+									<div class="col-sm-3">
+										<p>{{$competence->name}}</p>
+									</div>
+									<div class="col-sm-2">
+										<p>{{$competence->updated}}</p>
+									</div>
+									<div class="col-sm-4">
+										<div class="progress progress-xl">
+											<div class="progress-bar progress-bar-striped progress-bar-warning" role="progressbar" style="width: {{$competence->score}}%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+										</div>
+									</div>	
+									<div class="col-sm-1">
+										<h6><strong>{{$competence->score}}%</strong></h6>
+									</div>
+								
+									<div class="col-sm-2">
+											@if($competence->deleted=='0')
+												<form id="form" name="form" action="{{ route('competence.destroy', ['id' => $competence->id])}}" method="POST">
+													{{ csrf_field() }}
+													{{ method_field('DELETE') }}
+											@else
+												<form id="form" name="form" action="{{ route('competence.restore', ['id' => $competence->id]) }}" method="POST">
+													{{ csrf_field() }}
+											@endif
+												<center>
+													<a href="{{ route('competence.edit', ['id' => $competence->id]) }}" class="btn btn-primary" title="Editar puntuación de la competencia {{$competence->name}}" style="margin: 3px;"><span class="icofont icofont-ui-edit"></span></a>
+
+													@if($competence->deleted=='0')
+														<button type="submit" class="btn btn-danger" style="margin: 3px;" id="eliminar" name="eliminar" onclick="archiveFunction()" title="Eliminar competencia del estudiante"><span class="icofont icofont-ui-delete"></span></button>
+													@else
+														<button type="submit" class="btn btn-success" style="margin: 3px;" id="restaurar" name="restaurar" onclick="restoreFunction()" title="Restaurar competencia del estudiante"><span class="fas fa-reply"></span></a>
+													@endif
+												</center>
+											</form>
+									</div>	
+								</div>
+							@endforeach	
+						@else
+						<center>
+							<div class="alert alert-primary icons-alert">
+								<p><strong>Sin habilidades</strong></p>
+								<p>El estudiante no posee ninguna habilidad.</p>
+							</div>
+
+						</center>
+						@endif	
+					</div>
+					<div class="card-footer">
+						<div class="row">
+							<div class="col-sm-4"></div>
+							<a href="{{ route('competences.asignar', ['id' => $student->university_id]) }}" class="col-sm-4 btn btn-primary"><strong> Asignar Habilidades</strong></a>
+						</div>
 					</div>
 				</div>
 			</div>
