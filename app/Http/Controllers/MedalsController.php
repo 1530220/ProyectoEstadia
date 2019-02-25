@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Alert;
 use App\Medals;
+use App\students_medals;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Helpers\DeleteHelper;
@@ -177,5 +178,60 @@ class MedalsController extends Controller
         insertToLog(Auth::user()->id, 'recover', $request->id, "medalla");
         $medal = Medals::find($request->id);
         return redirect()->route('medals.show', ['id' => $medal->user_id]);
+    }
+
+    public function asignar($id){
+      $medals_asigned = DB::table('medals')
+              ->join('students_medals','medals.id','=','students_medals.medal_id')
+              ->where('students_medals.student_id','=',$id)
+              ->get();
+
+      $medals_not_asigned = Medals::whereNotExists(function($query) use ($id){
+             $query->select(DB::raw(1))
+                ->from('students_medals')
+                ->whereRaw('medals.id = students_medals.medal_id')
+                ->where('students_medals.student_id','=',$id);
+              })->where('medals.deleted','=',0)
+              ->get();
+
+      return view('medals.asignar')->with('id',$id)
+                                        ->with('medals_asigned',$medals_asigned)
+                                        ->with('medals_not_asigned',$medals_not_asigned);
+    }
+
+    public function guardarAsignaciones(Request $request,$id){
+      $medals_ids = $request->medals_not_asigned;
+
+      foreach ($medals_ids as $medals) {
+
+        $student_medals = new students_medals();
+        $student_medals->student_id = $id;
+        $student_medals->medal_id = $medals;
+        $student_medals->save();
+        insertToLog(Auth::user()->id, 'added', $medals, "medalla a estudiante {$id}");
+
+      }
+
+      Alert::success('Exitosamente','Medallas asignadas');
+      return redirect()->route('students.show', ['id' => $id]);
+    }
+
+    public function destroyStudentMedal(students_medals $medal){
+      DeleteHelper::instance()->onCascadeLogicalDelete('students_medals','id',$medal->id);
+
+        Alert::success('Exitosamente','Medalla eliminada del estudiante');
+
+        insertToLog(Auth::user()->id, 'deleted', $medal->id, "medalla del estudiante {$medal->student_id}");
+        return redirect()->route('students.show', ['id' => $medal->student_id]);
+    }
+
+    public function restoreStudentMedal(Request $request){
+      DeleteHelper::instance()->restoreLogicalDelete('students_medals','id',$request->id);
+
+        Alert::success('Exitosamente','Medalla restaurada en el estudiante');
+        $student = students_medals::find($request->id);
+
+        insertToLog(Auth::user()->id, 'recover', $request->id, "medalla del estudiante {$student->student_id}");
+        return redirect()->route('students.show', ['id' => $student->student_id]);
     }
 }

@@ -211,6 +211,12 @@ Route::group(['middleware'=>['auth']], function () {
         Route::delete('/medals/{medal}', 'MedalsController@destroy')->name('medals.destroy');
         Route::post('/medals/restore', 'MedalsController@restore')->name('medals.restore');
         
+        Route::get('/medals/asignar/{id}', 'MedalsController@asignar')->name('medals.asignar');
+        Route::post('/medals/asignar/{id}','MedalsController@guardarAsignaciones')->name('medals.guardarAsignaciones');
+
+        Route::delete('/medal/{medal}', 'MedalsController@destroyStudentMedal')->name('medal.destroy');
+        Route::post('/medal/restore', 'MedalsController@restoreStudentMedal')->name('medal.restore');
+
         Route::get('/projects', 'ProjectsController@index')->name('projects.list');
         Route::get('/projects/new', 'ProjectsController@create')->name('projects.create');
         Route::post('/projects', 'ProjectsController@store');
@@ -241,6 +247,33 @@ Route::group(['middleware'=>['auth']], function () {
         Route::get('/states/{id}', 'WorkExperiencesController@getStates');
         Route::get('/states/{id}/flag', 'WorkExperiencesController@getFlag');
         Route::get('/cities/{id}', 'WorkExperiencesController@getCities');
+
+        Route::get('/companies', 'CompaniesController@index')->name('companies.list');
+        Route::get('/companies/new', 'CompaniesController@create')->name('companies.create');
+        Route::post('/companies', 'CompaniesController@store');
+        Route::get('/companies/{id}', 'CompaniesController@show')->where('id', '[0-9]+')->name('companies.show');
+        Route::get('/companies/{company}/edit', 'CompaniesController@edit')->where('id', '[0-9]+')->name('companies.edit');
+        Route::put('/companies/{company}', 'CompaniesController@update')->name('companies.update');
+        Route::delete('/companies/{company}', 'CompaniesController@destroy')->name('companies.destroy');
+        Route::post('/companies/restore', 'CompaniesController@restore')->name('companies.restore');
+
+        Route::get('/jobs', 'JobsController@index')->name('jobs.list');
+        Route::get('/jobs/new', 'JobsController@create')->name('jobs.create');
+        Route::post('/jobs', 'JobsController@store');
+        Route::get('/jobs/{id}', 'JobsController@show')->where('id', '[0-9]+')->name('jobs.show');
+        Route::get('/jobs/{job}/edit', 'JobsController@edit')->where('id', '[0-9]+')->name('jobs.edit');
+        Route::put('/jobs/{job}', 'JobsController@update')->name('jobs.update');
+        Route::delete('/jobs/{job}', 'JobsController@destroy')->name('jobs.destroy');
+        Route::post('/jobs/restore', 'JobsController@restore')->name('jobs.restore');
+
+        Route::get('/contacts', 'ContactsController@index')->name('contacts.list');
+        Route::get('/contacts/new', 'ContactsController@create')->name('contacts.create');
+        Route::post('/contacts', 'ContactsController@store');
+        Route::get('/contacts/{id}', 'ContactsController@show')->where('id', '[0-9]+')->name('contacts.show');
+        Route::get('/contacts/{contact}/edit', 'ContactsController@edit')->where('id', '[0-9]+')->name('contacts.edit');
+        Route::put('/contacts/{contact}', 'ContactsController@update')->name('contacts.update');
+        Route::delete('/contacts/{contact}', 'ContactsController@destroy')->name('contacts.destroy');
+        Route::post('/contacts/restore', 'ContactsController@restore')->name('contacts.restore');
         /***************************************************
          *  Rutas para importar CSV al sistema *
          ***************************************************/

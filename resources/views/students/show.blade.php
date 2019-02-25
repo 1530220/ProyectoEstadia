@@ -93,9 +93,6 @@
 																	{{ csrf_field() }}
 																	{{ method_field('DELETE') }}
 																	<a style="color:white" onclick="returnURL('{{ url()->previous() }}')"><button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="Regresar"><i class="icofont icofont-arrow-left m-0"></i></button></a>
-																	<a href="{{ route('students.edit', ['matricula' => $student->user_id]) }}"><button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="Editar"><i class="icofont icofont-edit m-0"></i></button></a>
-																	<button onclick="archiveFunction()" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" type="submit" title="Eliminar"><span class="icofont icofont-ui-delete"></span></button>
-																	<a href="{{ route('assignations.reassignation', ['id' => $student->user_id]) }}"><button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="Cambiar Tutor Asignado"><i class="fas fa-exchange-alt"></i></i></button></a>
 																</form>
 															@else
 																<a style="color:white" onclick="returnURL('{{ url()->previous() }}')"><button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="Regresar"><i class="icofont icofont-arrow-left m-0"></i>Regresar</button></a>
@@ -106,8 +103,6 @@
 																	{{ csrf_field() }}
 
 																	<a style="color:white" onclick="returnURL('{{ url()->previous() }}')"><button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="Regresar"><i class="icofont icofont-arrow-left m-0"></i></button></a>
-																	<a href="{{ route('students.edit', ['matricula' => $student->user_id]) }}"><button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="Editar"><i class="icofont icofont-edit m-0"></i></button></a>
-																	<button onclick="restoreFunction()" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" type="submit" title="Restaurar"><span class="fas fa-reply"></span></button>
 																</form>
 															@else
 																<a style="color:white; " onclick="returnURL('{{ url()->previous() }}')"><button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="Regresar"><i class="icofont icofont-arrow-left m-0"></i>Regresar</span></button></a>
@@ -223,38 +218,54 @@
 							</div>
 							@foreach ($skills as $skill)
 								<div class="row">
-									<div class="col-sm-2">
-										<p>{{$skill->name}}</p>
-									</div>
-									<div class="col-sm-2">
-										<p>{{$skill->updated_at}}</p>
-									</div>
+									@if ($skill->deleted!='0')
+										<div class="col-sm-2">
+											<p style="color:firebrick;"><strong>{{$skill->name}}</strong></p>
+										</div>
+										<div class="col-sm-2">
+											<p style="color:firebrick;">{{$skill->updated_at}}</p>
+										</div>
+									@else
+										<div class="col-sm-2">
+											<p>{{$skill->name}}</p>
+										</div>
+										<div class="col-sm-2">
+											<p>{{$skill->updated_at}}</p>
+										</div>
+									@endif
+									
 									<div class="col-sm-5">
 										<div class="progress progress-xl">
 											<div class="progress-bar progress-bar-striped progress-bar-info" role="progressbar" style="width: {{$skill->score}}%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
 										</div>
-									</div>	
-									<div class="col-sm-1">
-										<h6><strong>{{$skill->score}}%</strong></h6>
 									</div>
+									@if ($skill->deleted!='0')
+									<div class="col-sm-1">
+											<h6 style="color:firebrick;"><strong>{{$skill->score}}%</strong></h6>
+										</div>
+									@else
+										<div class="col-sm-1">
+											<h6><strong>{{$skill->score}}%</strong></h6>
+										</div>
+									@endif
 								
 									<div class="col-sm-2">
-											@if($skill->deleted=='0')
-												<form id="form" name="form" action="{{ route('skill.destroy', ['id' => $skill->id])}}" method="POST">
-													{{ csrf_field() }}
-													{{ method_field('DELETE') }}
-											@else
-												<form id="form" name="form" action="{{ route('skill.restore', ['id' => $skill->id]) }}" method="POST">
-													{{ csrf_field() }}
-											@endif
-												<center>
-													@if($skill->deleted=='0')
-														<button type="submit" class="btn btn-danger" style="margin: 3px;" id="eliminar" name="eliminar" onclick="archiveFunction()" title="Eliminar habilidad del estudiante"><span class="icofont icofont-ui-delete"></span></button>
-													@else
-														<button type="submit" class="btn btn-success" style="margin: 3px;" id="restaurar" name="restaurar" onclick="restoreFunction()" title="Restaurar habilidad del estudiante"><span class="fas fa-reply"></span></a>
-													@endif
-												</center>
-											</form>
+										@if($skill->deleted=='0')
+											<form id="form" name="form" action="{{ route('skill.destroy', ['id' => $skill->id])}}" method="POST">
+												{{ csrf_field() }}
+												{{ method_field('DELETE') }}
+										@else
+											<form id="form" name="form" action="{{ route('skill.restore', ['id' => $skill->id]) }}" method="POST">
+												{{ csrf_field() }}
+										@endif
+											<center>
+												@if($skill->deleted=='0')
+													<button type="submit" class="btn btn-danger" style="margin: 3px;" id="eliminar" name="eliminar" onclick="archiveFunction()" title="Eliminar habilidad del estudiante"><span class="icofont icofont-ui-delete"></span></button>
+												@else
+													<button type="submit" class="btn btn-success" style="margin: 3px;" id="restaurar" name="restaurar" onclick="restoreFunction()" title="Restaurar habilidad del estudiante"><span class="fas fa-reply"></span></a>
+												@endif
+											</center>
+										</form>
 									</div>	
 								</div>
 							@endforeach	
@@ -308,20 +319,36 @@
 						</div>
 						@foreach ($competences as $competence)
 							<div class="row">
-								<div class="col-sm-3">
-									<p>{{$competence->name}}</p>
-								</div>
-								<div class="col-sm-2">
-									<p>{{$competence->updated}}</p>
-								</div>
+								@if ($competence->deleted!='0')
+									<div class="col-sm-3">
+										<p style="color:firebrick;"><strong>{{$competence->name}}</strong></p>
+									</div>
+									<div class="col-sm-2">
+										<p style="color:firebrick;">{{$competence->updated}}</p>
+									</div>
+								@else
+									<div class="col-sm-3">
+										<p>{{$competence->name}}</p>
+									</div>
+									<div class="col-sm-2">
+										<p>{{$competence->updated}}</p>
+									</div>
+								@endif
 								<div class="col-sm-4">
 									<div class="progress progress-xl">
 										<div class="progress-bar progress-bar-striped progress-bar-warning" role="progressbar" style="width: {{$competence->score}}%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
 									</div>
-								</div>	
-								<div class="col-sm-1">
-									<h6><strong>{{$competence->score}}%</strong></h6>
 								</div>
+								@if ($competence->deleted!='0')
+									<div class="col-sm-1">
+										<h6  style="color:firebrick;"><strong>{{$competence->score}}%</strong></h6>
+									</div>
+								@else
+									<div class="col-sm-1">
+										<h6><strong>{{$competence->score}}%</strong></h6>
+									</div>
+								@endif
+								
 							
 								<div class="col-sm-2">
 										@if($competence->deleted=='0')
@@ -359,6 +386,64 @@
 						<div class="row">
 							<div class="col-sm-4"></div>
 							<a href="{{ route('competences.asignar', ['id' => $student->university_id]) }}" class="col-sm-4 btn btn-inverse"><strong> Asignar Competencias</strong></a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="card">
+					<div class="card-block">
+					<h4 class="sub-title">Medallas que posee el estudiante</h4>
+
+					@if ($medals->isNotEmpty())
+					<div class="row">
+						@foreach ($medals as $medal)
+							<div class="col-lg-6 col-xl-4">
+								<center>  
+									@if ($medal->deleted == '0')
+										<img src="{{$medal->image}}" alt="{{$medal->name}}" title="{{$medal->name}}" width="150"><hr>
+										<h6>{{$medal->name}}</h6>
+									@else
+										<img style="opacity: 0.4;" src="{{$medal->image}}" alt="{{$medal->name}}" title="{{$medal->name}}" width="150"><hr>
+										<h6 style="color:firebrick;"><strong>{{$medal->name}}</strong></h6>
+									@endif
+
+									@if($medal->deleted=='0')
+										<form id="form" name="form" action="{{ route('medal.destroy', ['id' => $medal->id])}}" method="POST">
+											{{ csrf_field() }}
+											{{ method_field('DELETE') }}
+									@else
+										<form id="form" name="form" action="{{ route('medal.restore', ['id' => $medal->id]) }}" method="POST">
+											{{ csrf_field() }}
+									@endif
+										@if($medal->deleted=='0')
+											<button type="submit" class="btn btn-danger" id="eliminar" name="eliminar" onclick="archiveFunction()" data-toggle="tooltip" data-placement="bottom" title="Eliminar medalla {{$medal->name}} del estudiante {{$student->university_id}}"><i class="icofont icofont-ui-delete"></i></button>
+										@else
+											<button type="submit" class="btn btn-success" id="restaurar" name="restaurar" onclick="restoreFunction()" data-toggle="tooltip" data-placement="bottom" title="Restaurar medalla {{$medal->name}} del estudiante {{$student->university_id}}"><i class="fas fa-reply"></i></button>
+										@endif
+									</form>
+								</center>
+							</div>
+						@endforeach
+					</div>
+
+					@else
+					<center>
+						<div class="alert alert-primary icons-alert">
+							<p><strong>Medallas no asignadas</strong></p>
+							<p>El estudiante no posee ninguna medalla asignada.</p>
+						</div>
+
+					</center>
+					@endif	
+					</div>
+					<div class="card-footer">
+						<div class="row">
+							<div class="col-sm-4"></div>
+							<a href="{{ route('medals.asignar', ['id' => $student->university_id]) }}" class="col-sm-4 btn btn-inverse"><strong> Asignar Medallas</strong></a>
 						</div>
 					</div>
 				</div>

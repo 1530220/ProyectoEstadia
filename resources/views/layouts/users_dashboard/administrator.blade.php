@@ -128,71 +128,71 @@
             </li>
         </ul>
     </li>-->
-    <li class="pcoded-hasmenu {{ explode('.', $view_name)[0]=='tutorias' ? 'active pcoded-trigger' : '' }}">
+    <li class="pcoded-hasmenu {{ explode('.', $view_name)[0]=='companies' ? 'active pcoded-trigger' : '' }}">
         <a href="javascript:void(0)">
             <span class="pcoded-micon"  style="background-color:lightseagreen;"><i class="fa fa-building"></i><b>T</b></span>
             <span class="pcoded-mtext" data-i18n="nav.search.main">Empresas</span>
             <span class="pcoded-mcaret"></span>
         </a>
         <ul class="pcoded-submenu">
-            <li class="{{ Route::currentRouteNamed('tutorias.list') ? 'active' : '' }}">
-                <a href="{{ route('tutorias.list') }}">
+            <li class="{{ Route::currentRouteNamed('companies.list') ? 'active' : '' }}">
+                <a href="{{ route('companies.list') }}">
                     <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
                     <span class="pcoded-mtext" data-i18n="nav.search.simple-search">Listado de Empresas</span>
                     <span class="pcoded-mcaret"></span>
                 </a>
             </li>
-            <li class="{{ Route::currentRouteNamed('tutorias.list') ? 'active' : '' }}">
-                <a href="{{ route('tutorias.list') }}">
+            <li class="{{ Route::currentRouteNamed('companies.create') ? 'active' : '' }}">
+                <a href="{{ route('companies.create') }}">
                     <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
                     <span class="pcoded-mtext" data-i18n="nav.search.simple-search">Agregar Empresa</span>
                     <span class="pcoded-mcaret"></span>
                 </a>
             </li>
-            <li class="{{ explode('.', $view_name)[0]=='imports.list' ? 'active pcoded-trigger' : '' }}">
-                <a href="{{ route('imports.list',['type'=>'users']) }}">
+            <li class="{{ Route::currentRouteNamed('import.list') ? 'active' : '' }}">
+                    <a href="{{ route('imports.list') }}">
                     <span class="pcoded-micon" style="background-color:#13a57c;"><i class="fas fa-file-import"></i><b>T</b></span>
                     <span class="pcoded-mtext" data-i18n="nav.task.main">Importar Empresas</span>
                     <span class="pcoded-mcaret"></span>
                 </a>
             </li>
-            <li class="{{ explode('.', $view_name)[0]=='imports.list' ? 'active pcoded-trigger' : '' }}">
-                <a href="{{ route('imports.list',['type'=>'users']) }}">
+            <li class="{{ Route::currentRouteNamed('jobs.list') ? 'active' : '' }}">
+                    <a href="{{ route('jobs.list') }}">
                     <span class="pcoded-micon" style="background-color:#13a57c;"><i class="fas fa-file-import"></i><b>T</b></span>
                     <span class="pcoded-mtext" data-i18n="nav.task.main">Listado de Vacantes</span>
                     <span class="pcoded-mcaret"></span>
                 </a>
             </li>
-            <li class="{{ explode('.', $view_name)[0]=='imports.list' ? 'active pcoded-trigger' : '' }}">
-                <a href="{{ route('imports.list',['type'=>'users']) }}">
+            <li class="{{ Route::currentRouteNamed('jobs.create') ? 'active' : '' }}">
+                    <a href="{{ route('jobs.create') }}">
                     <span class="pcoded-micon" style="background-color:#13a57c;"><i class="fas fa-file-import"></i><b>T</b></span>
                     <span class="pcoded-mtext" data-i18n="nav.task.main">Agregar Vacante</span>
                     <span class="pcoded-mcaret"></span>
                 </a>
             </li>
-            <li class="{{ explode('.', $view_name)[0]=='imports.list' ? 'active pcoded-trigger' : '' }}">
-                <a href="{{ route('imports.list',['type'=>'users']) }}">
+            <li class="{{ Route::currentRouteNamed('import.list') ? 'active' : '' }}">
+                    <a href="{{ route('imports.list') }}">
                     <span class="pcoded-micon" style="background-color:#13a57c;"><i class="fas fa-file-import"></i><b>T</b></span>
                     <span class="pcoded-mtext" data-i18n="nav.task.main">Importar Vacantes</span>
                     <span class="pcoded-mcaret"></span>
                 </a>
             </li>
-            <li class="{{ explode('.', $view_name)[0]=='imports.list' ? 'active pcoded-trigger' : '' }}">
-                <a href="{{ route('imports.list',['type'=>'users']) }}">
+            <li class="{{ Route::currentRouteNamed('contacts.list') ? 'active' : '' }}">
+                    <a href="{{ route('contacts.list') }}">
                     <span class="pcoded-micon" style="background-color:#13a57c;"><i class="fas fa-file-import"></i><b>T</b></span>
                     <span class="pcoded-mtext" data-i18n="nav.task.main">Listado de Contactos</span>
                     <span class="pcoded-mcaret"></span>
                 </a>
             </li>
-            <li class="{{ explode('.', $view_name)[0]=='imports.list' ? 'active pcoded-trigger' : '' }}">
-                <a href="{{ route('imports.list',['type'=>'users']) }}">
+            <li class="{{ Route::currentRouteNamed('contacts.create') ? 'active' : '' }}">
+                    <a href="{{ route('contacts.create') }}">
                     <span class="pcoded-micon" style="background-color:#13a57c;"><i class="fas fa-file-import"></i><b>T</b></span>
                     <span class="pcoded-mtext" data-i18n="nav.task.main">Agregar Contacto</span>
                     <span class="pcoded-mcaret"></span>
                 </a>
             </li>
-            <li class="{{ explode('.', $view_name)[0]=='imports.list' ? 'active pcoded-trigger' : '' }}">
-                <a href="{{ route('imports.list',['type'=>'users']) }}">
+            <li class="{{ Route::currentRouteNamed('import.list') ? 'active' : '' }}">
+                    <a href="{{ route('imports.list') }}">
                     <span class="pcoded-micon" style="background-color:#13a57c;"><i class="fas fa-file-import"></i><b>T</b></span>
                     <span class="pcoded-mtext" data-i18n="nav.task.main">Importar Contactos</span>
                     <span class="pcoded-mcaret"></span>

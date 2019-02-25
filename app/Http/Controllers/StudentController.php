@@ -119,8 +119,14 @@ class StudentController extends Controller
                     'skills.name as name')
             ->where('students_skills.user_id','=',$id)->get();
 
+        $medals = DB::table('students_medals')
+            ->join('medals','students_medals.medal_id','=','medals.id')
+            ->select('students_medals.*',
+                    'medals.name as name',
+                    'medals.image as image')
+            ->where('students_medals.student_id','=',$id)->get();
         //Retorna a la vista de detalles de alumno
-        return view('students.show', compact('student','projects','acknowledgments','work_experiences','competences','skills'));
+        return view('students.show', compact('student','projects','acknowledgments','work_experiences','competences','skills','medals'));
     }
 
     /**

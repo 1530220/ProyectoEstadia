@@ -66,7 +66,12 @@
                             @endforeach
                             <br><br>
                             <h6>Competencias que pueden ser asignadas:</h6><br>
-
+							@if (count($competences_not_asigned)==0)
+								<div class="alert alert-primary icons-alert">
+									<p><strong>Sin competencias disponibles</strong></p>
+									<p>No existe alguna competencia que pueda ser asignada al estudiante.</p>
+								</div>
+							@endif
                             @foreach ($competences_not_asigned as $competences)
                                 <div class="col-sm-5 checkbox-fade fade-in-inverse">
                                     <label>
@@ -82,7 +87,9 @@
 							<br><br><br>
 							<center>
 								<a style="color:white" onclick="returnURL('{{ url()->previous() }}')"  class="btn btn-primary"><i class="icofont icofont-arrow-left"></i>Regresar</a>
-								<button type="submit" class="btn btn-success"><i class="icofont icofont-check-circled"></i>Asignar Competencias</button>
+								@if (count($competences_not_asigned)!=0)
+									<button type="submit" class="btn btn-success"><i class="icofont icofont-check-circled"></i>Asignar Competencias</button>
+								@endif
 							</center>
 						</form>
 					</div>
