@@ -66,9 +66,9 @@ class WorkExperiencesController extends Controller
             'fin' => 'required',
             'description' => 'required',
             'company' => 'required',
-            'country' => 'required',
-            'state' => 'required',
-            'city' => 'required',
+            'country' => 'required|max:246|min:1',
+            'state' => 'required|max:4121|min:1',
+            'city' => 'required|max:48356|min:1',
           ],[
             'id.required' => ' * Este campo es obligatorio.',
             'id.max' => ' * El valor máximo de este campo es 4294967294.',
@@ -80,9 +80,27 @@ class WorkExperiencesController extends Controller
             'fin.required' => ' * Este campo es obligatorio.',
             'company.required' => ' * Este campo es obligatorio.',
             'country.required' => ' * Este campo es obligatorio.',
+            'country.max' => ' * Favor de seleccionar un país.',
+            'country.min' => ' * Favor de seleccionar un país.',
             'state.required' => ' * Este campo es obligatorio.',
+            'state.max' => ' * Favor de seleccionar un estado.',
+            'state.min' => ' * Favor de seleccionar un estado.',
             'city.required' => ' * Este campo es obligatorio.',
+            'city.max' => ' * Favor de seleccionar una ciudad.',
+            'city.min' => ' * Favor de seleccionar una ciudad.',
           ]);
+
+          if(Input::get('country') == "0"){
+            Alert::error('Se debe seleccionar un pais', 'Error');
+            return redirect()->route('work_experiences.create');
+          }
+          
+          if(Input::get('city') == "placeholder"){
+            Alert::error('Se debe seleccionar una ciudad', 'Error');
+            return redirect()->route('work_experiences.create');          
+          }
+          
+          
           $fecha_actual=date("Y-m-d");
 
           if(Input::get('inicio')>= Input::get('fin')){
@@ -133,7 +151,22 @@ class WorkExperiencesController extends Controller
         $pais = Country::find($work_experience->country);
         $estado = State::find($work_experience->state);
         $ciudad = City::find($work_experience->city);
-        return view('work_experiences.show', compact('work_experience','pais','estado','ciudad'));
+        if($pais->name == "Seleccionar país"){
+          $name_pais = "No se selecciono un país";
+        }else{
+          $name_pais = $pais->name;
+        }
+        if($estado == NULL){
+          $name_estado = "No se selecciono un estado";
+        }else{
+          $name_estado = $estado->name;
+        }
+        if($ciudad == NULL){
+          $name_ciudad = "No se selecciono una ciudad";
+        }else{
+          $name_ciudad = $ciudad->name;
+        }
+        return view('work_experiences.show', compact('work_experience','name_pais','name_estado','name_ciudad'));
     }
 
     /**

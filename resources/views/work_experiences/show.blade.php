@@ -111,7 +111,7 @@
 													<h6 class="f-w-400 m-b-30"><i class="icofont icofont-world"></i>País :</h6>
 												</div>
 												<div class="col-sm-8">
-													<h6 class="m-b-30">{{ $pais->name }}</h6>
+													<h6 class="m-b-30">{{ $name_pais }}</h6>
 												</div>
                                             </div>
                                             <div class="row">
@@ -119,7 +119,7 @@
 													<h6 class="f-w-400 m-b-30"><i class="icofont icofont-map"></i>Estado :</h6>
 												</div>
 												<div class="col-sm-8">
-													<h6 class="m-b-30">{{ $estado->name  }}</h6>
+													<h6 class="m-b-30">{{ $name_estado }}</h6>
 												</div>
 											</div>
 											<div class="row">
@@ -127,7 +127,7 @@
 													<h6 class="f-w-400 m-b-30"><i class="icofont icofont-map"></i>Ciudad :</h6>
 												</div>
 												<div class="col-sm-8">
-													<h6 class="m-b-30">{{ $ciudad->name  }}</h6>
+													<h6 class="m-b-30">{{ $name_ciudad  }}</h6>
 												</div>
 											</div>
 										</div>

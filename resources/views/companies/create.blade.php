@@ -42,8 +42,11 @@
 			<div class="col-sm-12">
 				<div class="card">
 					<div class="card-block">
-						<form id="form" method="POST" action="{{ route('companies.list') }}">
+						<form id="form" method="POST" action="{{ route('companies.list') }}" enctype="multipart/form-data">
 							{!! csrf_field() !!}
+							<input type="hidden" name="_token" value="{{ csrf_token() }}">
+							
+
 
 							<div class="form-group row">
 								<label class="col-sm-2 col-form-label" for="id">ID Empresa:</label>
@@ -56,6 +59,17 @@
 								</div>
 							</div>
 							<div class="form-group row">
+								<label class="col-sm-2 col-form-label" for="rfc">RFC:</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" id="rfc_input" oninput="validarInput(this)" name="rfc" placeholder="Ej. XAXX010101000" value="{{ old('rfc') }}" title="RFC de la Empresa">
+									@if ($errors->has('rfc'))
+										<div class="col-form-label" style="color:red;">{{$errors->first('rfc')}}</div>
+									@endif
+									<div  class="col-form-label" id="resultado" style="display:none;"></div>
+								</div>
+							</div>
+
+							<div class="form-group row">
 								<label class="col-sm-2 col-form-label" for="name">Nombre:</label>
 								<div class="col-sm-10">
 									<input type="text" class="form-control" name="name" placeholder="Ej. Oracle" value="{{ old('name') }}" title="Nombre de la Empresa">
@@ -64,19 +78,121 @@
 									@endif
 								</div>
 							</div>
+
+							<div class="form-group row">
+								<label class="col-sm-2 col-form-label" for="telefono">Teléfono:</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" name="telefono" placeholder="Ej. 8349874563" value="{{ old('telefono') }}" title="Telefono de la Empresa">
+									@if ($errors->has('telefono'))
+										<div class="col-form-label" style="color:red;">{{$errors->first('telefono')}}</div>
+									@endif
+								</div>
+							</div>
 							
-                            <label>RFC:</label>
-                            <input type="text" id="rfc_input" style="width:100%;"
-                                   oninput="validarInput(this)" 
-                                   placeholder="Ingrese su RFC">
-                            <pre id="resultado"></pre>
+							<div class="form-group row">
+                                <label class="col-sm-2 col-form-label" for="country">País:</label>
+                                <div class="col-sm-4">
+                                    {!! Form::select('country',$countries,null,['id'=>'country','class'=>'form-control']) !!}
+                                    @if ($errors->has('country'))
+                                        <div class="col-form-label" style="color:red;">{{$errors->first('country')}}</div>
+                                    @endif
+								</div>
+								
+								<label class="col-sm-2 col-form-label" for="state">Estado:</label>
+                                <div class="col-sm-4">
+                                    {!! Form::select('state',['placeholder'=>'Favor de seleccionar un país'],null,['id'=>'state','class'=>'form-control']) !!}
+                                    @if ($errors->has('state'))
+                                        <div class="col-form-label" style="color:red;">{{$errors->first('state')}}</div>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" for="city">Ciudad:</label>
+                                <div class="col-sm-4">
+                                    {!! Form::select('city',['placeholder'=>'Favor de seleccionar un estado'],null,['id'=>'city','class'=>'form-control']) !!}
+                                    @if ($errors->has('city'))
+                                        <div class="col-form-label" style="color:red;">{{$errors->first('city')}}</div>
+                                    @endif
+								</div>
+
+								<label class="col-sm-2 col-form-label" for="zip">Código Postal:</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" name="zip" placeholder="Ej. 87000" value="{{ old('zip') }}" title="Codigo Postal">
+									@if ($errors->has('zip'))
+										<div class="col-form-label" style="color:red;">{{$errors->first('zip')}}</div>
+									@endif
+								</div>
+							</div>
+
+							<div class="form-group row">
+								<label class="col-sm-2 col-form-label" for="colonia">Colonia:</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" name="colonia" placeholder="Ej. Liberal" value="{{ old('colonia') }}" title="Colonia">
+									@if ($errors->has('colonia'))
+										<div class="col-form-label" style="color:red;">{{$errors->first('colonia')}}</div>
+									@endif
+								</div>
+								<label class="col-sm-2 col-form-label" for="calle">Calle:</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" name="calle" placeholder="Ej. Guerrero" value="{{ old('calle') }}" title="Calle">
+									@if ($errors->has('calle'))
+										<div class="col-form-label" style="color:red;">{{$errors->first('calle')}}</div>
+									@endif
+								</div>
+							</div>
+
+							<div class="form-group row">
+								<label class="col-sm-2 col-form-label" for="horario">Horario de la Empresa:</label>
+								<div class="col-sm-10">
+									<textarea class="form-control" name="horario" rows="3" maxlength="500" placeholder="Ej. Lunes a Viernes de 8:00 a 20:00" title="Horario de la Empresa">{{ old('horario') }}</textarea>
+									@if ($errors->has('horario'))
+										<div class="col-form-label" style="color:red;">{{$errors->first('horario')}}</div>
+									@endif
+								</div>
+							</div>
+							<div class="form-group row">
+								<label class="col-sm-2 col-form-label" for="descripcion">Descripción de la Empresa:</label>
+								<div class="col-sm-10">
+									<textarea class="form-control" name="descripcion" rows="5" maxlength="1000" placeholder="Ej. Oracle Corporation es una compañía especializada en el desarrollo de soluciones de nube y locales" title="Descripción de la Empresa">{{ old('descripcion') }}</textarea>
+									@if ($errors->has('descripcion'))
+										<div class="col-form-label" style="color:red;">{{$errors->first('descripcion')}}</div>
+									@endif
+								</div>
+							</div>
+
+							<div class="form-group row">
+								<label class="col-sm-2 col-form-label">Imagen:</label>
+								<div class="col-sm-10">
+									<div class="file-upload">
+										<div class="image-upload-wrap">
+											<input id="image_input" class="file-upload-input" type='file' name="image" onchange="readURL(this);" accept="image/*" />
+											<div style="padding-top:40px" onclick="$('.file-upload-input').trigger('click' )">
+												<center>
+													<i style="font-size: 60px;" class="fas fa-cloud-upload-alt drag-icon"></i>
+												</center>
+											</div>
+											<div class="drag-text">
+												<span>Arrastre y suelte la imagen de la empresa <span style="font-weight: bold; font-size:16px;"> aquí</span> o haga clic <span style="font-weight: bold; font-size:16px;"> aquí</span> para buscarla en su equipo.</span>
+											</div>
+										</div>
+										<div class="file-upload-content">
+											<img class="file-upload-image" src="#" alt="your image" />
+											<div class="image-title-wrap">
+												<button type="button" onclick="removeUpload()" class="remove-image">Remover Imagen</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
 
 							<br>
 							<center>
 								<a style="color:white" onclick="returnURL('{{ url()->previous() }}')"  class="btn btn-primary"><i class="icofont icofont-arrow-left"></i>Regresar</a>
-								<button type="submit" class="btn btn-success"><i class="icofont icofont-check-circled"></i>Guardar Empresa</button>
+								<button type="submit" style="display:none;" id="registroEmpresa" class="btn btn-success"><i class="icofont icofont-check-circled"></i>Guardar Empresa</button>
 							</center>
 						</form>
+
 					</div>
 				</div>
 			</div>
@@ -86,12 +202,11 @@
 @endsection
 <style>
 #resultado {
-    background-color: red;
-    color: white;
+    color: red;
     font-weight: bold;
 }
 #resultado.ok {
-    background-color: green;
+    color: green;
 }
 </style>
 @section('javascriptcode')
@@ -108,7 +223,6 @@
 				'* El id que esta intentando ingresar no esta disponible.');
 		});
 		//* Termina verificacion de columnas unicas
-
 
 
 
@@ -160,21 +274,28 @@
         function validarInput(input) {
             var rfc         = input.value.trim().toUpperCase(),
                 resultado   = document.getElementById("resultado"),
+				button   = document.getElementById("registroEmpresa"),
                 valido;
-                
+            
+			if(rfc==""){
+				resultado.style.display="none";
+				button.style.display="none"
+			}else{
+				resultado.style.display="block";
+			}
             var rfcCorrecto = rfcValido(rfc);   // ⬅️ Acá se comprueba
         
             if (rfcCorrecto) {
-                valido = "Válido";
+                valido = "válido";
             resultado.classList.add("ok");
+			button.style.display="inline"
             } else {
-                valido = "No válido"
+                valido = "no válido"
                 resultado.classList.remove("ok");
+				button.style.display="none"
             }
                 
-            resultado.innerText = "RFC: " + rfc 
-                                + "\nResultado: " + rfcCorrecto
-                                + "\nFormato: " + valido;
+            resultado.innerText = " * RFC " + valido;
         }
 	</script>
 @endsection

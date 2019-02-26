@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Alert;
 use App\company;
+use App\Country;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Helpers\DeleteHelper;
@@ -34,7 +35,8 @@ class CompaniesController extends Controller
      */
     public function create()
     {
-        return view('companies.create');
+        $countries = Country::pluck('name','id'); 
+        return view('companies.create')->with("countries",$countries);
     }
 
     /**
@@ -45,7 +47,77 @@ class CompaniesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //dd("1");
+        $data = request()->validate([
+            'id' => 'required|min:1|numeric',
+            'name' => 'required',
+            'telefono' => 'required|numeric',
+            'zip' => 'required|numeric',
+            'colonia' => 'required',
+            'calle' => 'required',
+            'horario' => 'required',
+            'descripcion' => 'required',
+        ], [
+            'id.required' => ' * Este campo es obligatorio.',
+            'id.min' => ' * El valor mínimo de este campo es 1.',
+            'id.numeric' => ' * Este campo es de tipo numérico.',
+            'name.required' => ' * Este campo es obligatorio.',
+            'telefono.required' => ' * Este campo es obligatorio.',
+            'telefono.numeric' => ' * Este campo es de tipo numérico.',
+            'zip.required' => ' * Este campo es obligatorio.',
+            'zip.numeric' => ' * Este campo es de tipo numérico.',
+            'colonia.required' => ' * Este campo es obligatorio.',
+            'calle.required' => ' * Este campo es obligatorio.',
+            'horario.required' => ' * Este campo es obligatorio.',
+            'descripcion.required' => ' * Este campo es obligatorio.',
+        ]);
+
+        if(Input::get('country') == "0"){
+            Alert::error('Se debe seleccionar un pais', 'Error');
+            return redirect()->route('companies.create');
+        }
+        
+        if(Input::get('city') == "placeholder"){
+            Alert::error('Se debe seleccionar una ciudad', 'Error');
+            return redirect()->route('companies.create');          
+        }
+        
+        
+
+        //Se crea una nueva instancia de usuario
+        $company = new company;
+
+        //Se llena el usuario con los datos ingresados en la vista
+        $company->id = Input::get('id');
+        $company->rfc = Input::get('rfc');
+        $company->name = Input::get('name');
+        $company->phone = Input::get('telefono');
+        $company->country = Input::get('country');
+        $company->state = Input::get('state');
+        $company->city = Input::get('city');
+        $company->zip = Input::get('zip');
+        $company->colony = Input::get('colonia');
+        $company->street = Input::get('calle');
+        $company->schedule = Input::get('horario');
+        $company->description = Input::get('descripcion');
+
+        //Se carga la imagen subida
+        $image = Input::file('image');
+        //Si se ingreso una imagen a guardar, entonces la guarda en storage en la carpeta de users
+        if ($image!=null) {
+            //Almacenando la imagen del alumno
+            $path=$request->file('image')->store('/public/users');
+            $company->image_url = 'storage/users/'.Input::file('image')->hashName();
+        }
+
+        //dd($user);
+        //Se muestran los mensajes de cofirmacion para cada tipo de usuario y se realiza
+        //el almacenamiento necesario para cada tipo de usuario
+        $company->save();
+        Alert::success('Exitosamente', 'Empresa Registrada');
+        insertToLog(Auth::user()->id, 'added', Input::get('id'), "empresa");
+        return redirect()->route('companies.list');
+        
     }
 
     /**
@@ -56,7 +128,8 @@ class CompaniesController extends Controller
      */
     public function show($id)
     {
-        //
+        $company = Company::find($id);
+        return view('companies.show', compact('company'));
     }
 
     /**

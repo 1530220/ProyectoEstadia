@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title',"SIITA - Editar Perfil")
+@section('title',"Bolsa de Trabajo - Editar Perfil")
 
 @switch(Auth::user()->type)
 	@case(1)

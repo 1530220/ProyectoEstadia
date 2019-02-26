@@ -28,6 +28,8 @@ class CreateCompaniesTable extends Migration
             $table->string('street',50);
             $table->string('schedule',500);
             $table->string('description',1000);
+            $table->integer('deleted')->default(0);
+            $table->timestamps();
         });
     }
 
