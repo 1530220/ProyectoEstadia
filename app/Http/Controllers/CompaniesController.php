@@ -106,8 +106,8 @@ class CompaniesController extends Controller
         //Si se ingreso una imagen a guardar, entonces la guarda en storage en la carpeta de users
         if ($image!=null) {
             //Almacenando la imagen del alumno
-            $path=$request->file('image')->store('/public/users');
-            $company->image_url = 'storage/users/'.Input::file('image')->hashName();
+            $path=$request->file('image')->store('/public/companies');
+            $company->image_url = 'storage/companies/'.Input::file('image')->hashName();
         }
 
         //dd($user);
