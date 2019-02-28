@@ -45,8 +45,9 @@
 								@if ($companies->isNotEmpty())
 								<thead id="table_header">
 									<tr>
-										<th class="all" scope="col">ID</th>
-										<th scope="col">Nombre</th>
+										<th class="all" scope="col">RFC</th>
+										<th scope="col">Empresa</th>
+										<th scope="col">Teléfono</th>
 										<th class="all" style="width:25%;" scope="col">Acciones</th>
 									</tr>
 								</thead>
@@ -54,11 +55,13 @@
 									@foreach ($companies as $company)
 									<tr>
 										@if($company->deleted=='0')
-											<th scope="row">{{ $company->id }}</th>
+											<th scope="row">{{ $company->rfc }}</th>
 											<td>{{ $company->name }}</td>
+											<td>{{ $company->phone }}</td>
 										@else
-											<th style="color:red" scope="row">{{ $company->id }}</th>
+											<th style="color:red" scope="row">{{ $company->rfc }}</th>
 											<td style="color:red">{{ $company->name }}</td>
+											<td style="color:red">{{ $company->phone }}</td>
 										@endif
 										<td>
 											@if($company->deleted=='0')
@@ -86,8 +89,9 @@
 								</tbody>
 								<tfoot>
 									<tr id="table_footer">
-										<th style="padding-right: 2.8%" scope="col">ID</th>
-										<th style="padding-right: 2.8%" scope="col">Nombre</th>
+										<th style="padding-right: 2.8%" scope="col">RFC</th>
+										<th style="padding-right: 2.8%" scope="col">Empresa</th>
+										<th style="padding-right: 2.8%" scope="col">Teléfono</th>
 										<th style="padding-left: 1.2%" scope="col" style="width:0%;"></th>
 									</tr>
 								</tfoot>

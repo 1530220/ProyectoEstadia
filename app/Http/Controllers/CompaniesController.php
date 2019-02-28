@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Alert;
 use App\company;
 use App\Country;
+use App\State;
+use App\City;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Helpers\DeleteHelper;
@@ -129,7 +131,25 @@ class CompaniesController extends Controller
     public function show($id)
     {
         $company = Company::find($id);
-        return view('companies.show', compact('company'));
+        $pais = Country::find($company->country);
+        $estado = State::find($company->state);
+        $ciudad = City::find($company->city);
+        if($pais->name == "Seleccionar país"){
+          $name_pais = "No se selecciono un país";
+        }else{
+          $name_pais = $pais->name;
+        }
+        if($estado == NULL){
+          $name_estado = "No se selecciono un estado";
+        }else{
+          $name_estado = $estado->name;
+        }
+        if($ciudad == NULL){
+          $name_ciudad = "No se selecciono una ciudad";
+        }else{
+          $name_ciudad = $ciudad->name;
+        }
+        return view('companies.show', compact('company','name_pais','name_estado','name_ciudad'));
     }
 
     /**
@@ -138,9 +158,12 @@ class CompaniesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Company $company)
     {
-        //
+        $countries = Country::pluck('name','id');
+        $states = State::all()->where('country_id','=',$company->country)->pluck('name','id');
+        $cities = City::all()->where('state_id','=',$company->state)->pluck('name','id');
+        return view('companies.edit')->with('company',$company)->with('countries',$countries)->with('states',$states)->with('cities',$cities);
     }
 
     /**

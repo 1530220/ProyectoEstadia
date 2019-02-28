@@ -126,7 +126,15 @@
 												</div>
 												<div class="row">
 													<div class="col-sm-4">
-														<h6 class="f-w-400 m-b-30"><i class="icofont icofont-ui-user"></i>Nombre :</h6>
+														<h6 class="f-w-400 m-b-30"><i class="icofont icofont-id-card"></i>RFC :</h6>
+													</div>
+													<div class="col-sm-8">
+														<h6 class="m-b-30"><strong>{{ $company->rfc }}</strong></h6>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-sm-4">
+														<h6 class="f-w-400 m-b-30"><i class="icofont icofont-ui-user"></i>Empresa :</h6>
 													</div>
 													<div class="col-sm-8">
 														<h6 class="m-b-30">{{ $company->name }} </h6>
@@ -134,7 +142,7 @@
 												</div>
 												<div class="row">
 													<div class="col-sm-4">
-														<h6 class="f-w-400 m-b-30"><i class="icofont icofont-cube"></i>Telefono :</h6>
+														<h6 class="f-w-400 m-b-30"><i class="icofont icofont-phone"></i>Telefono :</h6>
 													</div>
 													<div class="col-sm-8">
 														<h6 class="m-b-30">{{ $company->phone }}</h6>
@@ -142,7 +150,31 @@
 												</div>
 												<div class="row">
 													<div class="col-sm-4">
-														<h6 class="f-w-400 m-b-30"><i class="icofont icofont-chart-bar-graph"></i>Código Postal :</h6>
+														<h6 class="f-w-400 m-b-30"><i class="icofont icofont-world"></i>País :</h6>
+													</div>
+													<div class="col-sm-8">
+														<h6 class="m-b-30">{{ $name_pais }}</h6>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-sm-4">
+														<h6 class="f-w-400 m-b-30"><i class="icofont icofont-map"></i>Estado :</h6>
+													</div>
+													<div class="col-sm-8">
+														<h6 class="m-b-30">{{ $name_estado }}</h6>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-sm-4">
+														<h6 class="f-w-400 m-b-30"><i class="icofont icofont-map"></i>Ciudad :</h6>
+													</div>
+													<div class="col-sm-8">
+														<h6 class="m-b-30">{{ $name_ciudad  }}</h6>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-sm-4">
+														<h6 class="f-w-400 m-b-30"><i class="icofont icofont-map"></i>Código Postal :</h6>
 													</div>
 													<div class="col-sm-8">
 														<h6 class="m-b-30">{{ $company->zip }}</h6>
@@ -150,7 +182,7 @@
 												</div>
 												<div class="row">
 													<div class="col-sm-4">
-														<h6 class="f-w-400 m-b-30"><i class="icofont icofont-ui-email"></i>Colonia :</h6>
+														<h6 class="f-w-400 m-b-30"><i class="icofont icofont-map"></i>Colonia :</h6>
 													</div>
 													<div class="col-sm-8">
 														<h6 class="m-b-30">{{ $company->colony }}</h6>
@@ -158,13 +190,28 @@
 												</div>
 												<div class="row">
 													<div class="col-sm-4">
-														<h6 class="f-w-400 m-b-30"><i class="fa fa-phone-square"></i>Calle :</h6>
+														<h6 class="f-w-400 m-b-30"><i class="icofont icofont-map"></i>Calle :</h6>
 													</div>
 													<div class="col-sm-8">
 														<h6 class="m-b-30">{{ $company->street }}</h6>
 													</div>
 												</div>
-												
+												<div class="row">
+													<div class="col-sm-4">
+														<h6 class="f-w-400 m-b-30"><i class="icofont icofont-cube"></i>Horario :</h6>
+													</div>
+													<div class="col-sm-8">
+														<h6 class="m-b-30">{{ $company->schedule }}</h6>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-sm-4">
+														<h6 class="f-w-400 m-b-30"><i class="icofont icofont-cube"></i>Descripción :</h6>
+													</div>
+													<div class="col-sm-8">
+														<h6 class="m-b-30">{{ $company->description }}</h6>
+													</div>
+												</div>
 											</div>
 										</div>
 									</div>
