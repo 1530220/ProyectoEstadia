@@ -91,7 +91,8 @@ Route::group(['middleware'=>['auth']], function () {
     //Permite obtener el valor de una grafica
     Route::post('/operations/ajax/reports/get_value_for_chart', 'ReportController@get_value_for_chart')->name('reports.get_value_for_chart');
 
-
+    Route::post('/operations/ajax/companies/verific_column', 'CompaniesController@verific_column')->name('companies.verific_column');
+    Route::post('/operations/ajax/companies/verific_email', 'CompaniesController@verific_email')->name('companies.verific_email');
     /**************  Termina operaciones AJAX  ***************/
 
     /**

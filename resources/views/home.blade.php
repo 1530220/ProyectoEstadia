@@ -80,7 +80,7 @@
         </div>
 
         <div class="col-md-6 col-xl-4">
-            <a href="{{ route('users.list') }}" style="color: #353c64;"><div class="card widget-card-1">
+            <a href="{{ route('companies.list') }}" style="color: #353c64;"><div class="card widget-card-1">
                 <div class="card-block-small">
                     <i class="fa fa-building card1-icon" style="background-color:lightseagreen"></i>
                     <span class="f-w-600" style="color:lightseagreen">Empresas</span>

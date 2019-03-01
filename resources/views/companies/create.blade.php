@@ -3,6 +3,7 @@
 @section('title',"Bolsa de Trabajo - Crear Empresa")
 
 @section('body')
+
 <!-- Main-body start -->
 <div class="main-body">
 	<!-- Page-header start -->
@@ -51,17 +52,17 @@
 							<div class="form-group row">
 								<label class="col-sm-2 col-form-label" for="id">ID Empresa:</label>
 								<div class="col-sm-10">
-									<input type="number" class="form-control" id="id" name="id" placeholder="Ej. 10" value="{{ old('id') }}" title="ID de la Empresa">
+									<input type="number" class="form-control" onkeyup="verificar_columna()" id="id" name="id" placeholder="Ej. 10" value="{{ old('id') }}" title="ID de la Empresa" required>
 									@if ($errors->has('id'))
 										<div class="col-form-label" style="color:red;">{{$errors->first('id')}}</div>
 									@endif
-									<div id="error_id" class="col-form-label" style="color:red; display:none;"></div>
+									<div id="error_id" class="col-form-label" style="color:red display:none;"></div>
 								</div>
 							</div>
 							<div class="form-group row">
 								<label class="col-sm-2 col-form-label" for="rfc">RFC:</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="rfc_input" oninput="validarInput(this)" name="rfc" placeholder="Ej. XAXX010101000" value="{{ old('rfc') }}" title="RFC de la Empresa">
+									<input type="text" class="form-control" id="rfc_input" oninput="validarInput()" name="rfc" placeholder="Ej. XAXX010101000" value="{{ old('rfc') }}" title="RFC de la Empresa" required>
 									@if ($errors->has('rfc'))
 										<div class="col-form-label" style="color:red;">{{$errors->first('rfc')}}</div>
 									@endif
@@ -86,6 +87,16 @@
 									@if ($errors->has('telefono'))
 										<div class="col-form-label" style="color:red;">{{$errors->first('telefono')}}</div>
 									@endif
+								</div>
+							</div>
+							<div class="form-group row">
+								<label class="col-sm-2 col-form-label" for="email">E-mail:</label>
+								<div class="col-sm-10">
+									<input type="email" class="form-control" id="email" name="email" onkeyup="verificar_email()" placeholder="Ej. empresa@gmail.com" value="{{ old('email') }}" title="E-mail de la Empresa">
+									@if ($errors->has('email'))
+										<div class="col-form-label" style="color:red;">{{$errors->first('email')}}</div>
+									@endif
+									<div id="error_email" class="col-form-label" style="color:red display:none;"></div>
 								</div>
 							</div>
 							
@@ -211,20 +222,17 @@
 </style>
 @section('javascriptcode')
 	<script>
+		verificar_columna();
+		verificar_email();
+		validarInput();
+
+		var flag1 = 0;
+		var flag2 = 0;
+
 		error_divs = [
 			$('#error_id'),
 		];
-		verify_column($('#id'), 'id', 'companies', null, $('#error_id'),
-			'* El id que esta intentando ingresar no esta disponible.');
-
-		//* Se verifica que no se ingrese un registro repedito para columnas unicas
-		$('#id').keyup(function(e) {
-			verify_column($('#id'), 'id', 'companies', null, $('#error_id'),
-				'* El id que esta intentando ingresar no esta disponible.');
-		});
-		//* Termina verificacion de columnas unicas
-
-
+		
 
         //Función para validar un RFC
         // Devuelve el RFC sin espacios ni guiones si es correcto
@@ -271,31 +279,104 @@
         //Handler para el evento cuando cambia el input
         // -Lleva la RFC a mayúsculas para validarlo
         // -Elimina los espacios que pueda tener antes o después
-        function validarInput(input) {
-            var rfc         = input.value.trim().toUpperCase(),
+        function validarInput() {
+			
+            var rfc         = $("#rfc_input").val().trim().toUpperCase(),
                 resultado   = document.getElementById("resultado"),
 				button   = document.getElementById("registroEmpresa"),
                 valido;
             
 			if(rfc==""){
 				resultado.style.display="none";
-				button.style.display="none"
+				button.style.display="none";
 			}else{
-				resultado.style.display="block";
+				var rfcCorrecto = rfcValido(rfc);   
+			
+				if (rfcCorrecto) {
+					valido = "válido";
+					resultado.classList.add("ok");
+					button.style.display="inline";
+				} else {
+					valido = "no válido"
+					resultado.classList.remove("ok");
+					button.style.display="none";
+				}
+				resultado.style.display="inline";
+				button.style.display="inline";
+				resultado.innerText = " * RFC " + valido;
 			}
-            var rfcCorrecto = rfcValido(rfc);   // ⬅️ Acá se comprueba
-        
-            if (rfcCorrecto) {
-                valido = "válido";
-            resultado.classList.add("ok");
-			button.style.display="inline"
-            } else {
-                valido = "no válido"
-                resultado.classList.remove("ok");
-				button.style.display="none"
-            }
-                
-            resultado.innerText = " * RFC " + valido;
+            
         }
+		
+		//id = $("#id").val();
+		function verificar_columna() {
+			var x = $("#id").val();
+
+			$.ajaxSetup({
+				headers: {
+					'X-CSRF-TOKEN': '{{ csrf_token() }}'
+				}
+			});
+			$.ajax({
+				url: '{{ route('companies.verific_column') }}',
+				method: 'post',
+				data: {
+					id: x,
+				},
+				success: function(result) {
+
+					company = result['response'];
+
+					if (company!=null) {
+						$("#error_id").text("* El id que esta intentando ingresar no esta disponible.");
+						document.getElementById("error_id").style.color = "red";
+						document.getElementById("error_id").style.display = "inline";
+						document.getElementById("registroEmpresa").style.display = "none";
+					}else{
+						$("#error_id").text("");
+						document.getElementById("error_id").style.display = "none";
+						document.getElementById("registroEmpresa").style.display = "inline";
+					}
+				}
+			});
+
+		}
+
+
+		function verificar_email() {
+			var x = $("#email").val();
+
+			$.ajaxSetup({
+				headers: {
+					'X-CSRF-TOKEN': '{{ csrf_token() }}'
+				}
+			});
+			$.ajax({
+				url: '{{ route('companies.verific_email') }}',
+				method: 'post',
+				data: {
+					id: x,
+				},
+				success: function(result) {
+
+					company = result['response'];
+
+					if (company!=null) {
+						$("#error_email").text("* El email que esta intentando ingresar no esta disponible.");
+						document.getElementById("error_email").style.color = "red";
+						document.getElementById("error_email").style.display = "inline";
+						document.getElementById("registroEmpresa").style.display = "none";
+					}else{
+						$("#error_email").text("");
+						document.getElementById("error_email").style.display = "none";
+						document.getElementById("registroEmpresa").style.display = "inline";
+					}
+				}
+			});
+
+		}
+		//$("error_id").text(id_company);
+		
+		
 	</script>
 @endsection
