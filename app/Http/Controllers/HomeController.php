@@ -58,10 +58,14 @@ class HomeController extends Controller
             return view('home', compact('careers', 'students','tutores','sessions','movements','skills','competences','medals','companies','contacts','jobs','sectors'));
             break;
         case 3: //INFORMACION DASHBOARD PARA ESTUDIANTES
+          
            break;
         case 5: //INFORMACION DASHBOARD PARA TUTORES
            break;
+       case 8: //INFORMACION DASHBOARD PARA TUTORES
+           break;
         default:
+          
            
       }
     }

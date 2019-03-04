@@ -294,15 +294,13 @@ class CompaniesController extends Controller
     public function verific_column(Request $request){
         //Se obtiene los detalles del profesor con el id mandado
         $company = DB::table('siita_db.users as users')
-            ->select(
-                'users.id',
-            )
+            ->select('users.id')
             ->where('users.id', '=', $request->id)
             ->first();
         if($company == NULL){
             $company = DB::table('siita_db.users as users')
             ->select(
-                'users.id',
+                'users.id'
             )
             ->where('users.university_id', '=', $request->id)
             ->first();
@@ -316,7 +314,7 @@ class CompaniesController extends Controller
         //Se obtiene los detalles del profesor con el id mandado
         $company = DB::table('siita_db.users as users')
             ->select(
-                'users.email',
+                'users.email'
             )
             ->where('users.email', '=', $request->id)
             ->first();
