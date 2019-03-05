@@ -424,6 +424,7 @@
 										@else
 											<button type="submit" class="btn btn-success" id="restaurar" name="restaurar" onclick="restoreFunction()" data-toggle="tooltip" data-placement="bottom" title="Restaurar medalla {{$medal->name}} del estudiante {{$student->university_id}}"><i class="fas fa-reply"></i></button>
 										@endif
+                      <hr>
 									</form>
 								</center>
 							</div>

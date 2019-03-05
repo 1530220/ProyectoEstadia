@@ -265,14 +265,17 @@ class EmpresasController extends Controller
         ->join('sectors','sectors.id','=','companies.id_sector')
         ->select('sectors.*')
         ->get());*/
-        $companies=DB::table('companies')
-        ->select('companies.*')
-        ->where('companies.id','=',$id)
+        $companies=DB::table('companies as c')
+        ->join('siita_db.users as u','u.id','=','c.id') 
+        ->select('c.*','u.email') 
+        ->where('c.id','=',$id)
         ->get();
+      
         $jobs=DB::table('jobs as j')
         ->join('companies as c', 'c.id','=','j.id_company')
+        ->join('siita_db.users as u','u.id','=','c.id')  
         ->join('sectors as s', 's.id','=','j.id_sector')
-        ->select('c.name as company_name', 'c.phone as company_phone','c.email as company_email','j.*','s.name as sector_name')
+        ->select('c.name as company_name', 'c.phone as company_phone','u.email as company_email','j.*','s.name as sector_name')
         ->where('j.id_company',$id)
         ->latest()
         ->get();
@@ -309,13 +312,13 @@ class EmpresasController extends Controller
         $count_jobs_no_post=DB::table('jobs')
         ->join('companies as c', 'c.id','=','id_company')
         ->where('id_company',$id)
-        ->where('deleted',1)
+        ->where('jobs.deleted',1)
         ->count();
 
         $count_jobs_post=DB::table('jobs')
         ->join('companies as c', 'c.id','=','id_company')
         ->where('id_company',$id)
-        ->where('deleted',0)
+        ->where('jobs.deleted',0)
         ->count();
 
         return view('empresa.perfil', compact('companies','jobs','contacts','count_contacts','count_jobs','count_jobs_no_post','count_jobs_post','count_contacts_avialable','count_contacts_no_avialable'));

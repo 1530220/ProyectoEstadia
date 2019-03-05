@@ -267,11 +267,7 @@
                                   <h6 class="title col-xs-6">Carrera</h6>
                                   <span class="subtitle col-xs-6">{{$user->name}}</span></li>
                                   <br>
-                              <li class="row">
-                                <h6 class="title col-xs-6">Telefono</h6>
-                                <span class="subtitle col-xs-6">{{$user->phone}}</span></li>
-                               
-                                <br>
+                            
                               <li class="row">
                                 <h6 class="title col-xs-6">Correo</h6>
                                 <span class="subtitle col-xs-6"><a href="#.">{{$user->email}}</a></span></li>

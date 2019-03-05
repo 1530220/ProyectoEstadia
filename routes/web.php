@@ -93,6 +93,8 @@ Route::group(['middleware'=>['auth']], function () {
 
     Route::post('/operations/ajax/companies/verific_column', 'CompaniesController@verific_column')->name('companies.verific_column');
     Route::post('/operations/ajax/companies/verific_email', 'CompaniesController@verific_email')->name('companies.verific_email');
+  
+   //Route::post('/operations/ajax/login/verificar_type', 'LoginController@verificar_type')->name('login.verificar_type');
     /**************  Termina operaciones AJAX  ***************/
 
     /**
@@ -293,7 +295,7 @@ Route::group(['middleware'=>['auth']], function () {
     /**
      * Rutas para: Administradores, Usuarios, Estudiantes, Tutores, Depto. Salud, Depto. Psicologia
      */
-    Route::group(['middleware'=>['access:1,2,3,5,6,7']], function(){
+    Route::group(['middleware'=>['access:1,2,5,6,7']], function(){
       //Ver el listado de tutorias
       Route::get('/tutorias', 'TutoriaController@index')->name('tutorias.list');
 
@@ -315,7 +317,7 @@ Route::group(['middleware'=>['auth']], function () {
     /**
      * Rutas para: Estudiantes
      */
-    Route::group(['middleware'=>['access:3']], function(){
+    /*Route::group(['middleware'=>['access:3']], function(){
         //Aprobar una tutoria
         Route::get('/tutorias/{id}/aproved', 'TutoriaController@tutoriaAproved')->name('tutorias.aproved');
 
@@ -327,12 +329,12 @@ Route::group(['middleware'=>['auth']], function () {
 
         //Rechazar una asesoria
         Route::get('/asesorias/{id}/cancelled', 'AsesoriaController@asesoriaCancelled')->name('asesorias.cancelled');
-    });
+    });*/
 
     /**
      * Rutas para: Administradores, Usuarios, Estudiantes, Profesores, Tutores, Depto. Salud, Depto. Psicologia
      */
-    Route::group(['middleware'=>['access:1,2,3,4,5,6,7']], function(){
+    Route::group(['middleware'=>['access:1,2,4,5,6,7']], function(){
       //Ver el listado de asesorias
       Route::get('/asesorias', 'AsesoriaController@index')->name('asesorias.list');
 
@@ -418,7 +420,7 @@ Route::group(['middleware'=>['auth']], function () {
         /**************  Termina tutorias  ***************/
     });
 
-    Route::group(['middleware'=>['access:1,2,3,4,5']], function(){
+    Route::group(['middleware'=>['access:1,2,4,5']], function(){
         /*******************************************
          *Rutas para schedule*
          *******************************************/
@@ -447,11 +449,11 @@ Route::group(['middleware'=>['auth']], function () {
 
     });
 
-    Route::group(['middleware'=>['access:1,2,3,5']], function(){
+    //Route::group(['middleware'=>['access:1,2,3,5']], function(){
         /*******************************************
          *Rutas para schedule*
          *******************************************/
-
+/*
         //Editar una cita de tutoria
         Route::get('/schedule/editTutoria/{id}', 'ScheduleController@editCitaTutoria')->where('id', '[0-9]+')->name('schedule.tutoria.edit');
 
@@ -471,9 +473,9 @@ Route::group(['middleware'=>['auth']], function () {
         Route::get('/schedule/new/tutoria', 'ScheduleController@createCitaTutorias')->name('schedule.tutoria.create');
 
         //Permite almacenar la cita de tutorias en la BD
-        Route::post('/schedule/new/tutoria', 'ScheduleController@storeCitaTutorias')->name('schedule.storeTutoria');
+        Route::post('/schedule/new/tutoria', 'ScheduleController@storeCitaTutorias')->name('schedule.storeTutoria');*/
         /**************  Termina schedule  ***************/
-    });
+    //});
 
     /******************************************
      * Rutas para estudiantes                 *
@@ -706,9 +708,8 @@ Route::group(['middleware'=>['auth']], function () {
     });
 });
 
-Route::get('type/{type}', 'SweetAlertController@notification');
-
-//RUTAS DE EGRESADOS
+Route::group(['middleware'=>['access:3']], function(){
+  //RUTAS DE EGRESADOS
 //Route::get('/inicio_egresado','EgresadosController@inicio_egresado');
 
 Route::get('/ofertas_trabajo','EgresadosController@ofertas_trabajo');
@@ -740,10 +741,14 @@ Route::DELETE('/vacante/{jobs}','EgresadosController@destroy_sendjob');
 Route::get('/agregar_competencias/{users}','EgresadosController@addcompetence');
 
 Route::post('/agregar_competencias/{competences}','EgresadosController@store_addcompetences');
+});
 
-//------------------------------------------
+Route::get('type/{type}', 'SweetAlertController@notification');
+
+Route::group(['middleware'=>['access:8']], function(){
+ //------------------------------------------
 //RUTAS DE EMPRESA
-Route::get('/inicio_empresa','EmpresasController@inicio_empresa');
+//Route::get('/inicio_empresa','EmpresasController@inicio_empresa');
 
 Route::get('/tus_trabajos','EmpresasController@tus_trabajos');
 
@@ -778,3 +783,7 @@ Route::get('/conexiones_empresa','EmpresasController@conexiones_empresa');
 Route::get('/egresado/{users}','EmpresasController@egresado');
 
 Route::get('/empresa_vacante','EmpresasController@empresa_vacante');
+});
+
+
+

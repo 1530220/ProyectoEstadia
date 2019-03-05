@@ -54,21 +54,13 @@
                     <ul class="single-category">
                       <li class="row">
                         <h6 class="title col-xs-6">Matricula</h6>
-                      <span class="subtitle col-xs-6">{{$users->university_id}}</span></li>
+                      <span class="subtitle col-xs-6">{{$users->university_id}}</span></li><br>
                   <li class="row">
                     <h6 class="title col-xs-6">Nombre Completo</h6>
-                    <span class="subtitle col-xs-6">{{$users->first_name}} {{$users->last_name}} {{$users->second_last_name}}</span></li>
-                  <li class="row">
-                    <h6 class="title col-xs-6">Periodo Escolar</h6>
-                    <span class="subtitle col-xs-6">2015-2018</span></li>
-                  <li class="row">
-                    <h6 class="title col-xs-6">Telefono</h6>
-                    @foreach ($information as $info)
-                    <span class="subtitle col-xs-6">{{$info->phone}}</span></li>
-                    @endforeach
+                    <span class="subtitle col-xs-6">{{$users->first_name}} {{$users->last_name}} {{$users->second_last_name}}</span></li><br>
                   <li class="row">
                     <h6 class="title col-xs-6">Correo</h6>
-                    <span class="subtitle col-xs-6"><a href="#.">{{$users->email}}</a></span></li>
+                    <span class="subtitle col-xs-6"><a href="#.">{{$users->email}}</a></span></li><br>
                     </ul>
                   </div>
                 </div>

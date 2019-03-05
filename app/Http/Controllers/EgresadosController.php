@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
+use Alert;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests;
@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\competence;
-use App\users;
+use App\User;
 use App\students;
 use App\careers;
 use App\job;
@@ -97,7 +97,7 @@ class EgresadosController extends Controller
     //Pagina para ver el perfil del egresado
     public function perfil_egresado($id){
         //Mostrar un perfil de usuario con el id correspondiente
-        $users=users::findOrFail($id);
+        $users=User::findOrFail($id);
 
         //Mostrar la carrera del alumno correspondiente
         $users=DB::table('siita_db.students')
@@ -127,22 +127,24 @@ class EgresadosController extends Controller
         ->count();
 
         $contador_competencias=DB::table('students_competences as sc')
-        ->join('students as s', 's.user_id','=','student_id')
-        ->where('student_id',auth()->user()->id)
+        ->join('siita_db.users as u', 'u.university_id','=','student_id')
+        ->where('student_id',auth()->user()->university_id)
         ->count();
 
         $competences=DB::table('students_competences as sc')
-        ->join('students as s', 's.user_id','=','student_id')
+        ->join('siita_db.users as u', 'u.university_id','=','student_id')
         ->join('competences as c', 'c.id','=','competence_id')
-        ->select('c.id as id_competence','c.name','sc.*','s.*')
-        ->where('sc.student_id',auth()->user()->id)
+        ->select('c.id as id_competence','c.name','sc.*','u.*')
+        ->where('u.university_id',auth()->user()->university_id)
         ->get();
 
-        $competencias_pendientes=DB::table('students_competences')
+        $competencias_pendientes=DB::table('students_competences as sc')
+        ->where('sc.student_id',auth()->user()->university_id)
         ->where('status',0)
         ->count();
 
-        $competencias_aceptadas=DB::table('students_competences')
+        $competencias_aceptadas=DB::table('students_competences as sc')
+        ->where('sc.student_id',auth()->user()->university_id)
         ->where('status',1)
         ->count();
         
@@ -157,7 +159,7 @@ class EgresadosController extends Controller
     }
 
     public function editprofile($id){
-        $users=users::findOrFail($id);
+        $users=User::findOrFail($id);
 
         //Mostrar la carrera del alumno correspondiente
         $users=DB::table('siita_db.students')
@@ -172,7 +174,7 @@ class EgresadosController extends Controller
 
     public function update_profile($id){
         //Mostrar un perfil de usuario con el id correspondiente
-        $users=users::find($id);
+        $users=User::find($id);
         $image = Input::file('image');
         $image2 = Input::get('image_2');
 
@@ -199,26 +201,26 @@ class EgresadosController extends Controller
     //Pagina para ver el perfil de otros egresados
     public function perfil_usuario($id){
         //Mostrar un perfil de usuario con el id correspondiente
-        $users=users::findOrFail($id);
+        $users=User::findOrFail($id);
 
         //Mostrar la carrera del alumno correspondiente
-        $careers=DB::table('students')
-        ->join('users','students.user_id','=','users.id')
-        ->join('careers','careers.id','=','students.career_id')
-        ->select('students.*', 'users.*','careers.*')
-        ->where('users.id','=',$id)
+        $careers=DB::table('siita_db.students as s')
+        ->join('siita_db.users as u','s.user_id','=','u.id')
+        ->join('siita_db.careers as c','c.id','=','s.career_id')
+        ->select('s.*', 'u.*','c.*')
+        ->where('u.id','=',$id)
         ->get();
         return view('egresado.perfil_usuario', compact('users','careers'));
     }
 
     //Pagina para ver la conexiones del egresado
     public function conexiones_egresado($id){
-        $users=users::findOrFail($id);
-        $information=DB::table('students')
-        ->join('users','students.user_id','=','users.id')
-        ->join('careers','careers.id','=','students.career_id')
-        ->select('students.*', 'users.*','careers.*')
-        ->where('users.id','=',$id)
+        $users=User::findOrFail($id);
+        $information=DB::table('siita_db.students as s')
+        ->join('siita_db.users as u','s.user_id','=','u.id')
+        ->join('siita_db.careers as c','c.id','=','s.career_id')
+        ->select('s.*', 'u.*','c.*')
+        ->where('u.id','=',$id)
         ->get();
         return view('egresado.conexiones',compact('users','information'));
     }
@@ -274,14 +276,14 @@ class EgresadosController extends Controller
 
     public function addcompetence($id){
         //Mostrar un perfil de usuario con el id correspondiente
-        $users=users::findOrFail($id);
+        $users=User::findOrFail($id);
 
         //Mostrar la carrera del alumno correspondiente
         $users=DB::table('siita_db.students')
         ->join('siita_db.users','siita_db.students.user_id','=','siita_db.users.id')
         ->join('siita_db.careers','siita_db.careers.id','=','siita_db.students.career_id')
         ->select('siita_db.students.*', 'siita_db.users.*','siita_db.careers.*')
-        ->where('siita_db.students.user_id','=',$id)
+        ->where('siita_db.users.university_id','=',auth()->user()->university_id)
         ->get();
 
         /*$search_id=students::join('users','users.id','=','user_id')
@@ -289,7 +291,7 @@ class EgresadosController extends Controller
         ->first();*/
 
         //$id_student=(int)$search_id->university_id;
-       $id_student=auth()->user()->id;
+      $id_student=auth()->user()->university_id;
        $competences=DB::table('competences')
         ->join('students_competences','competences.id','=','students_competences.competence_id')
         ->where('students_competences.student_id',$id_student)
@@ -321,12 +323,12 @@ class EgresadosController extends Controller
         $competences_ids=$request->competences;
         foreach($competences_ids as $id){
             $students_competences=new students_competences();
-            $students_competences->student_id=auth()->user()->id;
+            $students_competences->student_id=auth()->user()->university_id;
             $students_competences->competence_id=$id;
             $students_competences->save();
         }
-
-        alert()->success('La solicitud de competencias de ha enviado correctamente','Bien Hecho!!!')->autoclose(4000);
+        Alert::success('La solicitud de competencias de ha enviado correctamente','Bien Hecho!!!')->autoclose(4000);
+        //alert()->success('La solicitud de competencias de ha enviado correctamente','Bien Hecho!!!');
         return back();
     }
 

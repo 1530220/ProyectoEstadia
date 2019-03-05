@@ -264,6 +264,11 @@ class SkillsController extends Controller
     }
 
     public function guardarAsignaciones(Request $request,$id){
+      if($request->skills_not_asigned==NULL){
+          Alert::error('Se debe seleccionar almenos una habilidad para asignar', 'Error');
+          return redirect()->route('skills.asignar',['id' => $id]);
+      }
+      
       $skills_ids = $request->skills_not_asigned;
 
       foreach ($skills_ids as $skill) {

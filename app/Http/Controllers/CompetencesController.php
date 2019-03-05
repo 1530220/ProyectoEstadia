@@ -263,6 +263,11 @@ class CompetencesController extends Controller
     }
 
     public function guardarAsignaciones(Request $request,$id){
+      if($request->competences_not_asigned==NULL){
+          Alert::error('Se debe seleccionar almenos una competencia para asignar', 'Error');
+          return redirect()->route('competences.asignar',['id' => $id]);
+      }
+      
       $competences_ids = $request->competences_not_asigned;
 
       foreach ($competences_ids as $competence) {

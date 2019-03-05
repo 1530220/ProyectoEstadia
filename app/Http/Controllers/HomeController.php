@@ -10,6 +10,7 @@ use App\Career;
 use App\Student;
 use App\User;
 use App\Skills;
+use Alert;
 use App\Http\Requests;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
@@ -58,15 +59,28 @@ class HomeController extends Controller
             return view('home', compact('careers', 'students','tutores','sessions','movements','skills','competences','medals','companies','contacts','jobs','sectors'));
             break;
         case 3: //INFORMACION DASHBOARD PARA ESTUDIANTES
-          
+           $jobs=DB::table('jobs')
+           ->join('companies as c','c.id','=','jobs.id_company')
+          ->join('sectors as s','s.id','=','jobs.id_sector')
+          ->select('c.name as company_name', 'c.image_url','jobs.*','s.name as sector_name')
+          ->latest()
+          ->get();
+          return view('egresado.inicio', compact('jobs'));
            break;
         case 5: //INFORMACION DASHBOARD PARA TUTORES
            break;
-       case 8: //INFORMACION DASHBOARD PARA TUTORES
+       case 8: //INFORMACION DASHBOARD PARA EMPRESA
+            $job_requests=DB::table('status_job as status')
+          ->join('jobs as j','j.id','=','status.id_job')
+          ->join('companies as c','c.id','=','j.id_company')
+          ->join('siita_db.students as s','s.user_id','=','status.id_student')
+          ->join('siita_db.users as u','u.id','=','s.user_id')
+          ->get();
+          return view('empresa.inicio', compact('job_requests'));
            break;
         default:
-          
-           
+          return view('noaccess');
+          break;
       }
     }
 }

@@ -113,31 +113,30 @@
 								</div>
 							</div>
 							<div class="form-group row">
-                                <label class="col-sm-2 col-form-label" for="country">País:</label>
-                                <div class="col-sm-4">
-                                    {!! Form::select('country',$countries,null,['id'=>'country','class'=>'form-control']) !!}
-                                    @if ($errors->has('country'))
-                                        <div class="col-form-label" style="color:red;">{{$errors->first('country')}}</div>
-                                    @endif
-								</div>
+                  <label class="col-sm-2 col-form-label" for="country">País:</label>
+                  <div class="col-sm-4">
+                      {!! Form::select('country',$countries,null,['id'=>'country','class'=>'form-control']) !!}
+                      @if ($errors->has('country'))
+                          <div class="col-form-label" style="color:red;">{{$errors->first('country')}}</div>
+                      @endif
+                  </div>
 								
-								<label class="col-sm-2 col-form-label" for="state">Estado:</label>
-                                <div class="col-sm-4">
-                                    {!! Form::select('state',$states,null,['id'=>'state','class'=>'form-control']) !!}
-                                    @if ($errors->has('state'))
-                                        <div class="col-form-label" style="color:red;">{{$errors->first('state')}}</div>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label class="col-sm-2 col-form-label" for="city">Ciudad:</label>
-                                <div class="col-sm-4">
-                                    {!! Form::select('city',$cities,null,['id'=>'city','class'=>'form-control']) !!}
-                                    @if ($errors->has('city'))
-                                        <div class="col-form-label" style="color:red;">{{$errors->first('city')}}</div>
-                                    @endif
-								</div>
+								  <label class="col-sm-2 col-form-label" for="state">Estado:</label>
+                    <div class="col-sm-4">
+                        {!! Form::select('state',$states,null,['id'=>'state','class'=>'form-control']) !!}
+                        @if ($errors->has('state'))
+                            <div class="col-form-label" style="color:red;">{{$errors->first('state')}}</div>
+                        @endif
+                    </div>
+              </div>
+              <div class="form-group row">
+                  <label class="col-sm-2 col-form-label" for="city">Ciudad:</label>
+                  <div class="col-sm-4">
+                      {!! Form::select('city',$cities,null,['id'=>'city','class'=>'form-control']) !!}
+                      @if ($errors->has('city'))
+                          <div class="col-form-label" style="color:red;">{{$errors->first('city')}}</div>
+                      @endif
+              </div>
 
 								<label class="col-sm-2 col-form-label" for="zip">Código Postal:</label>
 								<div class="col-sm-4">
@@ -184,45 +183,45 @@
 								</div>
 							</div>
 
-                            <div class="col-lg-12 col-xl-12">
-                                <table class="table m-0">
-                                    <tr>
-                                        <th scope="row"></th>
-                                        <td>
-                                            <img id="modal_img" style="border-radius: 15px; max-width:300px" src='{{ asset($company->image_url)}}' alt="{{ $company->name }}" class="img-fluid p-b-10">
-                                            <input type="text" name="image_2" class="form-control" hidden value="{{ $company->image_url }}">
-                                            <div id="modal_show_img" class="modal">
-                                                <span class="close">&times;</span>
-                                                <img class="modal-content" id="img_content">
-                                                <div id="caption"></div>
-                                            </div>
-                                            <div class="col-form-label" style="align:justify;"> * Vista de la imagen actual.</div>
-                                        </td>
-                                        <td>
-                                            <div class="file-upload">
-                                                <div class="image-upload-wrap">
-                                                    <input id="image_input" class="file-upload-input" type='file' name="image" onchange="readURL(this);" accept="image/*" />
-                                                    <div style="padding-top:40px" onclick="$('.file-upload-input').trigger('click' )">
-                                                        <center>
-                                                            <i style="font-size: 60px;" class="fas fa-cloud-upload-alt drag-icon"></i>
-                                                        </center>
-                                                    </div>
-                                                    <div class="drag-text">
-                                                        <span>Arrastre y suelte la imagen de la empresa <span style="font-weight: bold; font-size:16px;"> aquí</span> o haga clic <span style="font-weight: bold; font-size:16px;"> aquí</span> para buscarla en su equipo.</span>
-                                                    </div>
-                                                </div>
-                                                <div class="file-upload-content">
-                                                    <img class="file-upload-image" src="#" alt="your image" />
-                                                    <div class="image-title-wrap">
-                                                        <button type="button" onclick="removeUpload()" class="remove-image">Remover Imagen</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-form-label" style="align:justify;"> * Si desea cambiarla, agregue una nueva imagen.</div>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
+                  <div class="col-lg-12 col-xl-12">
+                      <table class="table m-0">
+                          <tr>
+                              <th scope="row"></th>
+                              <td>
+                                  <img id="modal_img" style="border-radius: 15px; max-width:300px" src='{{ asset($company->image_url)}}' alt="{{ $company->name }}" class="img-fluid p-b-10">
+                                  <input type="text" name="image_2" class="form-control" hidden value="{{ $company->image_url }}">
+                                  <div id="modal_show_img" class="modal">
+                                      <span class="close">&times;</span>
+                                      <img class="modal-content" id="img_content">
+                                      <div id="caption"></div>
+                                  </div>
+                                  <div class="col-form-label" style="align:justify;"> * Vista de la imagen actual.</div>
+                              </td>
+                              <td>
+                                  <div class="file-upload">
+                                      <div class="image-upload-wrap">
+                                          <input id="image_input" class="file-upload-input" type='file' name="image" onchange="readURL(this);" accept="image/*" />
+                                          <div style="padding-top:40px" onclick="$('.file-upload-input').trigger('click' )">
+                                              <center>
+                                                  <i style="font-size: 60px;" class="fas fa-cloud-upload-alt drag-icon"></i>
+                                              </center>
+                                          </div>
+                                          <div class="drag-text">
+                                              <span>Arrastre y suelte la imagen de la empresa <span style="font-weight: bold; font-size:16px;"> aquí</span> o haga clic <span style="font-weight: bold; font-size:16px;"> aquí</span> para buscarla en su equipo.</span>
+                                          </div>
+                                      </div>
+                                      <div class="file-upload-content">
+                                          <img class="file-upload-image" src="#" alt="your image" />
+                                          <div class="image-title-wrap">
+                                              <button type="button" onclick="removeUpload()" class="remove-image">Remover Imagen</button>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="col-form-label" style="align:justify;"> * Si desea cambiarla, agregue una nueva imagen.</div>
+                              </td>
+                          </tr>
+                      </table>
+                  </div>
                             
 
 							<br>

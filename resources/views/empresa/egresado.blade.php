@@ -34,7 +34,7 @@
               
               <!-- Top Riht Button -->
               <div class="right-top-bnr">
-                <div class="connect"> <a href="#." class="btn mb20 btn-large btn-success" data-toggle="modal" data-target="#myModal"><i class="fa fa-user-plus warning"></i> Conectar</a> <!--a href="#."><i class="fa fa-share-alt"></i> Share</a-->
+                <div class="connect"> <a href="#." class="btn mb20 btn-large btn-success" data-toggle="modal" data-target="#myModal"><i class="fas fa-user-plus warning"></i> Conectar</a> <!--a href="#."><i class="fa fa-share-alt"></i> Share</a-->
                   <!--div class="bt-ns"> <a href="#."><i class="fa fa-bookmark-o"></i> </a> <a href="#."><i class="fa fa-envelope-o"></i> </a> <a href="#."><i class="fa fa-exclamation"></i> </a> </div-->
                 </div>
               </div>
@@ -45,28 +45,17 @@
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="container">
-                    <h6><a class="close" href="#." data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a> Send Message</h6>
+                    <h6><a class="close" href="#." data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a></h6>
                     
                     <!-- Forms -->
                     <form action="#">
                       <ul class="row">
-                        <li class="col-xs-6">
-                          <input type="text" placeholder="First Name ">
+                        <center><h6>¿Seguro que quieres enviar solicitud a este usuario?</h6></center>
+                        <li class="col-xs-4">
+                          <center><a  class="close" href="#." data-dismiss="modal" aria-label="Close"><button class="btn btn-error">Cancelar</button></a></center>
                         </li>
-                        <li class="col-xs-6">
-                          <input type="text" placeholder="Last Name">
-                        </li>
-                        <li class="col-xs-6">
-                          <input type="text" placeholder="Country">
-                        </li>
-                        <li class="col-xs-6">
-                          <input type="text" placeholder="Email">
-                        </li>
-                        <li class="col-xs-12">
-                          <textarea placeholder="Your Message"></textarea>
-                        </li>
-                        <li class="col-xs-12">
-                          <button class="btn btn-primary">Send message</button>
+                        <li class="col-xs-5">
+                          <center><button class="btn btn-primary">Enivar</button></center>
                         </li>
                       </ul>
                     </form>

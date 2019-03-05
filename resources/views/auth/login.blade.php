@@ -17,15 +17,17 @@
                             </div>
                             <hr/>
                             <div class="input-group">
-                                <input id="email" name="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" placeholder="Correo Electrónico" required autofocus>
+                                <input id="email" name="email"  class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" placeholder="Correo Electrónico" required autofocus>
                                 @if  ($errors->has('email'))
                                     <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $errors->first('email') }}</strong>
+                                                <strong >{{ $errors->first('email') }}</strong>
                                             </span>
                                     @endif
+                              									<div id="error_email" class="col-form-label" style="color:red display:none;"></div>
+
                             </div>
                             <div class="input-group">
-                                <input id="password" name="password" type="text" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="Contraseña" required>
+                                <input id="password" name="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="Contraseña" required>
                                 @if  ($errors->has('password'))
                                     <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $errors->first('password') }}</strong>
@@ -35,7 +37,7 @@
                             
                             <div class="row m-t-30">
                                 <div class="col-md-12">
-                                    <button type="submit" class="btn btn-inverse btn-md btn-block text-center m-b-20">Iniciar Sesión</button>
+                                    <button type="submit" id="login" class="btn btn-inverse btn-md btn-block text-center m-b-20">Iniciar Sesión</button>
                                 </div>
                             </div>
                             
@@ -54,3 +56,5 @@
 </section>
 
 @endsection
+
+
