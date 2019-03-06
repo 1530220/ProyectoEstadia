@@ -10,6 +10,7 @@ use App\Career;
 use App\Student;
 use App\User;
 use App\Skills;
+use App\company;
 use Alert;
 use App\Http\Requests;
 use Illuminate\Support\Facades\DB;
@@ -59,6 +60,10 @@ class HomeController extends Controller
             return view('home', compact('careers', 'students','tutores','sessions','movements','skills','competences','medals','companies','contacts','jobs','sectors'));
             break;
         case 3: //INFORMACION DASHBOARD PARA ESTUDIANTES
+          $students=DB::table('siita_db.students')
+              ->where('siita_db.students.user_id',Auth::user()->id)
+              ->first();
+          if( $students->deleted==0){
            $jobs=DB::table('jobs')
            ->join('companies as c','c.id','=','jobs.id_company')
           ->join('sectors as s','s.id','=','jobs.id_sector')
@@ -67,9 +72,18 @@ class HomeController extends Controller
           ->get();
           return view('egresado.inicio', compact('jobs'));
            break;
+          }else{
+            return view('noaccess');
+            break;
+          }
         case 5: //INFORMACION DASHBOARD PARA TUTORES
            break;
        case 8: //INFORMACION DASHBOARD PARA EMPRESA
+            $companies=DB::table('companies')
+              ->where('companies.id',Auth::user()->id)
+              ->first();
+         if( $companies->deleted==0){
+          
             $job_requests=DB::table('status_job as status')
           ->join('jobs as j','j.id','=','status.id_job')
           ->join('companies as c','c.id','=','j.id_company')
@@ -77,7 +91,10 @@ class HomeController extends Controller
           ->join('siita_db.users as u','u.id','=','s.user_id')
           ->get();
           return view('empresa.inicio', compact('job_requests'));
-           break;
+           break;}else{
+            return view('noaccess');
+            break;
+          }
         default:
           return view('noaccess');
           break;

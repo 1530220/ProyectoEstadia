@@ -94,6 +94,8 @@ Route::group(['middleware'=>['auth']], function () {
     Route::post('/operations/ajax/companies/verific_column', 'CompaniesController@verific_column')->name('companies.verific_column');
     Route::post('/operations/ajax/companies/verific_email', 'CompaniesController@verific_email')->name('companies.verific_email');
   
+    Route::post('/operations/ajax/companies/verific_email_edit', 'CompaniesController@verific_email_edit')->name('companies.verific_email_edit');
+  
    //Route::post('/operations/ajax/login/verificar_type', 'LoginController@verificar_type')->name('login.verificar_type');
     /**************  Termina operaciones AJAX  ***************/
 
@@ -778,7 +780,7 @@ Route::PATCH('/editar_perfil/{companies}','EmpresasController@update_profile');
 
 Route::post('/agregar_vacante/{companies}','EmpresasController@store_addjob');
 
-Route::get('/conexiones_empresa','EmpresasController@conexiones_empresa');
+Route::get('/conexiones_empresa/{companies}','EmpresasController@conexiones_empresa');
 
 Route::get('/egresado/{users}','EmpresasController@egresado');
 

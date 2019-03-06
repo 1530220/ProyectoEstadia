@@ -15,7 +15,7 @@ use Alert;
 use App\User;
 use App\job;
 use App\contact;
-use App\sector;
+use App\Sectors;
 use App\company;
 use App\students;
 use App\careers;
@@ -36,7 +36,7 @@ class EmpresasController extends Controller
             $contact->company_id=request('id_company');
             $contact->schedule=request('schedule');
             $contact->save();
-            alert()->success('Tu contacto ha sido agregado correctamente','Bien Hecho!!!')->autoclose(4000);
+            Alert::success('El contacto ha sido creado correctamente','Bien Hecho!!!')->autoclose(4000);
             return redirect()->route('profile',[$contact->company_id]);
     }
 
@@ -44,12 +44,13 @@ class EmpresasController extends Controller
      public function editcontact($id){
         $contacts=DB::table('contacts')
         ->join('companies as c','contacts.company_id','=','c.id')
+        ->join('siita_db.users as u','u.id','c.id')
         ->select('contacts.*',
         'c.id as id_company',
         'c.rfc',
         'c.name as company_name',
         'c.phone as company_phone',
-        'c.email as company_email',
+        'u.email as company_email',
         'c.image_url',
         'c.country as company_country',
         'c.state as company_state',
@@ -81,7 +82,7 @@ class EmpresasController extends Controller
     //Función para agregar una vacante
     public function store_addjob(){
         //Encontrar el id del sector y compañia
-        $id_sector=sector::all()
+        $id_sector=Sectors::all()
         ->where('name',request('sector_name'))
         ->first();
             
@@ -100,7 +101,7 @@ class EmpresasController extends Controller
         $job->id_company=request('id_company');
         $job->deleted=request('deleted');
         $job->save();
-        alert()->success('Tu vacante ha sido agregado correctamente','Bien Hecho!!!')->autoclose(4000);
+        Alert::success('La vacante ha sido creada correctamente','Bien Hecho!!!')->autoclose(4000);
         return redirect()->route('profile',[$job->id_company]);
     }
     
@@ -108,12 +109,13 @@ class EmpresasController extends Controller
     public function editjob($id){
         $jobs=DB::table('jobs')
         ->join('companies as c','jobs.id_company','=','c.id')
+        ->join('siita_db.users as u','u.id','c.id')
         ->select('jobs.*',
         'c.id as company_id',
         'c.rfc',
         'c.name as company_name',
         'c.phone',
-        'c.email',
+        'u.email',
         'c.image_url',
         'c.country as company_country',
         'c.state as company_state',
@@ -137,7 +139,7 @@ class EmpresasController extends Controller
         ->select('jobs.*')
         ->where('jobs.id',$id)
         ->update(['salary' => request('salary'),'description' => request('description'),'deleted' => request('status')]);
-        alert()->success('Tu vacante ha sido actualizado correctamente','Bien Hecho!!!')->autoclose(4000);
+        Alert::success('La vacante ha sido actualizada correctamente','Bien Hecho!!!')->autoclose(4000);
         return back();
     }
 
@@ -293,15 +295,15 @@ class EmpresasController extends Controller
         ->count();
 
         $count_contacts_no_avialable=DB::table('contacts')
-        ->join('companies as c', 'c.id','=','company_id')
-        ->where('company_id',$id)
-        ->where('deleted',1)
+        ->join('companies as c', 'c.id','=','contacts.company_id')
+        ->where('contacts.company_id',$id)
+        ->where('contacts.deleted',1)
         ->count();
         
         $count_contacts_avialable=DB::table('contacts')
-        ->join('companies as c', 'c.id','=','company_id')
-        ->where('company_id',$id)
-        ->where('deleted',0)
+        ->join('companies as c', 'c.id','=','contacts.company_id')
+        ->where('contacts.company_id',$id)
+        ->where('contacts.deleted',0)
         ->count();
 
         $count_jobs=DB::table('jobs')
@@ -327,6 +329,8 @@ class EmpresasController extends Controller
     //Función para mostrar la vista de editar perfil
     public function editprofile($id){
         $companies=DB::table('companies')
+        ->join('siita_db.users as u','u.id','companies.id')
+        ->select('u.email','companies.*')
         ->where('companies.id',$id)
         ->get();
         return view('empresa.editprofile',compact('companies'));
@@ -352,8 +356,14 @@ class EmpresasController extends Controller
         $companies=DB::table('companies')
         ->select('companies.*')
         ->where('companies.id',$id)
-        ->update(['description' => request('description'),'schedule' => request('schedule'),'phone' => request('phone'),'email' => request('email')]);
-        alert()->success('Tu perfil ha sido actualizado correctamente','Bien Hecho!!!')->autoclose(4000);
+        ->update(['description' => request('description'),'schedule' => request('schedule'),'phone' => request('phone')]);
+        
+        $email=DB::table('companies')
+        ->join('siita_db.users as u','u.id','companies.id')
+        ->select('u.email')
+        ->where('companies.id',$id)
+        ->update(['u.email' => request('email')]);
+        Alert::success('Tu perfil ha sido actualizado correctamente','Bien Hecho!!!')->autoclose(4000);
         return back();
     }
     
@@ -365,13 +375,15 @@ class EmpresasController extends Controller
         ->select('sectors.*')
         ->get();
         $companies=DB::table('companies')
-        ->select('companies.*')
+        ->join('siita_db.users as u','u.id','companies.id')
+        ->select('companies.*','u.email')
         ->where('companies.id','=',$id)
         ->get();
         $jobs=DB::table('jobs as j')
         ->join('companies as c', 'c.id','=','j.id_company')
+        ->join('siita_db.users as u','u.id','c.id')
         ->join('sectors as s', 's.id','=','j.id_sector')
-        ->select('c.name as company_name', 'c.phone as company_phone','c.email as company_email','j.*','s.name as sector_name')
+        ->select('c.name as company_name', 'c.phone as company_phone','u.email as company_email','j.*','s.name as sector_name')
         ->where('j.id_company',$id)
         ->latest()
         ->get();
@@ -387,13 +399,15 @@ class EmpresasController extends Controller
         ->select('sectors.*')
         ->get();
         $companies=DB::table('companies')
-        ->select('companies.*')
+        ->join('siita_db.users as u','u.id','companies.id')
+        ->select('companies.*','u.*')
         ->where('companies.id','=',$id)
         ->get();
         $jobs=DB::table('jobs as j')
+        ->join('siita_db.users as u','u.id','j.id')
         ->join('companies as c', 'c.id','=','j.id_company')
         ->join('sectors as s', 's.id','=','j.id_sector')
-        ->select('c.name as company_name', 'c.phone as company_phone','c.email as company_email','j.*','s.name as sector_name')
+        ->select('c.name as company_name', 'c.phone as company_phone','u.email as company_email','j.*','s.name as sector_name')
         ->where('j.id_company',$id)
         ->latest()
         ->get();

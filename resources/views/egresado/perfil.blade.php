@@ -210,7 +210,9 @@
                               <div class="media">
                                 <div class="media-body">
                                 <h6>{{$competence->name}}</h6>
-                                  <p>Estado: Pendiente</p>
+                                  <div class="progress">
+                                  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {{$competence->score}}%;"><label>Puntaje: {{$competence->score}}/100</label> </div>
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -233,8 +235,10 @@
                             <div class="similar">
                               <div class="media">
                                 <div class="media-body">
-                                <h6>{{$competence->name}}</h6>
-                                  <p>Estado: Aceptado</p>
+                                  <h6>{{$competence->name}}</h6>
+                                <div class="progress">
+                                  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {{$competence->score}}%;"><label>Puntaje: {{$competence->score}}/100</label> </div>
+                                </div>
                                 </div>
                               </div>
                             </div>

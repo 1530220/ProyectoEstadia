@@ -80,7 +80,7 @@
 										<div class="row">
 											<div class="col-sm-3">
 												<center>
-													<img id="modal_img" src='{{ asset($company->image_url)}}' alt="{{ asset($company->image_url) }}" class="img-fluid p-b-10 rounded" style="width:100%;max-width:300px">
+													<img id="modal_img" src='{{ asset($company->image_url)}}' alt="{{ $company->name }}" class="img-fluid p-b-10 rounded" style="width:100%;max-width:300px">
 													<div id="modal_show_img" class="modal">
 														<span class="close">&times;</span>
 														<img class="modal-content" id="img_content">

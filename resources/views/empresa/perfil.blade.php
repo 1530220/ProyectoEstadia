@@ -3,17 +3,19 @@
     Perfil Empresa
 @endsection
 @section('menu')
-      <div class="box-shadow-for-ui">
+<div class="box-shadow-for-ui">
         <div class="uou-block-2b">
-          <div class="container"> <a href="/inicio_empresa"><img src="/assets/images/logoupv.png" alt="" width="200px" height="100px"></a> <a href="#" class="mobile-sidebar-button mobile-sidebar-toggle"><span></span></a>
+          <div class="container"> <a href="/dashboard"><img src="/assets/images/logoupv.png" alt="" width="200px" height="100px"></a> <a href="#" class="mobile-sidebar-button mobile-sidebar-toggle"><span></span></a>
             <nav class="nav">
               <ul class="sf-menu">
-                <li><a href="/inicio_empresa" style="color:white;"><i class="fas fa-home"></i></a></li>
+                <li><a href="/dashboard" style="color:white;"><i class="fas fa-home"></i> Inicio</a></li>
                 <li> <a href="/tus_trabajos" style="color:white;"><i class="fas fa-clipboard-list"></i> Tus Trabajos</a> </li>
                 <li> <a href="/egresados" style="color:white;"><i class="fas fa-user-graduate"></i> Egresados</a> </li>
-                <li> <a href="/perfil_empresa" style="color:white;"><i class="fas fa-building"></i> Tu perfil</a></li>
-                <li><a href="/conexiones_empresa" style="color:white;"><i class="fab fa-connectdevelop"></i> Conexiones</a></li>
-                <li><a href="/" style="color:white;"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+                <li> <a href="/perfil_empresa/{{auth()->user()->id}}" style="color:white;"><i class="fas fa-building"></i>  Tu perfil</a></li>
+                <li><a href="/conexiones_empresa/{{auth()->user()->id}}" style="color:white;"><i class="fab fa-connectdevelop"></i> Conexiones</a></li>
+                <li><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" style="color:white;"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+                  <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                  {{ csrf_field() }}
               </ul>
             </nav>
           </div>
@@ -230,7 +232,7 @@
                         <div class="listing-inner">
                           <div class="listing-content">
                           <h6 class="title-company">{{$job->company_name}}</h6>
-                            <span class="location"> <i class="fa fa-map-marker"></i> {{$job->city}}, {{$job->state}}, {{$job->country}} </span> <span class="type-work full-time"> Full Time </span>
+                            <span class="location"> <i class="fas fa-map-marker-alt"></i> {{$job->city}}, {{$job->state}}, {{$job->country}} </span> <span class="type-work full-time"> Full Time </span>
                           <p>Descripción: {{$job->description}}</p>
                           <p>Salario: {{$job->salary}}</p>
                           <p><a href="/editar_vacante/{{$job->id}}"><i class="fas fa-edit"></i> Editar</a></p>
@@ -245,8 +247,8 @@
                         </div>
                         <div class="listing-tabs">
                           <ul>
-                            <li><a href="#"><i class="fa fa-envelope"></i> honda@contact.com</a></li>
-                            <li><a href="#"><i class="fa fa-phone"></i> 012 345 678</a></li>
+                            <li><a href="#"><i class="fas fa-envelope"></i> honda@contact.com</a></li>
+                            <li><a href="#"><i class="fas fa-phone"></i> 012 345 678</a></li>
                           </ul>
                         </div>
                       </div>
@@ -300,8 +302,8 @@
                     </div>
                     <div class="listing-tabs">
                       <ul>
-                        <li><a href="#"><i class="fa fa-envelope"></i> honda@contact.com</a></li>
-                        <li><a href="#"><i class="fa fa-phone"></i> 012 345 678</a></li>
+                        <li><a href="#"><i class="fas fa-envelope"></i> honda@contact.com</a></li>
+                        <li><a href="#"><i class="fas fa-phone"></i> 012 345 678</a></li>
                       </ul>
                     </div>
                   </div>
@@ -366,8 +368,8 @@
                       </div>
                       <div class="listing-tabs">
                         <ul>
-                          <li><a href="#"><i class="fa fa-envelope"></i> {{$contact->email}}</a></li>
-                          <li><a href="#"><i class="fa fa-phone"></i> {{$contact->phone}}</a></li>
+                          <li><a href="#"><i class="fas fa-envelope"></i> {{$contact->email}}</a></li>
+                          <li><a href="#"><i class="fas fa-phone"></i> {{$contact->phone}}</a></li>
                         </ul>
                       </div>
                     </div>  
@@ -404,8 +406,8 @@
                       </div>
                       <div class="listing-tabs">
                         <ul>
-                          <li><a href="#"><i class="fa fa-envelope"></i> {{$contact->email}}</a></li>
-                          <li><a href="#"><i class="fa fa-phone"></i> {{$contact->phone}}</a></li>
+                          <li><a href="#"><i class="fas fa-envelope"></i> {{$contact->email}}</a></li>
+                          <li><a href="#"><i class="fas fa-phone"></i> {{$contact->phone}}</a></li>
                         </ul>
                       </div>
                     </div>  

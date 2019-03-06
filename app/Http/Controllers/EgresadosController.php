@@ -187,13 +187,6 @@ class EgresadosController extends Controller
             $image_url = 'storage/students/'.Input::file('image')->hashName();
             DB::update('UPDATE siita_db.users SET image_url = ? WHERE id = ?', [$image_url, $id]);
         }
-
-        //Mostrar la carrera del alumno correspondiente
-        $users=DB::table('siita_db.students')
-        ->join('siita_db.users','siita_db.students.user_id','=','siita_db.users.id')
-        ->select('siita_db.students.*', 'siita_db.users.*')
-        ->where('siita_db.students.user_id',$id)
-        ->update(['siita_db.students.phone' => request('phone'),]);
         alert()->success('Se ha actualizado tu perfil','Bien Hecho!!!')->autoclose(4000);
         return back();
     }

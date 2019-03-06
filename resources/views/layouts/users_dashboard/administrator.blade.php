@@ -150,7 +150,7 @@
                 </a>
             </li>
             <li class="{{ Route::currentRouteNamed('import.list') ? 'active' : '' }}">
-                    <a href="{{ route('imports.list') }}">
+                    <a href="#">
                     <span class="pcoded-micon" style="background-color:#13a57c;"><i class="fas fa-file-import"></i><b>T</b></span>
                     <span class="pcoded-mtext" data-i18n="nav.task.main">Importar Empresas</span>
                     <span class="pcoded-mcaret"></span>
@@ -171,7 +171,7 @@
                 </a>
             </li>
             <li class="{{ Route::currentRouteNamed('import.list') ? 'active' : '' }}">
-                    <a href="{{ route('imports.list') }}">
+                    <a href="#">
                     <span class="pcoded-micon" style="background-color:#13a57c;"><i class="fas fa-file-import"></i><b>T</b></span>
                     <span class="pcoded-mtext" data-i18n="nav.task.main">Importar Vacantes</span>
                     <span class="pcoded-mcaret"></span>
@@ -192,7 +192,7 @@
                 </a>
             </li>
             <li class="{{ Route::currentRouteNamed('import.list') ? 'active' : '' }}">
-                    <a href="{{ route('imports.list') }}">
+                    <a href="#">
                     <span class="pcoded-micon" style="background-color:#13a57c;"><i class="fas fa-file-import"></i><b>T</b></span>
                     <span class="pcoded-mtext" data-i18n="nav.task.main">Importar Contactos</span>
                     <span class="pcoded-mcaret"></span>
@@ -301,7 +301,7 @@
             </ul>
         </li>
     <li class="{{ explode('.', $view_name)[0]=='imports.list' ? 'active pcoded-trigger' : '' }}">
-        <a href="{{ route('imports.list') }}">
+                    <a href="#">
             <span class="pcoded-micon" style="background-color:#13a57c;"><i class="fas fa-file-import"></i><b>T</b></span>
             <span class="pcoded-mtext" data-i18n="nav.task.main">Importar</span>
             <span class="pcoded-mcaret"></span>

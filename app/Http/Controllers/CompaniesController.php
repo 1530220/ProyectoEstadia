@@ -230,8 +230,6 @@ class CompaniesController extends Controller
         }
         
 
-        //Se llena el usuario con los datos ingresados en la vista
-        $company->id = Input::get('id');
         $company->name = Input::get('name');
         $company->phone = Input::get('telefono');
         $company->country = Input::get('country');
@@ -247,10 +245,7 @@ class CompaniesController extends Controller
         $image = Input::file('image');
         //Imagen actual(registrada en la base de datos)
         $image2 = Input::get('image_2');
-
-        //Se actualiza la empresa
-        $company->update();
-        
+      
         //Actualizar imagen, eliminando la anterior
         if ($image!=null) {
             if ($image2!='storage/no_image.png') {
@@ -259,38 +254,37 @@ class CompaniesController extends Controller
                 unlink(public_path()."/".$image2);
             }
             //Se realiza el almacenado de la nueva imagen(cargada en el file input)
-            $path=Input::file('image')->store('/public/users');
+            $path=Input::file('image')->store('/public/companies');
             //Se obtiene el nombre de la imagen
-            $image_url = 'storage/users/'.Input::file('image')->hashName();
+            $image_url = 'storage/companies/'.Input::file('image')->hashName();
             //Se realiza la nueva actualizacion al registro del usuario actual con el
             //nombre de la nueva imagen
-            DB::update('UPDATE users SET image_url = ? WHERE id = ?', [$image_url, $user_id]);
+            DB::update('UPDATE companies SET image_url = ? WHERE id = ?', [$image_url, $company->id]);
         }
 
+        if (Input::get('password') != null) {
+            $password = bcrypt(Input::get('password'));
+            DB::update('UPDATE siita_db.users SET password = ? WHERE id = ?', [$password, $company->id]);
+        }
+        
+        $email = Input::get('email');
+        DB::update('UPDATE siita_db.users SET email = ? WHERE id = ?', [$email, $company->id]);
+      
         //dd($user);
         //Se muestran los mensajes de cofirmacion para cada tipo de usuario y se realiza
         //el almacenamiento necesario para cada tipo de usuario
-        if($company->save()){
-            Alert::success('Exitosamente', 'Empresa Registrada');
-            insertToLog(Auth::user()->id, 'added', Input::get('id'), "empresa");
+        if($company->update()){
+            Alert::success('Exitosamente', 'Empresa Modificada');
+            insertToLog(Auth::user()->id, 'updated', Input::get('id'), "empresa");
             return redirect()->route('companies.list');
         }else{
-            Alert::error('Empresa no registrada', 'Error');
+            Alert::error('Empresa no modificada', 'Error');
             return redirect()->route('companies.list');  
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
+   
+   
     public function verific_column(Request $request){
         //Se obtiene los detalles del profesor con el id mandado
         $company = DB::table('siita_db.users as users')
@@ -321,5 +315,40 @@ class CompaniesController extends Controller
 
         //Se retorna una respuesta codificada con JSON
         return response()->json(['response'=>$company]);
+    }
+    public function verific_email_edit(Request $request){
+        //Se obtiene los detalles del profesor con el id mandado
+        $company = DB::table('siita_db.users as users')
+            ->select(
+                'users.email'
+            )
+            ->where('users.email', '=', $request->email)
+            ->where('users.id', '!=', $request->id)
+            ->first();
+
+        //Se retorna una respuesta codificada con JSON
+        return response()->json(['response'=>$company]);
+    }
+  
+  
+    public function destroy(Company $company)
+    {
+        DeleteHelper::instance()->onCascadeLogicalDelete('companies','id',$company->id);
+
+        Alert::success('Exitosamente','Empresa Eliminada');
+
+        insertToLog(Auth::user()->id, 'deleted', $company->id, "empresa");
+
+        return redirect()->route('companies.list');
+    }
+  
+   public function restore(Request $request)
+    {
+        DeleteHelper::instance()->restoreLogicalDelete('companies','id',$request->id);
+
+        Alert::success('Exitosamente','Empresa Restaurada');
+
+        insertToLog(Auth::user()->id, 'recover', $request->id, "empresa");
+        return redirect()->route('companies.list');
     }
 }

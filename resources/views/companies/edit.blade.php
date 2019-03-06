@@ -250,17 +250,20 @@
 
 	function verificar_email() {
 			var x = $("#email").val();
-
+      var id = {{$company->id}}
+  
+  console.log(id);
 			$.ajaxSetup({
 				headers: {
 					'X-CSRF-TOKEN': '{{ csrf_token() }}'
 				}
 			});
 			$.ajax({
-				url: '{{ route('companies.verific_email') }}',
+				url: '{{ route('companies.verific_email_edit') }}',
 				method: 'post',
 				data: {
-					id: x,
+					email: x,
+          id: id,
 				},
 				success: function(result) {
 

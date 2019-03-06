@@ -3,17 +3,19 @@
     Editar Vacante
 @endsection
 @section('menu')
-      <div class="box-shadow-for-ui">
+<div class="box-shadow-for-ui">
         <div class="uou-block-2b">
-          <div class="container"> <a href="/inicio_empresa"><img src="/assets/images/logoupv.png" alt="" width="200px" height="100px"></a> <a href="#" class="mobile-sidebar-button mobile-sidebar-toggle"><span></span></a>
+          <div class="container"> <a href="/dashboard"><img src="/assets/images/logoupv.png" alt="" width="200px" height="100px"></a> <a href="#" class="mobile-sidebar-button mobile-sidebar-toggle"><span></span></a>
             <nav class="nav">
               <ul class="sf-menu">
-                <li><a href="/inicio_empresa" style="color:white;"><i class="fa  fa-home"></i></a></li>
+                <li><a href="/dashboard" style="color:white;"><i class="fas fa-home"></i> Inicio</a></li>
                 <li> <a href="/tus_trabajos" style="color:white;"><i class="fas fa-clipboard-list"></i> Tus Trabajos</a> </li>
                 <li> <a href="/egresados" style="color:white;"><i class="fas fa-user-graduate"></i> Egresados</a> </li>
-                <li> <a href="/perfil_empresa" style="color:white;"><i class="fas fa-building"></i> Tu perfil</a></li>
-                <li><a href="/conexiones_empresa" style="color:white;"><i class="fab fa-connectdevelop"></i> Conexiones</a></li>
-                <li><a href="/" style="color:white;"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+                <li> <a href="/perfil_empresa/{{auth()->user()->id}}" style="color:white;"><i class="fas fa-building"></i>  Tu perfil</a></li>
+                <li><a href="/conexiones_empresa/{{auth()->user()->id}}" style="color:white;"><i class="fab fa-connectdevelop"></i> Conexiones</a></li>
+                <li><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" style="color:white;"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+                  <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                  {{ csrf_field() }}
               </ul>
             </nav>
           </div>
@@ -175,7 +177,7 @@
 
                 <div class="form-row">
                 <div class="form-group col-md-4">
-                <label>* Imagen actual del egresado</label>
+                <label>* Imagen actual de la empresa</label>
                 <img class="media-object" src="{{ URL::to($company->image_url) }}" alt="" style="width:100%;max-width:245px;height:100%;max-height:220px">
                 <input type="text" name="image_2" hidden value="{{ $company->image_url }}" style="color:black;" readonly>
                 </div>
@@ -187,22 +189,26 @@
                 
                 <div class="form-row">
                 <div class="form-group col-md-12">
-                <textarea rows="15" cols="50" class="form-control" placeholder="Descripción de la vacante" maxlength="1000" style="color:black" name="description" required>{{$company->description}}</textarea>
+                <label>* Descripción actual de la empresa</label>
+                <textarea rows="15" cols="50" class="form-control" placeholder="Descripción de la empresa" maxlength="1000" style="color:black" name="description" required>{{$company->description}}</textarea>
                 <span class="bootstrap-maxlength label-success label" style="display: block; position: absolute; white-space: nowrap; z-index: 1099; top: 4153.17px; left: 630.336px;">0 / 255</span>
                 </div>
                 </div>
                 
                 <div class="form-row">
                 <div class="form-group col-md-12">
+                <label>* Horario actual de la empresa</label>
                 <textarea rows="5" cols="50" class="form-control" placeholder="Horario de la empresa" maxlength="500" style="color:black" name="schedule" required>{{$company->schedule}}</textarea>
                 </div>
                 </div>
 
                 <div class="form-row">
                 <div class="form-group col-md-6">
+                <label>* Telefono actual de la empresa</label>
                 <input class="form-control" type="text" placeholder="Telefono de la empresa" style="color:black" name="phone" value="{{$company->phone}}" required>
                 </div>
                 <div class="form-group col-md-6">
+                <label>* Correo electrónico actual de la empresa</label>
                 <input class="form-control" type="email" placeholder="Correo empresarial" style="color:black" name="email" value="{{$company->email}}" required>
                 </div>
                 </div>
