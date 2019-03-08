@@ -98,7 +98,7 @@
             </div></a>
         </div>
         <div class="col-md-6 col-xl-4">
-            <a href="{{ route('users.list') }}" style="color: #353c64;"><div class="card widget-card-1">
+            <a href="{{ route('jobs.list') }}" style="color: #353c64;"><div class="card widget-card-1">
                 <div class="card-block-small">
                     <i class="fa fa-briefcase card1-icon" style="background-color:tomato"></i>
                     <span class="f-w-600" style="color:tomato">Vacantes</span>

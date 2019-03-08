@@ -16,7 +16,7 @@
 <link rel="stylesheet" href="/css_bolsa/owl.carousel.css">
 <link rel="stylesheet" href="/css_bolsa/main-style.css">
 <link rel="stylesheet" href="/css_bolsa/style.css">
-<link rel="stylesheet" href="/sweetalert/sweetalert.css"
+<link rel="stylesheet" href="/sweetalert/sweetalert.css">
 
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

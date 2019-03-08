@@ -56,7 +56,7 @@
 
         <p>{{$job->description}}</p>
 
-        <p><b style="font-style:italic;">* Salario: ${{$job->salary}}</b></p>
+        <p><b style="font-style:italic;">* Salario: {{$job->salary}}</b></p>
 
 
           <!--<div class="uou-share-story clearfix">

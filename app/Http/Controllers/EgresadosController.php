@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Alert;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests;
@@ -12,9 +11,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Alert;
 use App\competence;
+use App\project;
 use App\User;
-use App\students;
+use App\Student;
 use App\careers;
 use App\job;
 use App\company;
@@ -155,7 +156,29 @@ class EgresadosController extends Controller
         ->where('status','Pendiente')
         ->select('j.*','status_job.*','c.name as company_name')
         ->get();
-        return view('egresado.perfil', compact('users','trabajos_pendientes','count_jobs','contador_pendientes','contador_aceptados','contador_rechazados','contador_competencias','competences','competencias_pendientes','competencias_aceptadas'));
+      
+      
+      $contador_proyectos=DB::table('projects as p')
+        ->join('siita_db.users as u', 'u.university_id','=','p.user_id')
+        ->where('p.user_id',auth()->user()->university_id)
+        ->count();
+
+        $projects=DB::table('projects as p')
+        ->join('siita_db.users as u', 'u.university_id','=','p.user_id')
+        ->select('p.*')
+        ->where('u.university_id',auth()->user()->university_id)
+        ->get();
+        
+        $proyectos_agregados=DB::table('projects as p')
+        ->where('p.user_id',auth()->user()->university_id)
+        ->where('deleted',0)
+        ->count();
+
+        $proyectos_eliminados=DB::table('projects as p')
+        ->where('p.user_id',auth()->user()->university_id)
+        ->where('deleted',1)
+        ->count();
+        return view('egresado.perfil', compact('users','trabajos_pendientes','count_jobs','contador_pendientes','contador_aceptados','contador_rechazados','contador_competencias','competences','competencias_pendientes','competencias_aceptadas','contador_proyectos','projects','proyectos_agregados','proyectos_eliminados'));
     }
 
     public function editprofile($id){
@@ -228,8 +251,7 @@ class EgresadosController extends Controller
         ->where('jobs.id',$id)
         ->get();
         
-        $id_student=students::all()
-        ->where('user_id',auth()->user()->id)
+        $id_student=Student::where('user_id',auth()->user()->id)
         ->first();
 
         $status=DB::table('status_job')
@@ -354,6 +376,115 @@ class EgresadosController extends Controller
         ->get();
 
         return view('egresado.egresado_perfil_empresa', compact('companies','jobs','contacts'));
+    }
+  
+  //Pagina para ver el perfil del egresado
+    public function addprojects($id){
+        //Mostrar un perfil de usuario con el id correspondiente
+        $users=User::findOrFail($id);
+
+        //Mostrar la carrera del alumno correspondiente
+        $users=DB::table('siita_db.students')
+        ->join('siita_db.users','siita_db.students.user_id','=','siita_db.users.id')
+        ->join('siita_db.careers','siita_db.careers.id','=','siita_db.students.career_id')
+        ->select('siita_db.students.*', 'siita_db.users.*','siita_db.careers.*')
+        ->where('siita_db.students.user_id','=',$id)
+        ->get();
+      
+        return view('egresado.addproject', compact('users'));
+    }
+
+  //Pagina para ver el perfil del egresado
+    public function store_addprojects(Request $request){
+        $data = request()->validate([
+            'name' => 'required|max:128',
+            'start_date' => 'required',
+            'finish_date' => 'required',
+            'description' => 'required',
+            'boss' => 'required',
+            'company' => 'required',
+          ],[
+            'name.required' => ' * Este campo es obligatorio.',
+            'name.max' => ' * Este campo debe contener sólo 128 caracteres.',
+            'description.required' => ' * Este campo es obligatorio.',
+            'start_date.required' => ' * Este campo es obligatorio.',
+            'finish_date.required' => ' * Este campo es obligatorio.',
+            'boss.required' => ' * Este campo es obligatorio.',
+            'company.required' => ' * Este campo es obligatorio.',
+          ]);
+            
+          $fecha_actual=date("Y-m-d");
+
+          if(Input::get('start_date')>= Input::get('finish_date')){
+            Alert::error('Fecha de inicio no puede ser mayor a la de finalización', 'Error');
+            return back();
+          }else if (Input::get('start_date')>$fecha_actual ){
+            Alert::error('Fecha de finalización excede a la fecha actual', 'Error');
+            return back();
+          }
+
+          $project = new project;
+  
+          //Se obtienen los valores de la vista
+          $project->name = Input::get('name');
+          $project->start_date = Input::get('start_date');
+          $project->finish_date = Input::get('finish_date');
+          $project->description = Input::get('description');
+          $project->user_id = Input::get('university_id');
+          $project->boss = Input::get('boss');
+          $project->company = Input::get('company');
+          $project->save();
+        //Se almacena y se muestran mensajes en caos de registro exitoso
+          if ($project->save()) {
+            Alert::success('El proyecto ha sido agregado correctamente correctamente','Bien Hecho!!!')->autoclose(4000);
+            return redirect()->route('profile_student',[auth()->user()->id]);
+          } else {
+            Alert::error('No se registro el proyecto', 'Error');
+            return redirect()->route('profile_student',[auth()->user()->id]);
+          }
+
+          return back();
+         
+    }
+  
+  public function editproject($id){
+         //Mostrar un perfil de usuario con el id correspondiente
+        $project=project::findOrFail($id);
+        
+      
+        //Mostrar la carrera del alumno correspondiente
+        $users=DB::table('siita_db.students')
+        ->join('siita_db.users','siita_db.students.user_id','=','siita_db.users.id')
+        ->join('siita_db.careers','siita_db.careers.id','=','siita_db.students.career_id')
+        ->select('siita_db.students.*', 'siita_db.users.*','siita_db.careers.*')
+        ->where('siita_db.students.user_id','=',auth()->user()->id)
+        ->get();
+      
+         return view('egresado.editproject', compact('users','project'));
+    }
+  
+  public function update_project($id){
+        //Mostrar un perfil de usuario con el id correspondiente
+        
+        $projects=project::find($id);
+    
+         $fecha_actual=date("Y-m-d");
+
+          if(request('start_date')>= request('finish_date')){
+            Alert::error('Fecha de inicio no puede ser mayor a la de finalización', 'Error')->autoclose(4000);
+            return back();
+          }else if (request('start_date')>$fecha_actual ){
+            Alert::error('Fecha de finalización excede a la fecha actual', 'Error')->autoclose(4000);
+            return back();
+          }
+
+        //Mostrar la carrera del alumno correspondiente
+        $projects=DB::table('projects')
+        ->select('projects.*')
+        ->where('projects.id',$id)
+        ->update(['name' => request('name'),'start_date' => request('start_date'),'finish_date' => request('finish_date'),'description' => request('description'),'boss' => request('boss'),'company' => request('company')]);
+        Alert::success('El proyecto ha sido actualizada correctamente','Bien Hecho!!!')->autoclose(4000);
+        return back();
     }
 
    

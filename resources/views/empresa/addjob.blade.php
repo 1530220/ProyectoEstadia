@@ -194,16 +194,37 @@
                 </div>
         
                 <div class="form-row">
-                <div class="form-group col-md-4">
-                <input class="form-control" type="text" placeholder="Pais" style="color:black" name="country" required>
+                <<div class="form-group row">
+                                <label class="col-sm-2 col-form-label" for="country">País:</label>
+                                <div class="col-sm-4">
+                                    {!! Form::select('country',$countries,null,['id'=>'country','class'=>'form-control']) !!}
+                                    @if ($errors->has('country'))
+                                        <div class="col-form-label" style="color:red;">{{$errors->first('country')}}</div>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" for="state">Estado:</label>
+                                <div class="col-sm-4">
+                                    {!! Form::select('state',['placeholder'=>'Favor de seleccionar un país'],null,['id'=>'state','class'=>'form-control']) !!}
+                                    @if ($errors->has('state'))
+                                        <div class="col-form-label" style="color:red;">{{$errors->first('state')}}</div>
+                                    @endif
+                                </div>
+
+                                <label class="col-sm-2 col-form-label" for="city">Ciudad:</label>
+                                <div class="col-sm-4">
+                                    {!! Form::select('city',['placeholder'=>'Favor de seleccionar un estado'],null,['id'=>'city','class'=>'form-control']) !!}
+                                    @if ($errors->has('city'))
+                                        <div class="col-form-label" style="color:red;">{{$errors->first('city')}}</div>
+                                    @endif
+                                </div>
+                
                 </div>
-                <div class="form-group col-md-4">
-                <input class="form-control" type="text" placeholder="Estado" style="color:black" name="state" required>
-                </div>
-                <div class="form-group col-md-4">
-                <input class="form-control" type="text" placeholder="Ciudad" style="color:black" name="city" required>
-                </div>
-                </div>
+                  
+							
+                 
         
                 <div class="form-row">
                 <div class="form-group col-md-6">

@@ -249,9 +249,6 @@ Route::group(['middleware'=>['auth']], function () {
         Route::delete('/work_experiences/{work_experience}', 'WorkExperiencesController@destroy')->name('work_experiences.destroy');
         Route::post('/work_experiences/restore', 'WorkExperiencesController@restore')->name('work_experiences.restore');
 
-        Route::get('/states/{id}', 'WorkExperiencesController@getStates');
-        Route::get('/states/{id}/flag', 'WorkExperiencesController@getFlag');
-        Route::get('/cities/{id}', 'WorkExperiencesController@getCities');
 
         Route::get('/companies', 'CompaniesController@index')->name('companies.list');
         Route::get('/companies/new', 'CompaniesController@create')->name('companies.create');
@@ -263,7 +260,8 @@ Route::group(['middleware'=>['auth']], function () {
         Route::post('/companies/restore', 'CompaniesController@restore')->name('companies.restore');
 
         Route::get('/jobs', 'JobsController@index')->name('jobs.list');
-        Route::get('/jobs/new', 'JobsController@create')->name('jobs.create');
+        Route::get('/jobs/select', 'JobsController@select_company')->name('jobs.select_company');
+        Route::get('/jobs/{id}/new', 'JobsController@create')->where('id', '[0-9]+')->name('jobs.create');
         Route::post('/jobs', 'JobsController@store');
         Route::get('/jobs/{id}', 'JobsController@show')->where('id', '[0-9]+')->name('jobs.show');
         Route::get('/jobs/{job}/edit', 'JobsController@edit')->where('id', '[0-9]+')->name('jobs.edit');
@@ -422,32 +420,9 @@ Route::group(['middleware'=>['auth']], function () {
         /**************  Termina tutorias  ***************/
     });
 
-    Route::group(['middleware'=>['access:1,2,4,5']], function(){
-        /*******************************************
-         *Rutas para schedule*
-         *******************************************/
-
-         //Permite acceder al listado de citas de asesorias
-         Route::get('/schedule/asesoria', 'ScheduleController@indexCitasAsesorias')->name('schedule.asesoria.list');
-
-         //Editar un cita
-         Route::get('/schedule/asesoria/{id}/edit', 'ScheduleController@editCitaAsesoria')->where('id', '[0-9]+')->name('schedule.asesoria.edit');
-
-         //Permite acceder a la vista de schedule cita de asesorias
-         Route::get('/schedule/new/asesoria', 'ScheduleController@createCitaAsesoria')->name('schedule.asesoria.create');
-
-         //Permite almacenar la cita de asesorias en la BD
-         Route::post('/schedule/new/asesoria', 'ScheduleController@storeCitaAsesoria')->name('schedule.storeAsesoria');
-
-         //Eliminar un cita de asesoria
-         Route::delete('/schedule/{asesoria}', 'ScheduleController@destroyCitaAsesoria')->name('schedule.asesoria.destroy');
-
-         //Actualizar un cita de asesoria
-         Route::put('/schedule/{id}', 'ScheduleController@updateCitaAsesoria')->name('schedule.asesoria.update');
-
-         //Recuperar las citas de asesorias borradas
-         Route::post('/schedule/restore', 'ScheduleController@restoreCitaAsesoria')->name('schedule.asesoria.restore');
-         /**************  Termina schedule  ***************/
+    Route::group(['middleware'=>['access:1,8']], function(){
+        Route::get('/states/{id}', 'WorkExperiencesController@getStates');
+        Route::get('/cities/{id}', 'WorkExperiencesController@getCities');
 
     });
 
@@ -720,7 +695,15 @@ Route::get('/lista_egresados','EgresadosController@lista_egresados')->name('stud
 
 Route::get('/lista_egresados/ajax','EgresadosController@lista_egresados_ajax');//
 
-Route::get('/perfil_egresado/{users}','EgresadosController@perfil_egresado');
+Route::get('/perfil_egresado/{users}','EgresadosController@perfil_egresado')->name('profile_student');
+  
+Route::get('/agregar_proyectos/{users}','EgresadosController@addprojects');
+
+Route::post('/agregar_proyectos/{users}','EgresadosController@store_addprojects');
+
+Route::get('/editar_proyectos/{users}','EgresadosController@editproject');
+  
+Route::PATCH('/editar_proyectos/{users}','EgresadosController@update_project');
 
 //Route::PATCH('/perfil_egresado/{users}','EgresadosController@update_perfil_egresado');
 
@@ -763,6 +746,8 @@ Route::PATCH('/perfil_empresa/{companies}','EmpresasController@update_status_job
 Route::get('/agregar_contacto/{companies}','EmpresasController@addcontact');
 
 Route::post('/agregar_contacto/{companies}','EmpresasController@store_addcontact');
+  
+
 
 Route::get('/editar_contacto/{companies}','EmpresasController@editcontact');
 

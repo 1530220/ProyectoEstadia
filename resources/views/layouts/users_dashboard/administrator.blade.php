@@ -164,7 +164,7 @@
                 </a>
             </li>
             <li class="{{ Route::currentRouteNamed('jobs.create') ? 'active' : '' }}">
-                    <a href="{{ route('jobs.create') }}">
+                    <a href="{{ route('jobs.select_company') }}">
                     <span class="pcoded-micon" style="background-color:#13a57c;"><i class="fas fa-file-import"></i><b>T</b></span>
                     <span class="pcoded-mtext" data-i18n="nav.task.main">Agregar Vacante</span>
                     <span class="pcoded-mcaret"></span>

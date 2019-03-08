@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Student extends Model
 {
     protected $primaryKey = 'user_id';
+    protected $table = 'siita_db.students';
 
     /** @var array */
     protected $fillable = [

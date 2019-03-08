@@ -19,6 +19,9 @@ use App\Sectors;
 use App\company;
 use App\students;
 use App\careers;
+use App\Country;
+use App\State;
+use App\City;
 
 class EmpresasController extends Controller
 {
@@ -273,6 +276,24 @@ class EmpresasController extends Controller
         ->where('c.id','=',$id)
         ->get();
       
+        $country=DB::table('countries as c')
+         ->join('companies as co','co.country','c.id')
+         ->select('c.*','co.country')
+         ->where('co.id',$id)
+          ->first();
+       
+      $state=DB::table('states as s')
+         ->join('companies as co','co.state','s.id')
+         ->select('s.*','co.state')
+         ->where('co.id',$id)
+          ->first();
+      
+      $city=DB::table('cities as c')
+         ->join('companies as co','co.city','c.id')
+         ->select('c.*','co.city')
+         ->where('co.id',$id)
+          ->first();
+      
         $jobs=DB::table('jobs as j')
         ->join('companies as c', 'c.id','=','j.id_company')
         ->join('siita_db.users as u','u.id','=','c.id')  
@@ -323,7 +344,7 @@ class EmpresasController extends Controller
         ->where('jobs.deleted',0)
         ->count();
 
-        return view('empresa.perfil', compact('companies','jobs','contacts','count_contacts','count_jobs','count_jobs_no_post','count_jobs_post','count_contacts_avialable','count_contacts_no_avialable'));
+        return view('empresa.perfil', compact('companies','jobs','contacts','count_contacts','count_jobs','count_jobs_no_post','count_jobs_post','count_contacts_avialable','count_contacts_no_avialable','country','state','city'));
     }
 
     //Función para mostrar la vista de editar perfil
@@ -394,6 +415,9 @@ class EmpresasController extends Controller
     //Pagina para ver la vista de agregar vacantes
     public function addjob($id){
         $companies=company::findOrFail($id);
+      
+         $countries = Country::pluck('name','id'); 
+          
 
         $sectors=DB::table('sectors')
         ->select('sectors.*')
@@ -412,7 +436,7 @@ class EmpresasController extends Controller
         ->latest()
         ->get();
         
-        return view('empresa.addjob', compact('sectors','companies','jobs'));
+        return view('empresa.addjob', compact('sectors','companies','jobs'))->with("countries",$countries);
     }
 
     //Pagina para que la empresa vea sus conexiones

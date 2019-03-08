@@ -34,7 +34,7 @@
           @foreach ($companies as $company)
         <h1><i class="fas fa-building"></i> {{$company->name}} <a data-toggle="tooltip" data-placement="top" title="Verified Member"><img src="/images/icon-ver.png" alt="" ></a> </h1>
           <h6>Sector: Automotriz</h6>
-          <p>Dirección: {{$company->street}}, {{$company->state}} {{$company->zip}}  <!--a href="#.">map</a> / <a href="#.">street</a>)</p-->
+          <p>Dirección: {{$company->street}}, {{$state->name}} {{$company->zip}}  <!--a href="#.">map</a> / <a href="#.">street</a>)</p-->
           @endforeach
           <!-- Social Icon -->
           <!--div class="social-links"> <a href="#."><i class="fa fa-facebook"></i></a> <a href="#."><i class="fa fa-twitter"></i></a> <a href="#."><i class="fa fa-google"></i></a> <a href="#."><i class="fa fa-linkedin"></i></a> </div-->
@@ -140,7 +140,7 @@
                     @foreach ($companies as $company)
                     <li class="row">
                       <h6 class="title col-xs-6">Localización</h6>
-                      <span class="subtitle col-xs-6">{{$company->city}}, {{$company->country}}</span> </li><br>
+                      <span class="subtitle col-xs-6">{{$city->name}}, {{$country->name}}</span> </li><br>
                     <li class="row">
                       <h6 class="title col-xs-6">RFC</h6>
                       <span class="subtitle col-xs-6">{{$company->rfc}}</span> </li><br>

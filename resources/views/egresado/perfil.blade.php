@@ -102,23 +102,27 @@
                   <div id="profile" class="tab-pane fade in active">
                     <div class="row">
                       <div class="col-md-12">
+                        
                         <div class="profile-main">
-                          <h3>Experiencia Laboral</h3>
+          
+                            <h3>Experiencia Laboral</h3>
+                              
                           <div class="profile-in">
                             <div class="media-left">
                               <div class="img-profile"> <img class="media-object" src="{{ asset($user->image_url)}}" alt="" style="width:100%;max-width:245px;height:100%;max-height:220px"> </div>
                             </div>
                             <div class="media-body">
-                              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit, maxime, excepturi, mollitia, voluptatibus similique aliquidautem 
-                                laudantium sapiente ad enim ipsa modi labo rum accusantium deleniti neque architecto vitae.<br>
-                                <br>
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea, nihil, dolores, culpa ullam vero ipsum placeat accusamus nemo
-                                itate id molestiae consectetur quae pariatur repudi andae vel ex quaerat nam iusto aliquid laborum quia adipisci aut ut imcati 
-                                nisi deleniti tempore maxime sequi fugit reiciendis libero quo. Rerum, assumenda. <br>
-                                <br>
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Exercitationem, at nemo inventore temporibus corporis suscipit.</p>
+                              
+                              <center><button class="btn btn-primary">
+                             Añadir Experiencia Laboral
+                            </button></center>
+                              <ul class="single-category">
+                                <li><p>hola </p></li>
+                                <li><p>hola </p></li>
+                              </ul>
                             </div>
                           </div>
+                          
                         </div>
                       </div>
                       <div class="col-md-8"> 
@@ -181,6 +185,87 @@
                         
                         <!-- Professional Details -->
                         <div class="sidebar">
+                          <h5 class="main-title">Proyectos</h5>
+                          @if ($contador_proyectos==0)
+                          <div class="listing listing-1">
+                            <div class="listing-section">
+                              <div class="listing-ver-3">
+                                 <center><h6>Aun no tienes proyectos</h6></center>
+                              </div>
+                              <center><a href="/agregar_proyectos/{{auth()->user()->id}}"><i class="fas fa-plus"></i> Agregar Proyectos</a></center>
+                            </div>
+                          </div>
+                          @else
+                          <div class="listing-ver-3">
+                            <center><h5>* Proyectos Agregados ({{$proyectos_agregados}})</h5></center>
+                          </div>
+                          @if ($proyectos_agregados==0)
+                            <div class="listing listing-1">
+                              <div class="listing-section">
+                                <div class="listing-ver-3">
+                                  <center><h6>No tienes proyectos agregados</h6></center>
+                                </div>
+                              </div>
+                            </div>   
+                          @endif
+                          @foreach ($projects as $project)
+                           @if ($project->deleted==0 )
+                            <div class="similar">
+                              <div class="media">
+                                <div class="media-body">
+                                  <ul class="h6">
+                                    <li><h6> {{$project->name}}</h6><a href="/editar_proyectos/{{$project->id}}">
+                                      <button title="Editar" class="btn btn-warning">
+                                      <i class="fas fa-edit"></i>
+                                      </button></a> 
+                                      <button title="Eliminar" class="btn btn-error">
+                                      <i class="fas fa-trash-alt"></i>
+                                      </button></li>
+                                  </ul>
+                                </div>
+                              </div>
+                            </div>
+                          @endif
+                          @endforeach
+                          <div class="listing-ver-3">
+                            <center><h5>* Proyectos Eliminados ({{$proyectos_eliminados}})</h5></center>
+                          </div>
+                          @if ($proyectos_eliminados==0)
+                            <div class="listing listing-1">
+                              <div class="listing-section">
+                                <div class="listing-ver-3">
+                                   <center><h6>No tienes proyectos eliminados</h6></center>
+                                </div>
+                              </div>
+                            </div>   
+                          @endif
+                          @foreach ($projects as $project) 
+                          @if( $project->deleted==1 )
+                            <div class="similar">
+                              <div class="media">
+                                <div class="media-body">
+                                  <ul class="h6">
+                                    <li><h6> {{$project->name}}</h6><a href="/editar_proyectos/{{$project->id}}">
+                                      <button title="Editar" class="btn btn-warning">
+                                      <i class="fas fa-edit"></i>
+                                      </button></a> 
+                                      <button title="Restaurar" class="btn btn-success">
+                                      <i class="fas fa-undo-alt"></i>
+                                      </button></li>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </div>
+                            </div>
+                          @endif
+                          @endforeach
+                          <center><a href="/agregar_proyectos/{{auth()->user()->id}}"><i class="fas fa-plus"></i> Agregar Proyectos</a></center>
+                          @endif
+                             
+                        </div>
+                        
+                        <!-- Professional Details -->
+                        <div class="sidebar">
                           <h5 class="main-title">Competencias</h5>
                           @if ($contador_competencias==0)
                           <div class="listing listing-1">
@@ -209,9 +294,10 @@
                             <div class="similar">
                               <div class="media">
                                 <div class="media-body">
-                                <h6>{{$competence->name}}</h6>
+                                  <h6>{{$competence->name}}</h6>
+                                  <label>Puntaje: {{$competence->score}} de 100</label>
                                   <div class="progress">
-                                  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {{$competence->score}}%;"><label>Puntaje: {{$competence->score}}/100</label> </div>
+                                  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {{$competence->score}}%;"> </div>
                                   </div>
                                 </div>
                               </div>
@@ -236,8 +322,9 @@
                               <div class="media">
                                 <div class="media-body">
                                   <h6>{{$competence->name}}</h6>
+                                   <label>Puntaje: {{$competence->score}} de 100</label>
                                 <div class="progress">
-                                  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {{$competence->score}}%;"><label>Puntaje: {{$competence->score}}/100</label> </div>
+                                  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {{$competence->score}}%;"></div>
                                 </div>
                                 </div>
                               </div>
