@@ -611,11 +611,31 @@ class EgresadosController extends Controller
           ->select('ss.*')
           ->where('ss.id',$id)
           ->update(['score' => request('score')]);
-        
+          //swal("Good job!", "You clicked the button!", "success");
           Alert::success('La puntuación de esta habilidad ha sido actualizada correctamente','Bien Hecho!!!')->autoclose(4000);
           return back();
         }
         
+    }
+  public function deleteskills($id){
+         //Mostrar un perfil de usuario con el id correspondiente
+        $skill=DB::table('students_skills as ss')
+          ->join('skills as s','s.id','ss.skill_id')
+          ->join('siita_db.users as u','u.university_id','ss.user_id')
+          ->select('ss.*','s.name')
+          ->where('ss.id',$id)
+          ->first();
+        
+      
+        //Mostrar la carrera del alumno correspondiente
+        $users=DB::table('siita_db.students')
+        ->join('siita_db.users','siita_db.students.user_id','=','siita_db.users.id')
+        ->join('siita_db.careers','siita_db.careers.id','=','siita_db.students.career_id')
+        ->select('siita_db.students.*', 'siita_db.users.*','siita_db.careers.*')
+        ->where('siita_db.students.user_id','=',auth()->user()->id)
+        ->get();
+      
+         return view('egresado.deleteskill', compact('users','skill'));
     }
   
   public function destroy_skill($id){
@@ -625,7 +645,7 @@ class EgresadosController extends Controller
         ->delete();
       
         Alert::success('Tu habilidad ha sido eliminada','Bien Hecho!!!')->autoclose(4000);
-        return back();
+        return redirect()->route('profile_student',[auth()->user()->id]);
         
     }
 

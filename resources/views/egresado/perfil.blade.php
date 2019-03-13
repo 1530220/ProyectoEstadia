@@ -121,7 +121,7 @@
                                 <div class="progress">
                                   <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {{$ss->score}}%;"> </div>
                                 </div>
-                                <label>{{$ss->score}} / 100</label> <a href="/editar_habilidades/{{$ss->id}}" ><button class="btn btn-warning" title="Editar"><i class="fas fa-edit"></i></button></a>  <a href="#" ><button class="btn btn-error" title="Eliminar" data-toggle="modal" data-target="#{{$ss->id}}"><i class="fas fa-trash-alt"></i></button></a>
+                                <label>{{$ss->score}} / 100</label> <a href="/editar_habilidades/{{$ss->id}}" ><button class="btn btn-warning" title="Editar"><i class="fas fa-edit"></i></button></a>  <a href="/eliminar_habilidades/{{$ss->id}}" ><button class="btn btn-error" title="Eliminar"><i class="fas fa-trash-alt"></i></button></a>
                               </li>
                             </ul>
                             

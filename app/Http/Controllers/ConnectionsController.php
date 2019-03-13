@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Alert;
 use App\connections_companies;
+use App\company;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Helpers\DeleteHelper;
@@ -121,8 +122,19 @@ class ConnectionsController extends Controller
     }
   
     public function verific_companies(Request $request){
-      $companies = DB::table('connections_companies')->where('student_id_login', '=', $request->student_id)->get();
-
+        //$companies = DB::table('connections_companies')->where('student_id_login', '=', $request->student_id)->get();
+        
+        $id = $request->student_id;
+        $companies = company::whereNotExists(function($query) use ($id){
+             $query->select(DB::raw(1))
+                ->from('connections_companies')
+                ->whereRaw('companies.id = connections_companies.company_id')
+                ->where('connections_companies.student_id_login','=',$id);
+              })->where('companies.deleted','=',0)
+              ->get();
+     
+      
+      
         //Se retorna una respuesta codificada con JSON
         return response()->json(['response'=>$companies]);
     }

@@ -1,4 +1,7 @@
 @extends('layouts.noaccess')
+@section('title')
+Sin Acesso
+@endsection
 @section('content')
 <div class="content">
 

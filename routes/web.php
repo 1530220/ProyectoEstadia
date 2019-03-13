@@ -706,7 +706,9 @@ Route::get('/editar_habilidades/{users}','EgresadosController@editskills');
   
 Route::PATCH('/editar_habilidades/{users}','EgresadosController@update_skill');
   
-Route::DELETE('/perfil_egresado/{users}','EgresadosController@destroy_skill');
+Route::get('/eliminar_habilidades/{users}','EgresadosController@deleteskills');
+  
+Route::DELETE('/eliminar_habilidades/{users}','EgresadosController@destroy_skill');
   
 Route::POST('/agregar_habilidades/{users}','EgresadosController@store_addskills');
 

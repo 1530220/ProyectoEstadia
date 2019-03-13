@@ -4,7 +4,7 @@
 
 	<head>
 		<meta charset="utf-8">
-		<title>Sin Acceso</title>
+		<title>@yield('title')</title>
 		<meta name="description" content="Flat able 404 Error page design">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta name="author" content="Codedthemes">

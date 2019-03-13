@@ -84,7 +84,7 @@
             </div></a>
         </div>
         <div class="col-md-6 col-xl-4">
-            <a href="{{ route('users.list') }}" style="color: #353c64;"><div class="card widget-card-1">
+            <a href="{{ route('connections.list') }}" style="color: #353c64;"><div class="card widget-card-1">
                 <div class="card-block-small">
                     <i class="fab fa-connectdevelop card1-icon"  style="background-color:cornflowerblue"></i>
                     <span class="f-w-600" style="color:cornflowerblue">Conexiones</span>

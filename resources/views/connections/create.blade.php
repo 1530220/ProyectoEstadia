@@ -66,18 +66,10 @@
                       </select>
                   </div>
               </div>
-
-              <div class="form-group row">
-                  <label class="col-sm-2 col-form-label" for="company">Empresa :</label>
-                  <div class="col-sm-10">
-                      <select class="form-control" name="company" id="company">
-                          @foreach ($companies as $company)
-                              <option value="{{ $company->id}}"> {{$company->name}}</option>
-                          @endforeach
-                      </select>
-                  </div>
+              <br><br>
+              
+              <div id="empresas" class="form-group row">
               </div>
-
 							<br>
 							<center>
 								<a style="color:white" onclick="returnURL('{{ url()->previous() }}')"  class="btn btn-primary"><i class="icofont icofont-arrow-left"></i>Regresar</a>
@@ -107,6 +99,7 @@
 		});
 		//* Termina verificacion de columnas unicas
     
+    
     function obtener_empresas(matricula){
 			$.ajaxSetup({
 				headers: {
@@ -122,16 +115,44 @@
 				success: function(result) {
 
 					companies = result['response'];
-
+          
+          var d = document.getElementById("empresas");
+          while (d.hasChildNodes()){
+            d.removeChild(d.firstChild);
+          }
+            
 					if (companies!=null) {
-                          console.log(companies);
+            console.log(companies);
+            
+            companies.forEach(function (company){
+              var iDiv = document.createElement('div');
+              iDiv.id = 'block'+company;
+              
+              //iDiv.className = 'block';
 
-						/*$("#error_id").text("* El id que esta intentando ingresar no esta disponible.");
-						document.getElementById("error_id").style.color = "red";
-						document.getElementById("error_id").style.display = "inline";
-						document.getElementById("registroEmpresa").style.display = "none";*/
+              var imagen = document.createElement('img');
+              imagen.src = "http://165.227.53.211/"+company.image_url;
+              imagen.width = 200; 
+              imagen.height = 200;
+              iDiv.appendChild(imagen);
+              
+              var dir = document.createElement('a');
+              dir.href = "/companies/"+company.id;
+              dir.appendChild(iDiv);
+              dir.className = "col-sm-3";
+              /*
+                <a
+                  <div>  //iDiv
+                      <img>
+                      
+                  </div>
+                >
+                
+              */
+              document.getElementById("empresas").appendChild(dir);
+            });
 					}else{
-              console.log("null");
+              console.log("No existen empresas");
 						/*$("#error_id").text("");
 						document.getElementById("error_id").style.display = "none";
 						document.getElementById("registroEmpresa").style.display = "inline";*/
