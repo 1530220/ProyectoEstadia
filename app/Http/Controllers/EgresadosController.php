@@ -20,6 +20,8 @@ use App\careers;
 use App\job;
 use App\company;
 use App\students_competences;
+use App\students_skills;
+use App\skill;
 
 class EgresadosController extends Controller
 {
@@ -109,21 +111,21 @@ class EgresadosController extends Controller
         ->get();
 
         $count_jobs=DB::table('status_job')
-        ->where('id_student',auth()->user()->id)
+        ->where('id_student',auth()->user()->university_id)
         ->count();
 
         $contador_pendientes=DB::table('status_job')
-        ->where('id_student',auth()->user()->id)
+        ->where('id_student',auth()->user()->university_id)
         ->where('status','Pendiente')
         ->count();
 
         $contador_aceptados=DB::table('status_job')
-        ->where('id_student',auth()->user()->id)
+        ->where('id_student',auth()->user()->university_id)
         ->where('status','Aceptado')
         ->count();
 
         $contador_rechazados=DB::table('status_job')
-        ->where('id_student',auth()->user()->id)
+        ->where('id_student',auth()->user()->university_id)
         ->where('status','Rechazado')
         ->count();
 
@@ -152,7 +154,7 @@ class EgresadosController extends Controller
         $trabajos_pendientes=DB::table('status_job')
         ->join('jobs as j','j.id','=','id_job')
         ->join('companies as c','c.id','=','j.id_company')
-        ->where('id_student',auth()->user()->id)
+        ->where('id_student',auth()->user()->university_id)
         ->where('status','Pendiente')
         ->select('j.*','status_job.*','c.name as company_name')
         ->get();
@@ -178,7 +180,14 @@ class EgresadosController extends Controller
         ->where('p.user_id',auth()->user()->university_id)
         ->where('deleted',1)
         ->count();
-        return view('egresado.perfil', compact('users','trabajos_pendientes','count_jobs','contador_pendientes','contador_aceptados','contador_rechazados','contador_competencias','competences','competencias_pendientes','competencias_aceptadas','contador_proyectos','projects','proyectos_agregados','proyectos_eliminados'));
+      
+        $skills_student=DB::table('students_skills as ss')
+          ->join('siita_db.users as u','u.university_id','ss.user_id')
+          ->join('skills as s','s.id','ss.skill_id')
+          ->select('ss.*','s.name')
+          ->where('u.university_id',auth()->user()->university_id)
+          ->get();
+        return view('egresado.perfil', compact('skills_student','users','trabajos_pendientes','count_jobs','contador_pendientes','contador_aceptados','contador_rechazados','contador_competencias','competences','competencias_pendientes','competencias_aceptadas','contador_proyectos','projects','proyectos_agregados','proyectos_eliminados'));
     }
 
     public function editprofile($id){
@@ -210,7 +219,7 @@ class EgresadosController extends Controller
             $image_url = 'storage/students/'.Input::file('image')->hashName();
             DB::update('UPDATE siita_db.users SET image_url = ? WHERE id = ?', [$image_url, $id]);
         }
-        alert()->success('Se ha actualizado tu perfil','Bien Hecho!!!')->autoclose(4000);
+        Alert::success('Se ha actualizado tu perfil','Bien Hecho!!!')->autoclose(4000);
         return back();
     }
 
@@ -251,12 +260,14 @@ class EgresadosController extends Controller
         ->where('jobs.id',$id)
         ->get();
         
-        $id_student=Student::where('user_id',auth()->user()->id)
+        $id_student=Student::join('siita_db.users as u','user_id','=','u.id')
+        ->where('user_id',auth()->user()->id)
         ->first();
+        
 
         $status=DB::table('status_job')
         ->where('id_job','=',$id)
-        ->where('id_student','=',$id_student->user_id)
+        ->where('id_student','=',$id_student->university_id)
         ->count();
 
         return view('egresado.vacante', compact('jobs','status'));
@@ -271,21 +282,22 @@ class EgresadosController extends Controller
         ->insert(
             array('id_student' => $id_student, 'id_job' => $id_job, 'status' => $status)
         );
-        alert()->success('La solicitud se ha enviado correctamente','Bien Hecho!!!')->autoclose(4000);
+        Alert::success('La solicitud se ha enviado correctamente','Bien Hecho!!!')->autoclose(4000);
         return back();
     }
 
     public function destroy_sendjob($id){
-        $id_student=students::all()
+        $id_student=Student::join('siita_db.users as u','u.id','=','user_id')
         ->where('user_id',auth()->user()->id)
         ->first();
-
+        
+      
         $query=DB::table('status_job')
         ->where('id_job',$id)
-        ->where('id_student','=',$id_student->user_id)
+        ->where('id_student','=',$id_student->university_id)
         ->delete();
-
-        alert()->success('Tu solicitud ha sido cancelada','Bien Hecho!!!')->autoclose(4000);
+      
+        Alert::success('Tu solicitud ha sido cancelada','Bien Hecho!!!')->autoclose(4000);
         return back();
     }
 
@@ -334,7 +346,11 @@ class EgresadosController extends Controller
     }
 
     public function store_addcompetences(Request $request){
-       
+      
+      if($competences_ids=$request->competences==auth()->user()->id){
+         Alert::error('No has agregado competencias','Mal Hecho!!!')->autoclose(4000);
+         return back(); 
+       }else{
         $competences_ids=$request->competences;
         foreach($competences_ids as $id){
             $students_competences=new students_competences();
@@ -343,8 +359,9 @@ class EgresadosController extends Controller
             $students_competences->save();
         }
         Alert::success('La solicitud de competencias de ha enviado correctamente','Bien Hecho!!!')->autoclose(4000);
-        //alert()->success('La solicitud de competencias de ha enviado correctamente','Bien Hecho!!!');
         return back();
+       }
+ 
     }
 
     
@@ -357,13 +374,15 @@ class EgresadosController extends Controller
         ->select('sectors.*')
         ->get());*/
         $companies=DB::table('companies')
-        ->select('companies.*')
+        ->join('siita_db.users as u','u.id','=','companies.id')
+        ->select('companies.*','u.email')
         ->where('companies.id','=',$id)
         ->get();
         $jobs=DB::table('jobs as j')
         ->join('companies as c', 'c.id','=','j.id_company')
+        ->join('siita_db.users as u','u.id','=','c.id')
         ->join('sectors as s', 's.id','=','j.id_sector')
-        ->select('c.name as company_name', 'c.phone as company_phone','c.email as company_email','j.*','s.name as sector_name')
+        ->select('c.name as company_name', 'c.phone as company_phone','u.email as company_email','j.*','s.name as sector_name')
         ->where('j.id_company',$id)
         ->latest()
         ->get();
@@ -485,6 +504,129 @@ class EgresadosController extends Controller
         ->update(['name' => request('name'),'start_date' => request('start_date'),'finish_date' => request('finish_date'),'description' => request('description'),'boss' => request('boss'),'company' => request('company')]);
         Alert::success('El proyecto ha sido actualizada correctamente','Bien Hecho!!!')->autoclose(4000);
         return back();
+    }
+    public function delete_project($id){
+        //Mostrar un perfil de usuario con el id correspondiente
+        $id=request('idproject');
+        
+        if(request('delete')==1){
+          //Mostrar la carrera del alumno correspondiente
+        $projects=DB::table('projects')
+        ->select('projects.*')
+        ->where('projects.id',$id)
+        ->update(['deleted' => request('delete')]);
+        Alert::success('El proyecto ha sido eliminado correctamente','Bien Hecho!!!')->autoclose(4000);
+        return back();
+        }else{
+          //Mostrar la carrera del alumno correspondiente
+        $projects=DB::table('projects')
+        ->select('projects.*')
+        ->where('projects.id',$id)
+        ->update(['deleted' => request('delete')]);
+        Alert::success('El proyecto ha sido restaurado correctamente','Bien Hecho!!!')->autoclose(4000);
+        return back();
+        }
+
+        
+    }
+  public function addskills($id){
+        $users=User::findOrFail($id);
+
+        //Mostrar la carrera del alumno correspondiente
+        $users=DB::table('siita_db.students')
+        ->join('siita_db.users','siita_db.students.user_id','=','siita_db.users.id')
+        ->join('siita_db.careers','siita_db.careers.id','=','siita_db.students.career_id')
+        ->select('siita_db.students.*', 'siita_db.users.*','siita_db.careers.*')
+        ->where('siita_db.students.user_id','=',$id)
+        ->get();
+       
+       $id_student=auth()->user()->university_id;
+       $skills=DB::table('skills')
+        ->join('students_skills','skills.id','=','students_skills.skill_id')
+        ->where('students_skills.user_id',$id_student)
+        ->get();
+
+        $skills_not_asigned=DB::table('skills')
+        ->whereNotExists(function ($query) use ($id_student){
+            $query->select(DB::raw(1))
+            ->from('students_skills')
+            ->whereRaw('skills.id = students_skills.skill_id')
+            ->where('students_skills.user_id',$id_student);
+        })
+        ->get();
+
+       
+        return view('egresado.addskill', compact('users','skills','skills_not_asigned','id_student'));
+    }
+
+    public function store_addskills(Request $request){
+        
+       if($skills_ids=$request->skills==null){
+         Alert::error('No has agregado habilidades','Mal Hecho!!!')->autoclose(4000);
+         return back(); 
+       }else{
+        $skills_ids=$request->skills;
+        foreach($skills_ids as $id){
+            $students_skills=new students_skills();
+            $students_skills->user_id=auth()->user()->university_id;
+            $students_skills->skill_id=$id;
+            $students_skills->save();
+        }
+        Alert::success('Tus habilidades han sido agregadas correctamente','Bien Hecho!!!')->autoclose(4000);
+        return back(); 
+       }
+   
+    }
+  
+     public function editskills($id){
+         //Mostrar un perfil de usuario con el id correspondiente
+        $skill=DB::table('students_skills as ss')
+          ->join('skills as s','s.id','ss.skill_id')
+          ->join('siita_db.users as u','u.university_id','ss.user_id')
+          ->select('ss.*','s.name')
+          ->where('ss.id',$id)
+          ->first();
+        
+      
+        //Mostrar la carrera del alumno correspondiente
+        $users=DB::table('siita_db.students')
+        ->join('siita_db.users','siita_db.students.user_id','=','siita_db.users.id')
+        ->join('siita_db.careers','siita_db.careers.id','=','siita_db.students.career_id')
+        ->select('siita_db.students.*', 'siita_db.users.*','siita_db.careers.*')
+        ->where('siita_db.students.user_id','=',auth()->user()->id)
+        ->get();
+      
+         return view('egresado.editskill', compact('users','skill'));
+    }
+  
+  public function update_skill($id){
+        //Mostrar un perfil de usuario con el id correspondiente
+        
+        if( request('score')>100 || request('score')<0 ){
+          Alert::error('La puntuación de esta habilidad debe ser entre 0 y 100','Mal Hecho!!!')->autoclose(4000);
+          return back();
+        }else{
+          $skills=project::find($id);
+          $skills=DB::table('students_skills as ss')
+          ->select('ss.*')
+          ->where('ss.id',$id)
+          ->update(['score' => request('score')]);
+        
+          Alert::success('La puntuación de esta habilidad ha sido actualizada correctamente','Bien Hecho!!!')->autoclose(4000);
+          return back();
+        }
+        
+    }
+  
+  public function destroy_skill($id){
+        $id=request('idskill');
+        $skill=DB::table('students_skills')
+        ->where('id',$id)
+        ->delete();
+      
+        Alert::success('Tu habilidad ha sido eliminada','Bien Hecho!!!')->autoclose(4000);
+        return back();
+        
     }
 
    

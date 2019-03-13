@@ -183,6 +183,34 @@
 									@endif
 								</div>
 							</div>
+              
+              <div class="col-form-label"><strong> Favor de seleccionar las habilidades requeridas para la vacante.</strong></div><br>
+               <div class="form-group row">
+								<label class="col-sm-2 col-form-label" for="descripcion">Habilidades :</label>
+								<div class="col-sm-10">
+								  <div class="row">
+                    @foreach($skills as $skill)
+                    <div class="col-sm-5 checkbox-fade fade-in-primary">
+                        <label>
+                            <input type="checkbox" value="{{ $skill->id }}" name="skills_required[]"
+                            @foreach($jobs_skills as $job_skill)
+                                @if($skill->id == $job_skill->skill_id)
+                                  checked="true"
+                                @endif
+                            @endforeach    
+                            >
+                            <span class="cr">
+                                <i class="cr-icon icofont icofont-ui-check txt-inverse"></i>
+                            </span>
+                        <span> {{$skill->name}}</span>
+                        </label>
+                    </div>
+                    @endforeach
+                  </div>
+								</div>
+							</div>
+              
+              
 							<br>
 							<center>
 								<a style="color:white" onclick="confirmationOnReturn('{{ url()->previous() }}')" class="btn btn-primary"><i class="icofont icofont-arrow-left"></i>Regresar</a>

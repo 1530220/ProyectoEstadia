@@ -177,6 +177,16 @@
 													<h6 class="m-b-30">{{ $job->street }}</h6>
 												</div>
 											</div>
+                      <div class="row">
+												<div class="col-sm-4">
+													<h6 class="f-w-400 m-b-30"><i class="icofont icofont-cube"></i>Habilidades Requeridas :</h6>
+												</div>
+												<div class="col-sm-8">
+                          @foreach($jobs_skills as $skill)
+													  <h6 class="m-b-30"><strong> * {{ $skill->name }} </strong></h6>
+                          @endforeach
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>

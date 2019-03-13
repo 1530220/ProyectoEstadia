@@ -58,7 +58,7 @@ class SkillsController extends Controller
             'name.max' => ' * Este campo debe contener sólo 128 caracteres.',
           ]);
   
-          //Se crea una nueva carrera
+          //Se crea una nueva habilidad
           $skills = new Skills;
   
           //Se obtienen los valores de la vista

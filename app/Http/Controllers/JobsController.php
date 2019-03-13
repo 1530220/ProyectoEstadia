@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use Alert;
 use App\job;
+use App\jobs_skills;
 use App\Country;
 use App\State;
 use App\City;
 use App\Http\Requests;
 use App\company;
 use App\Sectors;
+use App\Skills;
 use App\contact;
 use Illuminate\Http\Request;
 use App\Helpers\DeleteHelper;
@@ -46,40 +48,31 @@ class JobsController extends Controller
          $companies = DB::table('companies')->where("deleted","=",0)->get();
           return view('jobs.select_company')->with("companies",$companies); 
        }
-        /*$num_companies = DB::table('companies')->where("deleted","=",0)->count();
-        $num_sectors = DB::table('sectors')->where("deleted","=",0)->count();
-        if($num_companies == 0){
-            Alert::error('No existen empresas para poder crear una vacante', 'Error');
-            return redirect()->route('companies.create');  
-        }else if($num_sectors == 0){
-            Alert::error('No existen sectores para poder crear una vacante', 'Error');
-            return redirect()->route('sectors.create');  
-        }else{
-          $companies = DB::table('companies')->where("deleted","=",0)->get();
-          $sectors = DB::table('sectors')->where("deleted","=",0)->get();
-          $countries = Country::pluck('name','id'); 
-          return view('jobs.create')->with("countries",$countries)
-                                    ->with("companies",$companies)
-                                    ->with("sectors",$sectors); 
-        }*/
+       
     }
 
     public function create($id){
         $num_contacts = DB::table('contacts')->where("deleted","=",0)->where("company_id","=",$id)->count();
         $num_sectors = DB::table('sectors')->where("deleted","=",0)->count();
+        $num_skills = DB::table('skills')->where('deleted',"=",0)->count();
         if($num_contacts == 0){
             Alert::error('No existen contactos para crear una vacante de la empresa seleccionada', 'Error');
-            return redirect()->route('jobs.list');  
+            return redirect()->route('contacts.create');  
         }else if($num_sectors == 0){
             Alert::error('No existen sectores para poder crear una vacante', 'Error');
             return redirect()->route('sectors.create');  
+        }else if($num_skills == 0){
+            Alert::error('No existen habilidades para poder crear una vacante', 'Error');
+            return redirect()->route('skills.create');  
         }else{
           $contacts = DB::table('contacts')->where("deleted","=",0)->where("company_id","=",$id)->get();
           $sectors = DB::table('sectors')->where("deleted","=",0)->get();
           $countries = Country::pluck('name','id'); 
+          $skills = Skills::where('deleted','=',0)->get();
           return view('jobs.create')->with("countries",$countries)
                                     ->with("contacts",$contacts)
-                                    ->with("sectors",$sectors); 
+                                    ->with("sectors",$sectors)
+                                    ->with("skills",$skills); 
         }
     }
     /**
@@ -118,7 +111,12 @@ class JobsController extends Controller
             Alert::error('Se debe seleccionar una ciudad', 'Error');
             return redirect()->route('jobs.create');          
         }
-      
+        
+        if($request->skills_required==NULL){
+            Alert::error('Se debe seleccionar almenos una habilidad para asignar', 'Error');
+            return redirect()->route('jobs.create');  
+        }
+        
         $job = new job;
         $job->id = Input::get("id");
         $job->name = Input::get("name");
@@ -135,6 +133,15 @@ class JobsController extends Controller
         $job->id_contact = Input::get("contact");
         $contacto = contact::find(Input::get("contact"));
         $job->id_company = $contacto->company_id;
+        
+        $skills_ids = $request->skills_required;
+
+        foreach ($skills_ids as $skill) {
+          $jobs_skills = new jobs_skills();
+          $jobs_skills->job_id = Input::get("id");
+          $jobs_skills->skill_id = $skill;
+          $jobs_skills->save();
+        }
       
         if($job->save()){
             Alert::success('Exitosamente', 'Vacante Registrada');
@@ -161,6 +168,9 @@ class JobsController extends Controller
         $sector = Sectors::find($job->id_sector);
         $company = company::find($job->id_company);
         $contact = contact::find($job->id_contact);
+        $jobs_skills = jobs_skills::where("job_id","=",$id)
+                          ->join("skills","jobs_skills.skill_id","=","skills.id")
+                          ->select("skills.name")->get();
         if($pais->name == "Seleccionar país"){
           $name_pais = "No se selecciono un país";
         }else{
@@ -176,7 +186,7 @@ class JobsController extends Controller
         }else{
           $name_ciudad = $ciudad->name;
         }
-        return view('jobs.show', compact('job','name_pais','name_estado','name_ciudad','sector','company','contact'));
+        return view('jobs.show', compact('job','name_pais','name_estado','name_ciudad','sector','company','contact','jobs_skills'));
     }
 
     /**
@@ -189,23 +199,31 @@ class JobsController extends Controller
     {
         $num_contacts = DB::table('contacts')->where("deleted","=",0)->where("company_id","=",$job->id_company)->count();
         $num_sectors = DB::table('sectors')->where("deleted","=",0)->count();
+        $num_skills = DB::table('skills')->where('deleted',"=",0)->count();
         if($num_contacts == 0){
             Alert::error('No existen contactos para la vacante seleccionada', 'Error');
             return redirect()->route('jobs.list');  
         }else if($num_sectors == 0){
-            Alert::error('No existen sectores para poder crear una vacante', 'Error');
+            Alert::error('No existen sectores para poder modificar la vacante', 'Error');
             return redirect()->route('sectors.create');  
+        }else if($num_skills == 0){
+            Alert::error('No existen habilidades para poder modificar la vacante', 'Error');
+            return redirect()->route('skills.create');  
         }else{
           $contacts = DB::table('contacts')->where("deleted","=",0)->where("company_id","=",$job->id_company)->get();
           $sectors = DB::table('sectors')->where("deleted","=",0)->get();
           $countries = Country::pluck('name','id'); 
           $states = State::all()->where('country_id','=',$job->country)->pluck('name','id');
           $cities = City::all()->where('state_id','=',$job->state)->pluck('name','id');
+          $jobs_skills = jobs_skills::where("job_id","=",$job->id)->get();
+          $skills = Skills::where('deleted','=',0)->get();
           return view('jobs.edit')->with("countries",$countries)
                                     ->with("contacts",$contacts)
                                     ->with("sectors",$sectors)
                                     ->with("states",$states)
                                     ->with("cities",$cities)
+                                    ->with("skills",$skills)
+                                    ->with("jobs_skills",$jobs_skills)
                                     ->with("job",$job); 
         }
     }
@@ -217,7 +235,7 @@ class JobsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(job $job)
+    public function update(job $job,Request $request)
     {
         $data = request()->validate([
             'job_id' => 'required|min:1|numeric',
@@ -238,7 +256,11 @@ class JobsController extends Controller
             'calle.required' => ' * Este campo es obligatorio.',
         ]);
 
-    
+        if($request->skills_required==NULL){
+            Alert::error('Se debe seleccionar almenos una habilidad para asignar', 'Error');
+            return redirect()->route('jobs.create');  
+        }
+      
         $job->id = Input::get("job_id");
         $job->name = Input::get("name");
         $job->description = Input::get("descripcion");
@@ -253,10 +275,20 @@ class JobsController extends Controller
         $job->id_sector = Input::get("sector");
         $job->id_contact = Input::get("contact");
     
+        DB::delete("DELETE FROM jobs_skills WHERE job_id=?",[$job->id]);
+      
+        $skills_ids = $request->skills_required;
 
+        foreach ($skills_ids as $skill) {
+          $jobs_skills = new jobs_skills();
+          $jobs_skills->job_id = Input::get("job_id");
+          $jobs_skills->skill_id = $skill;
+          $jobs_skills->save();
+        }
+      
         if($job->update()){
             Alert::success('Exitosamente', 'Vacante Modificada');
-            insertToLog(Auth::user()->id, 'updated', Input::get('id'), "vacante");
+            insertToLog(Auth::user()->id, 'updated', Input::get('job_id'), "vacante");
             return redirect()->route('jobs.list');
         }else{
             Alert::error('Vacante no modificada', 'Error');

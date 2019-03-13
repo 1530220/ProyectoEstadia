@@ -102,6 +102,7 @@ class EmpresasController extends Controller
         $job->street=request('street');
         $job->id_sector=$id_sector->id;
         $job->id_company=request('id_company');
+        $job->id_contact=request('id_contact');
         $job->deleted=request('deleted');
         $job->save();
         Alert::success('La vacante ha sido creada correctamente','Bien Hecho!!!')->autoclose(4000);
@@ -422,6 +423,10 @@ class EmpresasController extends Controller
         $sectors=DB::table('sectors')
         ->select('sectors.*')
         ->get();
+      $contacts=DB::table('contacts')
+        ->select('contacts.*')
+        ->where('company_id',$id)
+        ->get();
         $companies=DB::table('companies')
         ->join('siita_db.users as u','u.id','companies.id')
         ->select('companies.*','u.*')
@@ -436,7 +441,7 @@ class EmpresasController extends Controller
         ->latest()
         ->get();
         
-        return view('empresa.addjob', compact('sectors','companies','jobs'))->with("countries",$countries);
+        return view('empresa.addjob', compact('sectors','companies','jobs','contacts'))->with("countries",$countries);
     }
 
     //Pagina para que la empresa vea sus conexiones

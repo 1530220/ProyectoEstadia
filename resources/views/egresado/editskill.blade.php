@@ -60,7 +60,7 @@
               <!-- Nav Tabs -->
               <div class="col-md-12">
                 <ul class="nav nav-tabs">
-                  <li class="active"><a data-toggle="tab" href="#profile"><i class="fas fa-plus"></i> Agregar Competencias</a></li>
+                  <li class="active"><a data-toggle="tab" href="#profile"><i class="fas fa-plus"></i> Editar Proyectos</a></li>
                 </ul>
               </div>
               
@@ -75,29 +75,46 @@
                         
                         <!-- Professional Details -->
                         <div class="sidebar">
-                          <h5 class="main-title">Competencias</h5>
+                          <h5 class="main-title">Proyectos</h5>
                           
                           <div class="listing listing-1">
                             <div class="listing-section">
-                              <div class="listing-ver-3">
-                                  @foreach ($competences as $competence)
-                                  <h3><input type="checkbox" name="competences[]" value="{{$competence->id}}" disabled checked > {{$competence->name}}</h3>
-                                  @endforeach 
+                              
                                   
-                                 <form method="POST" action="/agregar_competencias/{{auth()->user()->id}}">
-                                 {{ csrf_field() }} 
-                                 @foreach ($competences_not_asigned as $competence_not_asigned)
-                                 <h3><input type="checkbox" name="competences[]" value="{{$competence_not_asigned->id}}"> {{$competence_not_asigned->name}}</h3>
-                                 @endforeach  
-                              </div>
-                              
-                            
-                              
+                                 
+                                 <form method="POST" action="/editar_habilidades/{{$skill->id}}">
+                                 {{method_field('PATCH')}} 
+                                 {!! csrf_field() !!}
                               <div class="form-row">
                               <div class="form-group col-md-12">
-                              <center><button type="submit" class="btn btn-primary">Agregar Competencias</button></center>
+                              <center><h6>* Habilidad: {{$skill->name}}</h6></center>
+                              </div>
+                               <div class="form-group col-md-12">
+                                <center><input name="score" type="number" style="color:black;align:center;" value="{{$skill->score}}" required></center>
                               </div>
                               </div>
+                                   
+                               <div class="form-row">
+                              <div class="form-group col-md-12">
+                             <label>* Puntuación actual de esta habilidad: {{$skill->score}} / 100</label>
+                              </div>
+                              </div>
+                                   
+                               <div class="form-row">
+                              <div class="form-group col-md-12">
+                             <div class="progress">
+                                  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {{$skill->score}}%;"> </div>
+                                </div>
+                              </div>
+                              </div>
+                              
+                                   
+                              <div class="form-row">
+                              <div class="form-group col-md-12">
+                              <center><button type="submit" class="btn btn-primary">Actualizar Puntuación</button></center>
+                              </div>
+                              </div>
+                                   
                               <br>
                               <div class="form-row">
                               <div class="form-group col-md-1">
@@ -105,7 +122,7 @@
                               </div>
                               </div>
                             </form>
-                
+                            
                             </div>
                           </div>
                           

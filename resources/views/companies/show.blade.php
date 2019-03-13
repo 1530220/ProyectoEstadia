@@ -140,6 +140,14 @@
 														<h6 class="m-b-30">{{ $company->name }} </h6>
 													</div>
 												</div>
+                        <div class="row">
+													<div class="col-sm-4">
+														<h6 class="f-w-400 m-b-30"><i class="fa fa-at"></i>Email :</h6>
+													</div>
+													<div class="col-sm-8">
+														<h6 class="m-b-30">{{ $company->email }}</h6>
+													</div>
+												</div>
 												<div class="row">
 													<div class="col-sm-4">
 														<h6 class="f-w-400 m-b-30"><i class="icofont icofont-phone"></i>Telefono :</h6>

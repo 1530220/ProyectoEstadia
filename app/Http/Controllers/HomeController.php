@@ -64,6 +64,8 @@ class HomeController extends Controller
               ->where('siita_db.students.user_id',Auth::user()->id)
               ->first();
           if( $students->deleted==0){
+            $mensaje=Auth::user()->first_name." ".Auth::user()->last_name." ".Auth::user()->second_last_name;
+            Alert::message( $mensaje,'Bienvenido!!!')->autoclose(4500);
            $jobs=DB::table('jobs')
            ->join('companies as c','c.id','=','jobs.id_company')
           ->join('sectors as s','s.id','=','jobs.id_sector')
@@ -82,8 +84,10 @@ class HomeController extends Controller
             $companies=DB::table('companies')
               ->where('companies.id',Auth::user()->id)
               ->first();
-         if( $companies->deleted==0){
           
+         if( $companies->deleted==0){
+           $mensaje=Auth::user()->last_name;
+            Alert::message( $mensaje,'Bienvenido!!!')->autoclose(4500);
             $job_requests=DB::table('status_job as status')
           ->join('jobs as j','j.id','=','status.id_job')
           ->join('companies as c','c.id','=','j.id_company')

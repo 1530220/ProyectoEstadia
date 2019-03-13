@@ -96,6 +96,10 @@ Route::group(['middleware'=>['auth']], function () {
   
     Route::post('/operations/ajax/companies/verific_email_edit', 'CompaniesController@verific_email_edit')->name('companies.verific_email_edit');
   
+    Route::post('/operations/ajax/contacts/verific_contact_email_edit', 'ContactsController@verific_contact_email_edit')->name('contacts.verific_contact_email_edit');
+    Route::post('/operations/ajax/contacts/verific_contact_email', 'ContactsController@verific_contact_email')->name('contacts.verific_contact_email');
+  
+   Route::post('/operations/ajax/connections/verific_companies', 'ConnectionsController@verific_companies')->name('connections.verific_companies');
    //Route::post('/operations/ajax/login/verificar_type', 'LoginController@verificar_type')->name('login.verificar_type');
     /**************  Termina operaciones AJAX  ***************/
 
@@ -277,6 +281,15 @@ Route::group(['middleware'=>['auth']], function () {
         Route::put('/contacts/{contact}', 'ContactsController@update')->name('contacts.update');
         Route::delete('/contacts/{contact}', 'ContactsController@destroy')->name('contacts.destroy');
         Route::post('/contacts/restore', 'ContactsController@restore')->name('contacts.restore');
+      
+        Route::get('/connections', 'ConnectionsController@index')->name('connections.list');
+        Route::get('/connections/new', 'ConnectionsController@create')->name('connections.create');
+        Route::post('/connections', 'ConnectionsController@store');
+        Route::get('/connections/{id}', 'ConnectionsController@show')->where('id', '[0-9]+')->name('connections.show');
+        Route::get('/connections/{connection}/edit', 'ConnectionsController@edit')->where('id', '[0-9]+')->name('connections.edit');
+        Route::put('/connections/{connection}', 'ConnectionsController@update')->name('connections.update');
+        Route::delete('/connections/{connection}', 'ConnectionsController@destroy')->name('connections.destroy');
+        Route::post('/connections/restore', 'ConnectionsController@restore')->name('connections.restore');
         /***************************************************
          *  Rutas para importar CSV al sistema *
          ***************************************************/
@@ -687,7 +700,15 @@ Route::group(['middleware'=>['auth']], function () {
 
 Route::group(['middleware'=>['access:3']], function(){
   //RUTAS DE EGRESADOS
-//Route::get('/inicio_egresado','EgresadosController@inicio_egresado');
+Route::get('/agregar_habilidades/{users}','EgresadosController@addskills');
+ 
+Route::get('/editar_habilidades/{users}','EgresadosController@editskills');
+  
+Route::PATCH('/editar_habilidades/{users}','EgresadosController@update_skill');
+  
+Route::DELETE('/perfil_egresado/{users}','EgresadosController@destroy_skill');
+  
+Route::POST('/agregar_habilidades/{users}','EgresadosController@store_addskills');
 
 Route::get('/ofertas_trabajo','EgresadosController@ofertas_trabajo');
 
@@ -705,7 +726,7 @@ Route::get('/editar_proyectos/{users}','EgresadosController@editproject');
   
 Route::PATCH('/editar_proyectos/{users}','EgresadosController@update_project');
 
-//Route::PATCH('/perfil_egresado/{users}','EgresadosController@update_perfil_egresado');
+Route::PATCH('/perfil_egresado/{users}','EgresadosController@delete_project');
 
 Route::get('/editar_egresado/{users}','EgresadosController@editprofile');
 

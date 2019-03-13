@@ -67,7 +67,7 @@
 							</div>
               
 							<div class="form-group row">
-                <label class="col-sm-2 col-form-label" for="country">Contacto:</label>
+                <label class="col-sm-2 col-form-label" for="contact">Contacto:</label>
                  <div class="col-sm-4">
                    <select name="contact" class="form-control">
                    @foreach($contacts as $contact)
@@ -97,7 +97,7 @@
 							</div>
               
               <div class="form-group row">
-                <label class="col-sm-2 col-form-label" for="country">Salario Mensual:</label>
+                <label class="col-sm-2 col-form-label" for="salary">Salario Mensual:</label>
                  <div class="col-sm-4">
                    <select name="salary" class="form-control">
                      <option value="No mostrado por la empresa">No mostrado por la empresa</option>
@@ -174,9 +174,28 @@
 										<div class="col-form-label" style="color:red;">{{$errors->first('calle')}}</div>
 									@endif
 								</div>
-							</div>
+							</div><br>
 
-							
+							<div class="col-form-label"><strong> Favor de seleccionar las habilidades requeridas para la vacante.</strong></div><br>
+               <div class="form-group row">
+								<label class="col-sm-2 col-form-label" for="descripcion">Habilidades :</label>
+								<div class="col-sm-10">
+								  <div class="row">
+                    @foreach($skills as $skill)
+                    <div class="col-sm-5 checkbox-fade fade-in-primary">
+                        <label>
+                            <input type="checkbox" value="{{ $skill->id }}" name="skills_required[]">
+                            <span class="cr">
+                                <i class="cr-icon icofont icofont-ui-check txt-inverse"></i>
+                            </span>
+                        <span> {{$skill->name}}</span>
+                        </label>
+                    </div>
+                    @endforeach
+                  </div>
+								</div>
+							</div>
+              
               
 							<br>
 							<center>

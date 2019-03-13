@@ -15,39 +15,7 @@
                 </div>
             </div></a>
         </div>
-        <!-- card1 end -->
-        <!-- card1 start -->
-        <!--<div class="col-md-6 col-xl-4">
-            <a href="{{ route('tutors.list') }}" style="color: #353c64;"><div class="card widget-card-1">
-                <div class="card-block-small">
-                    <i class="fa fa-user bg-c-green card1-icon"></i>
-                    <span class="text-c-green f-w-600">Tutores</span>
-                    <h4> $tutores }}</h4>
-                </div>
-            </div></a>
-        </div>-->
-        <!-- card1 end -->
-        <!-- card1 start -->
-        <!--<div class="col-md-6 col-xl-4">
-            <a href="" style="color: #353c64;"><div class="card widget-card-1">
-                <div class="card-block-small">
-                    <i class="fa fa-cubes bg-c-yellow card1-icon"></i>
-                    <span class="text-c-yellow f-w-600">Carreras</span>
-                    <h4></h4>
-                </div>
-            </div></a>
-        </div>-->
-        <!-- card1 end -->
-        <!-- card1 start -->
-        <!--<div class="col-md-6 col-xl-4">
-            <a href= style="color: #353c64;"><div class="card widget-card-1">
-                <div class="card-block-small">
-                    <i class="fa fa-users card1-icon" style="background-color:#ab7967"></i>
-                    <span class="f-w-600" style="color:#ab7967">Usuarios</span>
-                    <h4>{}</h4>
-                </div>
-            </div></a>
-        </div>-->
+        
         
         <div class="col-md-6 col-xl-4">
             <a href="{{ route('competences.list') }}" style="color: #353c64;"><div class="card widget-card-1">
@@ -89,7 +57,7 @@
             </div></a>
         </div>
         <div class="col-md-6 col-xl-4">
-            <a href="{{ route('users.list') }}" style="color: #353c64;"><div class="card widget-card-1">
+            <a href="{{ route('contacts.list') }}" style="color: #353c64;"><div class="card widget-card-1">
                 <div class="card-block-small">
                     <i class="fa fa-address-book card1-icon" style="background-color:seagreen"></i>
                     <span class="f-w-600" style="color:seagreen">Contactos</span>

@@ -194,35 +194,31 @@
                 </div>
         
                 <div class="form-row">
-                <<div class="form-group row">
-                                <label class="col-sm-2 col-form-label" for="country">País:</label>
-                                <div class="col-sm-4">
-                                    {!! Form::select('country',$countries,null,['id'=>'country','class'=>'form-control']) !!}
+                <div class="form-group col-md-6">
+                {!! Form::select('country',$countries,null,['id'=>'country','class'=>'form-control','style'=>'color:black']) !!}
                                     @if ($errors->has('country'))
                                         <div class="col-form-label" style="color:red;">{{$errors->first('country')}}</div>
                                     @endif
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label class="col-sm-2 col-form-label" for="state">Estado:</label>
-                                <div class="col-sm-4">
-                                    {!! Form::select('state',['placeholder'=>'Favor de seleccionar un país'],null,['id'=>'state','class'=>'form-control']) !!}
+                </div>
+                <div class="form-group col-md-6">
+                {!! Form::select('state',['placeholder'=>'Favor de seleccionar un país'],null,['id'=>'state','class'=>'form-control','style'=>'color:black']) !!}
                                     @if ($errors->has('state'))
                                         <div class="col-form-label" style="color:red;">{{$errors->first('state')}}</div>
                                     @endif
-                                </div>
-
-                                <label class="col-sm-2 col-form-label" for="city">Ciudad:</label>
-                                <div class="col-sm-4">
-                                    {!! Form::select('city',['placeholder'=>'Favor de seleccionar un estado'],null,['id'=>'city','class'=>'form-control']) !!}
+                </div> 
+                 
+                </div>
+                
+                  
+                <div class="form-row">
+                <div class="form-group col-md-12">
+                {!! Form::select('city',['placeholder'=>'Favor de seleccionar un estado'],null,['id'=>'city','class'=>'form-control','style'=>'color:black']) !!}
                                     @if ($errors->has('city'))
                                         <div class="col-form-label" style="color:red;">{{$errors->first('city')}}</div>
                                     @endif
-                                </div>
-                
                 </div>
-                  
+                 
+                </div>
 							
                  
         
@@ -257,6 +253,15 @@
                 <div class="form-group col-md-6">
                 <input class="form-control" type="hidden" placeholder="Borrado" style="color:black" name="deleted" value="0">
                 </div>
+        <div class="form-row">
+                <div class="form-group col-md-12">
+                <select class="form-control" type="text" name="id_contact" title="Contactos de la empresa" style="color:black" required>
+                  @foreach ($contacts as $contact)
+                  <option value="{{$contact->id}}">{{$contact->first_name}} {{$contact->last_name}} {{$contact->second_last_name}}</option>
+                  @endforeach
+                  </select>
+                </div>
+        </div>
         
         <div class="form-row">
         <div class="form-group col-md-12">

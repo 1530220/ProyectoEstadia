@@ -148,7 +148,11 @@ class CompaniesController extends Controller
      */
     public function show($id)
     {
-        $company = Company::find($id);
+        $company = DB::table('companies')
+        ->join('siita_db.users as users','companies.id','=','users.id')
+        ->select('companies.*',
+                'users.email')
+                ->where('companies.id','=',$id)->first();
         $pais = Country::find($company->country);
         $estado = State::find($company->state);
         $ciudad = City::find($company->city);

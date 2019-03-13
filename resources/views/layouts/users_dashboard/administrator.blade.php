@@ -44,90 +44,7 @@
             </li>
         </ul>
     </li>
-    <!--<li class="pcoded-hasmenu {{ explode('.', $view_name)[0]=='tutors' ? 'active pcoded-trigger' : '' }}">
-        <a href="javascript:void(0)">
-            <span class="pcoded-micon"><i class="fas fa-user"></i><b>T</b></span>
-            <span class="pcoded-mtext" data-i18n="nav.task.main">Tutores</span>
-            <span class="pcoded-mcaret"></span>
-        </a>
-        <ul class="pcoded-submenu">
-            <li class="{{ Route::currentRouteNamed('tutors.list') ? 'active' : '' }}">
-                <a href="{{ route('tutors.list') }}">
-                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                    <span class="pcoded-mtext" data-i18n="nav.task.task-list">Listado de Tutores</span>
-                    <span class="pcoded-mcaret"></span>
-                </a>
-            </li>
-            <li class="{{ Route::currentRouteNamed('tutors.create') ? 'active' : '' }}">
-                <a href="{{ route('tutors.create') }}">
-                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                    <span class="pcoded-mtext" data-i18n="nav.task.task-board">Puntuaciones asignadas</span>
-                    <span class="pcoded-mcaret"></span>
-                </a>
-            </li>
-        </ul>
-    </li>-->
     
-    <!--<li class="pcoded-hasmenu {{ explode('.', $view_name)[0]=='users' ? 'active pcoded-trigger' : '' }}">
-        <a href="javascript:void(0)">
-            <span class="pcoded-micon"><i class="fa fa-users"></i><b>U</b></span>
-            <span class="pcoded-mtext" data-i18n="nav.gallery.main">Usuarios</span>
-            <span class="pcoded-mcaret"></span>
-        </a>
-        <ul class="pcoded-submenu">
-            <li class="{{ Route::currentRouteNamed('users.list') ? 'active' : '' }}">
-                <a href="{{ route('users.list') }}">
-                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                    <span class="pcoded-mtext" data-i18n="nav.gallery.gallery-grid">Listado de Usuarios</span>
-                    <span class="pcoded-mcaret"></span>
-                </a>
-            </li>
-            <li class="{{ Route::currentRouteNamed('users.create') ? 'active' : '' }}">
-                <a href="{{ route('users.create') }}">
-                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                    <span class="pcoded-mtext" data-i18n="nav.gallery.masonry-gallery">Agregar Usuarios</span>
-                    <span class="pcoded-mcaret"></span>
-                </a>
-            </li>
-            <li class="{{ explode('.', $view_name)[0]=='imports.list' ? 'active pcoded-trigger' : '' }}">
-                <a href="{{ route('imports.list',['type'=>'users']) }}">
-                    <span class="pcoded-micon" style="background-color:#13a57c;"><i class="fas fa-file-import"></i><b>T</b></span>
-                    <span class="pcoded-mtext" data-i18n="nav.task.main">Importar Usuarios</span>
-                    <span class="pcoded-mcaret"></span>
-                </a>
-            </li>
-        </ul>
-    </li>-->
-    <!--<li class="pcoded-hasmenu {{ explode('.', $view_name)[0]=='assignations' ? 'active pcoded-trigger' : '' }}">
-        <a href="javascript:void(0)">
-            <span class="pcoded-micon" style="background-color:coral;"><i class="fas fa-link"></i><b>T</b></span>
-            <span class="pcoded-mtext" data-i18n="nav.task.main">Asignación</span>
-            <span class="pcoded-mcaret"></span>
-        </a>
-        <ul class="pcoded-submenu">
-            <li class="{{ Route::currentRouteNamed('assignations.list') ? 'active' : '' }}">
-                <a href="{{ route('assignations.list') }}">
-                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                    <span class="pcoded-mtext" data-i18n="nav.social.messages">Lista de Tutorados</span>
-                    <span class="pcoded-mcaret"></span>
-                </a>
-            </li>
-            <li class="{{ Route::currentRouteNamed('assignations.create') ? 'active' : '' }}">
-                <a href="{{ route('assignations.create') }}">
-                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                    <span class="pcoded-mtext" data-i18n="nav.social.messages">Asignación de Tutor</span>
-                    <span class="pcoded-mcaret"></span>
-                </a>
-            </li>
-            <li class="{{ explode('.', $view_name)[0]=='imports.list' ? 'active pcoded-trigger' : '' }}">
-                <a href="{{ route('imports.list',['type'=>'asignation']) }}">
-                    <span class="pcoded-micon" style="background-color:#13a57c;"><i class="fas fa-file-import"></i><b>T</b></span>
-                    <span class="pcoded-mtext" data-i18n="nav.task.main">Importar Asignación</span>
-                    <span class="pcoded-mcaret"></span>
-                </a>
-            </li>
-        </ul>
-    </li>-->
     <li class="pcoded-hasmenu {{ explode('.', $view_name)[0]=='companies' ? 'active pcoded-trigger' : '' }}">
         <a href="javascript:void(0)">
             <span class="pcoded-micon"  style="background-color:lightseagreen;"><i class="fa fa-building"></i><b>T</b></span>
@@ -300,6 +217,30 @@
                 
             </ul>
         </li>
+  <li class="pcoded-hasmenu {{ explode('.', $view_name)[0]=='connections' ? 'active pcoded-trigger' : '' }}">
+            <a href="javascript:void(0)">
+                <span class="pcoded-micon" style="background-color:cornflowerblue;"><i class="fab fa-connectdevelop"></i><b>T</b></span>
+                <span class="pcoded-mtext" data-i18n="nav.task.main">Conexiones</span>
+                <span class="pcoded-mcaret"></span>
+            </a>
+            <ul class="pcoded-submenu">
+                <li class="{{ Route::currentRouteNamed('connections.list') ? 'active' : '' }}">
+                    <a href="{{ route('connections.list') }}">
+                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                        <span class="pcoded-mtext" data-i18n="nav.social.messages">Listado de Conexiones</span>
+                        <span class="pcoded-mcaret"></span>
+                    </a>
+                </li>
+                <li class="{{ Route::currentRouteNamed('connections.create') ? 'active' : '' }}">
+                    <a href="{{ route('connections.create') }}">
+                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                        <span class="pcoded-mtext" data-i18n="nav.social.messages">Crear Conexión</span>
+                        <span class="pcoded-mcaret"></span>
+                    </a>
+                </li>
+                
+            </ul>
+        </li>
     <li class="{{ explode('.', $view_name)[0]=='imports.list' ? 'active pcoded-trigger' : '' }}">
                     <a href="#">
             <span class="pcoded-micon" style="background-color:#13a57c;"><i class="fas fa-file-import"></i><b>T</b></span>
@@ -323,7 +264,6 @@
             <span class="pcoded-mcaret"></span>
         </a>
     </li>
-    
 </ul>
 </div>
 </nav>

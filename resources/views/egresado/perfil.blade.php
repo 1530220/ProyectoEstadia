@@ -2,28 +2,6 @@
 @section('titulo')
     Tu perfil
 @endsection
-@section('menu')
-              <div class="box-shadow-for-ui">
-                <div class="uou-block-2b">
-                  <div class="container"> <a href="/inicio_egresado" class="logo"><img src="/assets/images/logoupv.png" alt=""></a> <a href="#" class="mobile-sidebar-button mobile-sidebar-toggle"><span></span></a>
-                    <nav class="nav">
-                      <ul class="sf-menu">
-                          <li><a href="/inicio_egresado" style="color:white;"><i class="fa  fa-home"></i></a></li>
-                          <li> <a href="/ofertas_trabajo" style="color:white;"><i class="fas fa-building"></i> Empresas</a> </li>
-                          <li> <a href="/lista_egresados" style="color:white;"><i class="fas fa-user-tie"></i> Alumnos</a> </li>
-                          <li> <a href="/perfil_egresado/{{auth()->user()->id}}" style="color:white;"><i class="fas fa-user"></i> Tu perfil</a></li>
-                          <li><a href="/conexiones_egresado/{{auth()->user()->id}}" style="color:white;"><i class="fab fa-connectdevelop"></i> Conexiones</a></li>
-                          <li><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" style="color:white;"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
-                          <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                          {{ csrf_field() }}
-                          </form>
-                      </ul>
-                    </nav>
-                  </div>
-                </div>
-                <!-- end .uou-block-2b --> 
-              </div>
-@endsection
 @section('contenido')
 <div class="compny-profile"> 
         <!-- SUB Banner -->
@@ -38,40 +16,10 @@
             </div>
           </div>
           
-          <!-- Modal POPUP -->
-          <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="container">
-                  <h6><a class="close" href="#." data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a> Send Message</h6>
+          
+          
+          
                   
-                  <!-- Forms -->
-                  <form action="#">
-                    <ul class="row">
-                      <li class="col-xs-6">
-                        <input type="text" placeholder="First Name ">
-                      </li>
-                      <li class="col-xs-6">
-                        <input type="text" placeholder="Last Name">
-                      </li>
-                      <li class="col-xs-6">
-                        <input type="text" placeholder="Country">
-                      </li>
-                      <li class="col-xs-6">
-                        <input type="text" placeholder="Email">
-                      </li>
-                      <li class="col-xs-12">
-                        <textarea placeholder="Your Message"></textarea>
-                      </li>
-                      <li class="col-xs-12">
-                        <button class="btn btn-primary">Send message</button>
-                      </li>
-                    </ul>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
         
         <!-- Profile Company Content -->
@@ -131,55 +79,55 @@
                         <div class="sidebar">
                           <h5 class="main-title">Habilidades</h5>
                           <div class="job-skills"> 
+                            @foreach($skills_student as $ss )
                             
+                            <!-- Modal POPUP -->
+            <div class="modal fade" id="{{$ss->id}}" tabindex="-1" role="dialog">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="container">
+                    <h6><a class="close" href="#." data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a></h6>
+                    
+                    <!-- Forms -->
+                    
+                    <form method="post" action="/perfil_egresado/{{auth()->user()->id}}">
+                      {{method_field('DELETE')}}  
+                      {{ csrf_field() }} 
+                      <ul class="row">
+                        <center><h6>¿Seguro que quieres eliminar esta habilidad ({{$ss->name}})?</h6></center>
+                        <li class="col-xs-4">
+                          <center><a  class="close" href="#." data-dismiss="modal" aria-label="Close"><button class="btn btn-error">Cancelar</button></a></center>
+                        </li>
+                        <li class="col-xs-5">
+                          
+                          <input type="hidden" name="idskill" value="{{$ss->id}}"
+                          
+                          <center><button class="btn btn-primary" type="submit" >Eliminar</button></center>
+                        </li>
+                      </ul>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+                        
                             <!-- Logo Design -->
                             <ul class="row">
                               <li class="col-sm-3">
-                                <h6><i class="fa fa-plus"></i> HTML5 and Css3</h6>
+                                <h6>{{$ss->name}}</h6>
                               </li>
                               <li class="col-sm-9">
+                                
                                 <div class="progress">
-                                  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"> </div>
+                                  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {{$ss->score}}%;"> </div>
                                 </div>
+                                <label>{{$ss->score}} / 100</label> <a href="/editar_habilidades/{{$ss->id}}" ><button class="btn btn-warning" title="Editar"><i class="fas fa-edit"></i></button></a>  <a href="#" ><button class="btn btn-error" title="Eliminar" data-toggle="modal" data-target="#{{$ss->id}}"><i class="fas fa-trash-alt"></i></button></a>
                               </li>
                             </ul>
                             
-                            <!-- Logo Design -->
-                            <ul class="row">
-                              <li class="col-sm-3">
-                                <h6><i class="fa fa-plus"></i> Logo Design</h6>
-                              </li>
-                              <li class="col-sm-9">
-                                <div class="progress">
-                                  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"> </div>
-                                </div>
-                              </li>
-                            </ul>
-                            
-                            <!-- Logo Design -->
-                            <ul class="row">
-                              <li class="col-sm-3">
-                                <h6><i class="fa fa-plus"></i> Web Design</h6>
-                              </li>
-                              <li class="col-sm-9">
-                                <div class="progress">
-                                  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 90%;"> </div>
-                                </div>
-                              </li>
-                            </ul>
-                            
-                            <!-- UI / UX -->
-                            <ul class="row">
-                              <li class="col-sm-3">
-                                <h6><i class="fa fa-plus"></i> UI/UX</h6>
-                              </li>
-                              <li class="col-sm-9">
-                                <div class="progress">
-                                  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 80%;"> </div>
-                                </div>
-                                <p>Preferred languages are Arabic, French & Italian. Proin nibh augue, suscipit asce lerisque sed, lacinia in, mi.</p>
-                              </li>
-                            </ul>
+                            @endforeach
+                            <br>
+                            <center><a href="/agregar_habilidades/{{auth()->user()->id}}"><i class="fas fa-plus"></i> Agregar Habilidades</a></center>
                           </div>
                         </div>
                         
@@ -218,9 +166,41 @@
                                       <button title="Editar" class="btn btn-warning">
                                       <i class="fas fa-edit"></i>
                                       </button></a> 
-                                      <button title="Eliminar" class="btn btn-error">
+                                      <button title="Eliminar" class="btn btn-error" data-toggle="modal" data-target="#{{$project->id}}">
                                       <i class="fas fa-trash-alt"></i>
                                       </button></li>
+                                    
+                                    <!-- Modal POPUP -->
+            <div class="modal fade" id="{{$project->id}}" tabindex="-1" role="dialog">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="container">
+                    <h6><a class="close" href="#." data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a></h6>
+                    
+                    <!-- Forms -->
+                    
+                    <form method="post" action="/perfil_egresado/{{auth()->user()->id}}">
+                      {{method_field('PATCH')}}  
+                      {{ csrf_field() }}  
+                      <ul class="row">
+                        <center><h6>¿Seguro que quieres eliminar este proyecto ({{$project->name}})?</h6></center>
+                        <li class="col-xs-4">
+                          <center><a  class="close" href="#." data-dismiss="modal" aria-label="Close"><button class="btn btn-error">Cancelar</button></a></center>
+                        </li>
+                        <li class="col-xs-5">
+                          <input type="hidden" name="delete" value="1">
+                          
+                          <input type="hidden" name="idproject" value="{{$project->id}}"
+                          
+                          <center><button class="btn btn-primary" type="submit" >Eliminar</button></center>
+                        </li>
+                      </ul>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+
                                   </ul>
                                 </div>
                               </div>
@@ -249,10 +229,36 @@
                                       <button title="Editar" class="btn btn-warning">
                                       <i class="fas fa-edit"></i>
                                       </button></a> 
-                                      <button title="Restaurar" class="btn btn-success">
+                                      <button title="Restaurar" class="btn btn-success" data-toggle="modal" data-target="#{{$project->id}}">
                                       <i class="fas fa-undo-alt"></i>
                                       </button></li>
-                                    </li>
+                                    <!-- Modal POPUP -->
+            <div class="modal fade" id="{{$project->id}}" tabindex="-1" role="dialog">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="container">
+                    <h6><a class="close" href="#." data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a></h6>
+                    
+                    <!-- Forms -->
+                    <form method="post" action="/perfil_egresado/{{auth()->user()->id}}">
+                      {{method_field('PATCH')}}  
+                      {{ csrf_field() }}  
+                      <ul class="row">
+                        <center><h6>¿Seguro que quieres restaurar este proyecto ({{$project->name}})?</h6></center>
+                        <li class="col-xs-4">
+                          <center><a  class="close" href="#." data-dismiss="modal" aria-label="Close"><button class="btn btn-error">Cancelar</button></a></center>
+                        </li>
+                        <li class="col-xs-5">
+                           <input type="hidden" name="delete" value="0">
+                          <input type="hidden" name="idproject" value="{{$project->id}}">
+                          <center><button class="btn btn-primary" type="submit">Restaurar</button></center>
+                        </li>
+                      </ul>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
                                   </ul>
                                 </div>
                               </div>
@@ -1232,34 +1238,4 @@
       </div>
     </div>
     
-@endsection
-@section('pie_pagina')
-        <!-- Footer -->
-      <div class="uou-block-4a secondary dark">
-        <div class="container">
-          <ul class="links">
-            <p>Versión 1.0 - Enero 2019</p>
-          </ul>
-          <p>Desarollo: Equipo del M.S.I. Mario Humberto Rodríguez Chávez - Dirección de Tecnologías de la Información</p>
-        </div>
-      </div>
-      <!-- end .uou-block-4a --> 
-      
-      <div class="uou-block-11a">
-        <h5 class="title">Menu</h5>
-        <a href="#" class="mobile-sidebar-close">&times;</a>
-        <nav class="main-nav">
-          <ul>
-              <li><a href="/inicio_egresado" style="color:white;"><i class="fa  fa-home"></i> Inicio</a></li>
-              <li> <a href="/ofertas_trabajo" style="color:white;"><i class="fas fa-building"></i> Empresas</a> </li>
-              <li> <a href="/lista_egresados" style="color:white;"><i class="fas fa-user-graduate"></i> Egresados</a> </li>
-              <li> <a href="/perfil_egresado/{{auth()->user()->id}}" style="color:white;"><i class="fas fa-user"></i> Tu perfil</a></li>
-              <li><a href="/conexiones_egresado/{{auth()->user()->id}}" style="color:white;"><i class="fab fa-connectdevelop"></i> Conexiones</a></li>
-              <li><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" style="color:white;"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
-              <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-              {{ csrf_field() }}
-              </form>
-          </ul>
-        </nav>
-        <hr>
 @endsection

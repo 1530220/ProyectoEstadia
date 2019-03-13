@@ -2,28 +2,7 @@
 @section('titulo')
     Tu perfil
 @endsection
-@section('menu')
-              <div class="box-shadow-for-ui">
-                <div class="uou-block-2b">
-                  <div class="container"> <a href="/inicio_egresado" class="logo"><img src="/assets/images/logoupv.png" alt=""></a> <a href="#" class="mobile-sidebar-button mobile-sidebar-toggle"><span></span></a>
-                    <nav class="nav">
-                      <ul class="sf-menu">
-                          <li><a href="/inicio_egresado" style="color:white;"><i class="fa  fa-home"></i></a></li>
-                          <li> <a href="/ofertas_trabajo" style="color:white;"><i class="fas fa-building"></i> Empresas</a> </li>
-                          <li> <a href="/lista_egresados" style="color:white;"><i class="fas fa-user-tie"></i> Alumnos</a> </li>
-                          <li> <a href="/perfil_egresado/{{auth()->user()->id}}" style="color:white;"><i class="fas fa-user"></i> Tu perfil</a></li>
-                          <li><a href="/conexiones_egresado/{{auth()->user()->id}}" style="color:white;"><i class="fab fa-connectdevelop"></i> Conexiones</a></li>
-                          <li><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" style="color:white;"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
-                          <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                          {{ csrf_field() }}
-                          </form>
-                      </ul>
-                    </nav>
-                  </div>
-                </div>
-                <!-- end .uou-block-2b --> 
-              </div>
-@endsection
+
 @section('contenido')
 <div class="compny-profile"> 
         <!-- SUB Banner -->
@@ -227,34 +206,4 @@
       </div>
     </div>
     
-@endsection
-@section('pie_pagina')
-        <!-- Footer -->
-      <div class="uou-block-4a secondary dark">
-        <div class="container">
-          <ul class="links">
-            <p>Versión 1.0 - Enero 2019</p>
-          </ul>
-          <p>Desarollo: Equipo del M.S.I. Mario Humberto Rodríguez Chávez - Dirección de Tecnologías de la Información</p>
-        </div>
-      </div>
-      <!-- end .uou-block-4a --> 
-      
-      <div class="uou-block-11a">
-        <h5 class="title">Menu</h5>
-        <a href="#" class="mobile-sidebar-close">&times;</a>
-        <nav class="main-nav">
-          <ul>
-              <li><a href="/inicio_egresado" style="color:white;"><i class="fa  fa-home"></i> Inicio</a></li>
-              <li> <a href="/ofertas_trabajo" style="color:white;"><i class="fas fa-building"></i> Empresas</a> </li>
-              <li> <a href="/lista_egresados" style="color:white;"><i class="fas fa-user-graduate"></i> Egresados</a> </li>
-              <li> <a href="/perfil_egresado/{{auth()->user()->id}}" style="color:white;"><i class="fas fa-user"></i> Tu perfil</a></li>
-              <li><a href="/conexiones_egresado/{{auth()->user()->id}}" style="color:white;"><i class="fab fa-connectdevelop"></i> Conexiones</a></li>
-              <li><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" style="color:white;"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
-              <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-              {{ csrf_field() }}
-              </form>
-          </ul>
-        </nav>
-        <hr>
 @endsection

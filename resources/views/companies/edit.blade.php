@@ -252,7 +252,6 @@
 			var x = $("#email").val();
       var id = {{$company->id}}
   
-  console.log(id);
 			$.ajaxSetup({
 				headers: {
 					'X-CSRF-TOKEN': '{{ csrf_token() }}'

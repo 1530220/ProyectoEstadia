@@ -46,6 +46,7 @@
 <script src="/js_bolsa/owl.carousel.min.js"></script> 
 <script src="/js_bolsa/gmap3.min.js"></script> 
 <script src="/js_bolsa/scripts.js"></script>
+<script src="/assets/js/dropdown.js"></script>
 <script>
     $(function () {
       $('[data-toggle="tooltip"]').tooltip()

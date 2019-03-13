@@ -60,7 +60,7 @@
               <!-- Nav Tabs -->
               <div class="col-md-12">
                 <ul class="nav nav-tabs">
-                  <li class="active"><a data-toggle="tab" href="#profile"><i class="fas fa-plus"></i> Agregar Competencias</a></li>
+                  <li class="active"><a data-toggle="tab" href="#profile"><i class="fas fa-plus"></i> Agregar Habilidades</a></li>
                 </ul>
               </div>
               
@@ -75,19 +75,19 @@
                         
                         <!-- Professional Details -->
                         <div class="sidebar">
-                          <h5 class="main-title">Competencias</h5>
+                          <h5 class="main-title">Habilidades</h5>
                           
                           <div class="listing listing-1">
                             <div class="listing-section">
                               <div class="listing-ver-3">
-                                  @foreach ($competences as $competence)
-                                  <h3><input type="checkbox" name="competences[]" value="{{$competence->id}}" disabled checked > {{$competence->name}}</h3>
+                                  @foreach ($skills as $skill)
+                                  <h3><input type="checkbox" name="skills[]" value="{{$skill->id}}" disabled checked > {{$skill->name}}</h3>
                                   @endforeach 
                                   
-                                 <form method="POST" action="/agregar_competencias/{{auth()->user()->id}}">
+                                 <form method="POST" action="/agregar_habilidades/{{auth()->user()->id}}">
                                  {{ csrf_field() }} 
-                                 @foreach ($competences_not_asigned as $competence_not_asigned)
-                                 <h3><input type="checkbox" name="competences[]" value="{{$competence_not_asigned->id}}"> {{$competence_not_asigned->name}}</h3>
+                                 @foreach ($skills_not_asigned as $skill_not_asigned)
+                                 <h3><input type="checkbox" name="skills[]" value="{{$skill_not_asigned->id}}"> {{$skill_not_asigned->name}}</h3>
                                  @endforeach  
                               </div>
                               
@@ -95,7 +95,7 @@
                               
                               <div class="form-row">
                               <div class="form-group col-md-12">
-                              <center><button type="submit" class="btn btn-primary">Agregar Competencias</button></center>
+                              <center><button type="submit" class="btn btn-primary">Agregar Habilidades</button></center>
                               </div>
                               </div>
                               <br>

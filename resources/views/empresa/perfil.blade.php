@@ -194,7 +194,7 @@
                     </select>
                   </div>
                   <ul class="listing-views">
-                    <button type="button" class="btn btn-primary"><a href="/agregar_vacante/{{$company->id}}" style="color:white;"><i class="fas fa-plus"></i> Añadir Vacante</a></button>
+                    <!--<button type="button" class="btn btn-primary"><a href="/agregar_vacante/{{$company->id}}" style="color:white;" ><i class="fas fa-plus"></i> Añadir Vacante</a></button>-->
                   </ul>
                 </div>
                 <div class="listing listing-1">

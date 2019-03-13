@@ -26,6 +26,8 @@ return array(
     'App\\Http\\Controllers\\CompetencesController' => $baseDir . '/app/Http/Controllers/CompetencesController.php',
     'App\\Http\\Controllers\\ContactsController' => $baseDir . '/app/Http/Controllers/ContactsController.php',
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
+    'App\\Http\\Controllers\\EgresadosController' => $baseDir . '/app/Http/Controllers/EgresadosController.php',
+    'App\\Http\\Controllers\\EmpresasController' => $baseDir . '/app/Http/Controllers/EmpresasController.php',
     'App\\Http\\Controllers\\HomeController' => $baseDir . '/app/Http/Controllers/HomeController.php',
     'App\\Http\\Controllers\\ImportController' => $baseDir . '/app/Http/Controllers/ImportController.php',
     'App\\Http\\Controllers\\JobsController' => $baseDir . '/app/Http/Controllers/JobsController.php',
