@@ -7,6 +7,7 @@ use App\job;
 use App\jobs_skills;
 use App\Country;
 use App\State;
+use App\StatusJob;
 use App\City;
 use App\Http\Requests;
 use App\company;
@@ -304,6 +305,13 @@ class JobsController extends Controller
      */
      public function destroy(job $job)
     {
+        $status_job = StatusJob::where("id_job","=",$job->id)->get();
+       
+        foreach($status_job as $status){
+          $delete_status = StatusJob::find($status->id);
+          $delete_status->delete();
+        }
+        
         DeleteHelper::instance()->onCascadeLogicalDelete('jobs','id',$job->id);
 
         Alert::success('Exitosamente','Vacante Eliminada');
@@ -315,11 +323,19 @@ class JobsController extends Controller
 
     public function restore(Request $request)
     {
-        DeleteHelper::instance()->restoreLogicalDelete('jobs','id',$request->id);
+        $job = job::find($request->id);
+        $company = DB::table("companies")->where("id","=",$job->id_company)->first();
+        if($company->deleted == 1){
+            Alert::error('No se puede restaurar debido a que la empresa se encuentra eliminada', 'Error');
+            return redirect()->route('companies.list');
+        }else{
+           DeleteHelper::instance()->restoreLogicalDelete('jobs','id',$request->id);
 
-        Alert::success('Exitosamente','Vacante Restaurada');
+          Alert::success('Exitosamente','Vacante Restaurada');
 
-        insertToLog(Auth::user()->id, 'recover', $request->id, "vacante");
-        return redirect()->route('jobs.list');  
+          insertToLog(Auth::user()->id, 'recover', $request->id, "vacante");
+          return redirect()->route('jobs.list'); 
+        }
+        
     }
 }

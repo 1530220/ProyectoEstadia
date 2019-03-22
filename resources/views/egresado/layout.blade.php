@@ -9,7 +9,7 @@
 <!-- Fonts Online -->
 <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800,300' rel='stylesheet' type='text/css'>
 <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <link rel="icon" href="../assets/images/upv.ico" type="image/x-icon" sizes="32x32">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -18,6 +18,8 @@
 <link rel="stylesheet" href="/css_bolsa/main-style.css">
 <link rel="stylesheet" href="/css_bolsa/style.css">
 <link rel="stylesheet" href="/sweetalert/sweetalert.css">
+
+
  
   
 
@@ -29,13 +31,16 @@
 <![endif]-->
 </head>
 <body>
+<style type="text/css">
+    textarea { border: none; }
+</style>
 <div id="main-wrapper"> 
 <div class="box-shadow-for-ui">
         <div class="uou-block-2b">
           <div class="container"> <a href="/dashboard"><img src="/assets/images/logoupv.png" alt="" width="200px" height="100px"></a> <a href="#" class="mobile-sidebar-button mobile-sidebar-toggle"><span></span></a>
             <nav class="nav">
               <ul class="sf-menu">
-                <li><a href="/dashboard" style="color:white;"><i class="fa  fa-home"></i> Inicio</a></li>
+                <li><a href="/dashboard" style="color:white;"><i class="fas fa-home"></i> Inicio</a></li>
                 <li> <a href="/ofertas_trabajo" style="color:white;"><i class="fas fa-building"></i> Empresas</a> </li>
                 <li> <a href="/lista_egresados" style="color:white;"><i class="fas fa-user-graduate"></i> Egresados</a> </li>
                 <li> <a href="/perfil_egresado/{{auth()->user()->id}}" style="color:white;"><i class="fas fa-user"></i> Tu perfil</a></li>
@@ -45,6 +50,7 @@
                     {{ csrf_field() }}
                 </form>
               </ul>
+              <div align="right"><label style="color:white;">Sesión actual: {{auth()->user()->first_name}}  {{auth()->user()->last_name}}</label></div>
             </nav>
           </div>
         </div>
@@ -56,7 +62,7 @@
       <div class="uou-block-4a secondary dark">
         <div class="container">
           <ul class="links">
-            <p>Versión 1.0 - Enero 2019</p>
+            <p>Versión 1.0</p>
           </ul>
           <p>Desarollo: Equipo del M.S.I. Mario Humberto Rodríguez Chávez - Dirección de Tecnologías de la Información</p>
         </div>
@@ -108,8 +114,9 @@
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
 });
-  </script>
+</script>
 <script src="/sweetalert/sweetalert.min.js"></script>
+@yield('scripts')
 @include('sweet::alert')
 </body>
 </html>

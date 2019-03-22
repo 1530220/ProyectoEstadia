@@ -23,9 +23,10 @@ class CompetencesController extends Controller
     public function index()
     {
         $competences = DB::table('competences')->where('id','!=','4294967295')->get();
-
+        $competences_tutor = DB::table('competences')->where('deleted','=',0)->get();
         return view('competences.list')
           ->with('competences',$competences)
+          ->with('competences_tutor',$competences_tutor)
           ->with('title', 'Listado de Competencias');
     }
 
@@ -207,7 +208,7 @@ class CompetencesController extends Controller
       if ($competence->update()) {
         Alert::success('Exitosamente','Puntuación Modificada');
 
-        insertToLog(Auth::user()->id, 'updated', Input::get($competence->id), "puntuacion");
+        insertToLog(Auth::user()->id, 'updated', $competence->id, "puntuacion");
 
         return redirect()->route('students.show', ['id' => $competence->student_id]);
       } else {
@@ -277,7 +278,7 @@ class CompetencesController extends Controller
         $student_competences->competence_id = $competence;
         $student_competences->status = 1;
         $student_competences->save();
-        insertToLog(Auth::user()->id, 'added', $competence, "competencia del estudiante");
+        insertToLog(Auth::user()->id, 'added', $competence, "competencia del estudiante ".$id);
 
       }
 
@@ -286,7 +287,21 @@ class CompetencesController extends Controller
     }
 
     public function solicitudes(){
-      $students_competences = DB::table('students_competences as solicitudes')
+      if(Auth::user()->type == 5){
+        $students_competences = DB::table('students_competences as solicitudes')
+          ->join('siita_db.users as users','solicitudes.student_id','=','users.university_id')
+          ->join('competences','solicitudes.competence_id','=','competences.id')
+          ->join('siita_db.students as students',"students.user_id","=","users.id")
+          ->select('solicitudes.*',
+                  'users.first_name',
+                  'users.last_name',
+                  'users.second_last_name',
+                  'competences.name')
+                  ->where('solicitudes.status','=',0)
+                  ->where('students.tutor_user_id',"=",Auth::user()->id)
+                  ->get();
+      }else{
+          $students_competences = DB::table('students_competences as solicitudes')
           ->join('siita_db.users as users','solicitudes.student_id','=','users.university_id')
           ->join('competences','solicitudes.competence_id','=','competences.id')
           ->select('solicitudes.*',
@@ -296,6 +311,7 @@ class CompetencesController extends Controller
                   'competences.name')
                   ->where('solicitudes.status','=',0)
                   ->get();
+      }
       return view('competences.solicitudes')->with('students_competences',$students_competences);
     }
 
@@ -323,6 +339,21 @@ class CompetencesController extends Controller
         Alert::error('No se pudo rechazar la solicitud', 'Error');        
         return redirect()->route('students.show', ['id' => $competence->student_id]);
       }
+    }
+  
+    public function not_evaluated(){
+       $competences_tutor = DB::table("students_competences")
+                ->join("competences","students_competences.competence_id","=","competences.id")
+                ->join("siita_db.users as users","students_competences.student_id","=","users.university_id")
+                ->join("siita_db.students as students","users.id","=","students.user_id")
+                ->select("users.*",
+                         "competences.name as nameCompetence",
+                         "students_competences.id as id_students_competences")
+                  ->where("students.tutor_user_id","=",Auth::user()->id)
+                  ->where("students_competences.deleted","=",0)
+                  ->where("students_competences.status","=",1)
+                  ->where("students_competences.evaluated","=",0)->get();
+      return view("competences.notEvaluated")->with("competences_tutor",$competences_tutor);
     }
 }
 

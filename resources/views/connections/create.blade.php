@@ -13,7 +13,7 @@
 					<i class="fa fa-plus" style="background-color:cornflowerblue;"></i>
 					<div class="d-inline">
 						<h4 style="text-transform: none;">Crear Conexión</h4>
-						<span style="text-transform: none;">Llene los campos en la parte inferior para crear una nueva conexión.</span>
+						<span style="text-transform: none;">Permitir que un alumno pueda seguir a una empresa.</span>
 					</div>
 				</div>
 			</div>
@@ -45,17 +45,7 @@
 						<form id="form" method="POST" action="{{ route('connections.list') }}">
 							{!! csrf_field() !!}
 
-							<div class="form-group row">
-								<label class="col-sm-2 col-form-label" for="id">ID Conexión :</label>
-								<div class="col-sm-10">
-									<input type="number" class="form-control" id="id" name="id" placeholder="Ej. 10" value="{{ old('id') }}" title="ID de Conexión">
-									@if ($errors->has('id'))
-										<div class="col-form-label" style="color:red;">{{$errors->first('id')}}</div>
-									@endif
-									<div id="error_id" class="col-form-label" style="color:red; display:none;"></div>
-								</div>
-							</div>
-              
+              <h6><strong>Selecciona un estudiante para visualizar las empresas que puede seguir.</strong> </h6> <br>
 							<div class="form-group row">
                   <label class="col-sm-2 col-form-label" for="matricula">Alumno :</label>
                   <div class="col-sm-10">
@@ -67,13 +57,25 @@
                   </div>
               </div>
               <br><br>
-              
-              <div id="empresas" class="form-group row">
+              <div id="instruccions" class="form-group row">
+                  
               </div>
+              <center>
+                <div id="empresas" class="form-group row">
+                    
+                </div>
+              </center>
+              
+              <center>
+                <div id="alerta" class="alert alert-warning icons-alert" style="display:none;">
+                  <strong>Atención</strong>
+                  <p>No existe alguna empresa disponible para que el estudiante seleccionado pueda conectarse.</p>
+                </div>
+              </center>
 							<br>
 							<center>
-								<a style="color:white" onclick="returnURL('{{ url()->previous() }}')"  class="btn btn-primary"><i class="icofont icofont-arrow-left"></i>Regresar</a>
-								<button type="submit" class="btn btn-success"><i class="icofont icofont-check-circled"></i>Guardar Conexión</button>
+								<a style="color:white" onclick="returnURL('{{ url()->previous() }}')"  class="btn btn-primary col-lg-3"><i class="icofont icofont-arrow-left"></i>Regresar</a>
+                <button type="submit" class="btn btn-success col-lg-3"><i class="icofont icofont-check-circled"></i>Realizar conexión</button>
 							</center>
 						</form>
 					</div>
@@ -115,47 +117,77 @@
 				success: function(result) {
 
 					companies = result['response'];
-          
+          num_companies = result['num_companies'];
+        
           var d = document.getElementById("empresas");
           while (d.hasChildNodes()){
             d.removeChild(d.firstChild);
           }
+          
+          var r = document.getElementById("instruccions");
+          while (r.hasChildNodes()){
+            r.removeChild(r.firstChild);
+          }
+					if (num_companies!=0) {
+            document.getElementById("alerta").style.display = "none";
             
-					if (companies!=null) {
-            console.log(companies);
+            var label = document.createElement('label');
+            label.append("Selecciona la empresa a seguir :");
+            
+            
+            var n = document.createElement("strong");
+            n.className ="col-sm-6";
+            n.appendChild(label);
+            
+            document.getElementById("instruccions").appendChild(n);
+            
             
             companies.forEach(function (company){
               var iDiv = document.createElement('div');
-              iDiv.id = 'block'+company;
+              iDiv.id = 'block';
               
-              //iDiv.className = 'block';
-
               var imagen = document.createElement('img');
               imagen.src = "http://165.227.53.211/"+company.image_url;
-              imagen.width = 200; 
-              imagen.height = 200;
-              iDiv.appendChild(imagen);
+              imagen.width = 220; 
               
+             
+              var div_check = document.createElement("div");
+              div_check.className= "col-sm-4 checkbox-fade fade-in-inverse";
+              
+              var label = document.createElement("label");
+              var input = document.createElement("input");
+              input.type = "checkbox";
+              input.value = company.id;
+              input.name = "companies_connect[]";
+              
+              var span = document.createElement("span");
+              span.className="cr";
+              
+              var i = document.createElement("i");
+              i.className ="cr-icon icofont icofont-ui-check txt-inverse";
+            
+              span.appendChild(i);
+              
+              label.appendChild(input);
+              label.appendChild(span);
+              
+              div_check.appendChild(label);
+              
+              iDiv.appendChild(imagen);
+              iDiv.appendChild(div_check);
+              
+              //<button type="submit" class="btn btn-success"><i class="icofont icofont-check-circled"></i>Guardar Medalla</button>
+
               var dir = document.createElement('a');
               dir.href = "/companies/"+company.id;
+              dir.className = "col-sm-4";
               dir.appendChild(iDiv);
-              dir.className = "col-sm-3";
-              /*
-                <a
-                  <div>  //iDiv
-                      <img>
-                      
-                  </div>
-                >
-                
-              */
+              
+              
               document.getElementById("empresas").appendChild(dir);
             });
 					}else{
-              console.log("No existen empresas");
-						/*$("#error_id").text("");
-						document.getElementById("error_id").style.display = "none";
-						document.getElementById("registroEmpresa").style.display = "inline";*/
+						document.getElementById("alerta").style.display = "block";
 					}
 				}
 			});

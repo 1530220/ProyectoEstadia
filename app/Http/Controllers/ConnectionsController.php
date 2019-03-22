@@ -21,7 +21,10 @@ class ConnectionsController extends Controller
      */
     public function index()
     {
-        $connections = connections_companies::all();
+        $connections = connections_companies::join("companies","connections_companies.company_id","=","companies.id")
+                      ->join("siita_db.users as users","connections_companies.student_id_login","=","users.university_id")
+                      ->select("connections_companies.*","companies.name","users.first_name","users.last_name","users.second_last_name")
+                      ->get();
         return view("connections.list")->with("connections",$connections);
     }
 
@@ -45,86 +48,55 @@ class ConnectionsController extends Controller
      */
     public function store(Request $request)
     {
-          $data = request()->validate([
-            'id' => 'required|max:4294967295|min:1|numeric',
-          ],[
-            'id.required' => ' * Este campo es obligatorio.',
-            'id.max' => ' * El valor máximo de este campo es 4294967294.',
-            'id.min' => ' * El valor mínimo de este campo es 1.',
-            'id.numeric' => ' * Este campo es de tipo numérico.',
-          ]);
-        
-          $fecha_actual=date("Y-m-d H:i:s");
-          $connection = new connections_companies;
-  
-          //Se obtienen los valores de la vista
-          $connection->id = Input::get('id');
-          $connection->student_id_login = Input::get('matricula');
-          $connection->company_id = Input::get('company');
-          $connection->date = $fecha_actual;
-  
-          //Se almacena y se muestran mensajes en caos de registro exitoso
-          if ($connection->save()) {
-            Alert::success('Exitosamente','Conexión Creada');
-  
-            insertToLog(Auth::user()->id, 'added', Input::get('id'), "conexión");
-  
-            return redirect()->route('connections.list');
-          } else {
-            Alert::error('No se creo la conexión', 'Error');
-            return redirect()->route('connections.list');
+         
+          if($request->companies_connect==NULL){
+              Alert::error('Se debe seleccionar almenos una empresa para realizar una conexión', 'Error');
+              return redirect()->route("connections.create");
           }
+
+          $companies_ids = $request->companies_connect;
+
+          foreach ($companies_ids as $company) {
+            $company_connect = new connections_companies();
+            $company_connect->student_id_login = Input::get('matricula');
+            $company_connect->company_id = $company;
+            $company_connect->date = date("Y-m-d H:i:s");
+            $company_connect->save();
+            insertToLog(Auth::user()->id, 'added', $company, "conexión");
+          }
+      
+          Alert::success('Exitosamente','Conexión Creada');
+          return redirect()->route('connections.list');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    
+    public function destroy(connections_companies $connection)
     {
-        //
-    }
+        if($connection->delete()){
+          Alert::success('Exitosamente','Conexión Eliminada');
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+          insertToLog(Auth::user()->id, 'deleted', $connection->id, "conexión");
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+          return redirect()->route('connections.list');  
+        }else{
+          Alert::error('No se eliminó la conexión', 'Error');
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+          return redirect()->route('connections.list');  
+        }
     }
   
+ 
     public function verific_companies(Request $request){
-        //$companies = DB::table('connections_companies')->where('student_id_login', '=', $request->student_id)->get();
         
         $id = $request->student_id;
+        $num_companies = company::whereNotExists(function($query) use ($id){
+             $query->select(DB::raw(1))
+                ->from('connections_companies')
+                ->whereRaw('companies.id = connections_companies.company_id')
+                ->where('connections_companies.student_id_login','=',$id);
+              })->where('companies.deleted','=',0)
+              ->count();
+      
         $companies = company::whereNotExists(function($query) use ($id){
              $query->select(DB::raw(1))
                 ->from('connections_companies')
@@ -133,9 +105,7 @@ class ConnectionsController extends Controller
               })->where('companies.deleted','=',0)
               ->get();
      
-      
-      
         //Se retorna una respuesta codificada con JSON
-        return response()->json(['response'=>$companies]);
+        return response()->json(['response'=>$companies,'num_companies'=>$num_companies]);
     }
 }

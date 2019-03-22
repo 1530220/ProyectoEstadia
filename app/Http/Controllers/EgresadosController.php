@@ -16,12 +16,18 @@ use App\competence;
 use App\project;
 use App\User;
 use App\Student;
-use App\careers;
+use App\Career;
 use App\job;
 use App\company;
 use App\students_competences;
 use App\students_skills;
 use App\skill;
+use App\work_experience;
+use App\acknowledgments;
+use App\Evidences;
+use App\Country;
+use App\State;
+use App\City;
 
 class EgresadosController extends Controller
 {
@@ -45,35 +51,18 @@ class EgresadosController extends Controller
         $university_id  = $request->get('university_id');
         $abbreviation = $request->get('abbreviation');
         
-        $students_upv=DB::table('siita_db.users')
-        ->join('siita_db.students','siita_db.users.id','=','siita_db.students.user_id')
-        ->join('siita_db.careers','siita_db.students.career_id','=','siita_db.careers.id')
-        ->select('siita_db.users.*','siita_db.students.*','siita_db.careers.*')
-        ->where('siita_db.users.university_id','LIKE',"%$university_id%")
-        ->where('siita_db.careers.abbreviation','LIKE',"%$abbreviation%")
-        ->orderBy('siita_db.users.university_id')
-        ->paginate(8);
-
-        //Obtener la lista de carreras para su busqueda
-        $careers=DB::table('siita_db.careers')
-        ->select('siita_db.careers.*')
-        ->get();
-
-        //Obtener la lista de los alumnos para su busqueda
-        $students=DB::table('siita_db.users')
-        ->select('siita_db.users.*')
-        ->where('siita_db.users.type',3)
-        ->get();    
-
-        return view('egresado.lista_egresados', compact('students_upv','careers','students'));
-    }
-
-    //Pagina para ver otros egresados con ajax
-    public function lista_egresados_ajax(Request $request){
-        //Declarar variables para poder realizar la consulta correspondiente
-        $university_id  = $request->get('university_id');
-        $abbreviation = $request->get('abbreviation');
         
+      
+       $students_count=DB::table('siita_db.users')
+        ->join('siita_db.students','siita_db.users.id','=','siita_db.students.user_id')
+        ->join('siita_db.careers','siita_db.students.career_id','=','siita_db.careers.id')
+        ->select('siita_db.users.*','siita_db.students.*','siita_db.careers.*')
+        ->where('siita_db.users.university_id','LIKE',"%$university_id%")
+        ->where('siita_db.careers.abbreviation','LIKE',"%$abbreviation%")
+        ->orderBy('siita_db.users.university_id')
+        ->count();
+      
+      if($students_count==0){
         $students_upv=DB::table('siita_db.users')
         ->join('siita_db.students','siita_db.users.id','=','siita_db.students.user_id')
         ->join('siita_db.careers','siita_db.students.career_id','=','siita_db.careers.id')
@@ -81,7 +70,20 @@ class EgresadosController extends Controller
         ->where('siita_db.users.university_id','LIKE',"%$university_id%")
         ->where('siita_db.careers.abbreviation','LIKE',"%$abbreviation%")
         ->orderBy('siita_db.users.university_id')
-        ->paginate(8);
+        ->get();
+        Alert::info('Este alumno no se encuentra','Algo sucedio!!!')->autoclose(4000);
+      }else{
+        $students_upv=DB::table('siita_db.users')
+        ->join('siita_db.students','siita_db.users.id','=','siita_db.students.user_id')
+        ->join('siita_db.careers','siita_db.students.career_id','=','siita_db.careers.id')
+        ->select('siita_db.users.*','siita_db.students.*','siita_db.careers.*')
+        ->where('siita_db.users.university_id','LIKE',"%$university_id%")
+        ->where('siita_db.careers.abbreviation','LIKE',"%$abbreviation%")
+        ->orderBy('siita_db.users.university_id')
+        ->get();
+      }
+      
+      
 
         //Obtener la lista de carreras para su busqueda
         $careers=DB::table('siita_db.careers')
@@ -94,7 +96,7 @@ class EgresadosController extends Controller
         ->where('siita_db.users.type',3)
         ->get();    
 
-        return view('egresado.lista_egresados_ajax', compact('students_upv','careers','students'));
+        return view('egresado.lista_egresados', compact('students_count','students_upv','careers','students'));
     }
 
     //Pagina para ver el perfil del egresado
@@ -187,7 +189,59 @@ class EgresadosController extends Controller
           ->select('ss.*','s.name')
           ->where('u.university_id',auth()->user()->university_id)
           ->get();
-        return view('egresado.perfil', compact('skills_student','users','trabajos_pendientes','count_jobs','contador_pendientes','contador_aceptados','contador_rechazados','contador_competencias','competences','competencias_pendientes','competencias_aceptadas','contador_proyectos','projects','proyectos_agregados','proyectos_eliminados'));
+      
+      $experiences=DB::table('work_experiences as we')
+        ->join('siita_db.users as u', 'u.university_id','=','we.user_id')
+        ->select('we.*')
+        ->where('u.university_id',auth()->user()->university_id)
+        ->get();
+      
+      $count_experiences=DB::table('work_experiences as we')
+        ->join('siita_db.users as u', 'u.university_id','=','we.user_id')
+        ->select('we.*')
+        ->where('u.university_id',auth()->user()->university_id)
+        ->count();
+      
+     $student_medals=DB::table('students_medals as sm')
+        ->join('siita_db.users as u', 'u.university_id','=','sm.student_id')
+        ->join('medals as m','m.id','sm.medal_id')
+        ->select('sm.*','m.name','m.description','m.image')
+        ->where('u.university_id',auth()->user()->university_id)
+        ->get();
+      
+      $count_medals=DB::table('students_medals as sm')
+        ->join('siita_db.users as u', 'u.university_id','=','sm.student_id')
+        ->select('sm.*')
+        ->where('u.university_id',auth()->user()->university_id)
+        ->count();
+      
+      $acknowledgments=DB::table('acknowledgments as a')
+        ->join('siita_db.users as u', 'u.university_id','=','a.user_id')
+        ->select('a.*')
+        ->where('u.university_id',auth()->user()->university_id)
+        ->get();
+      
+      $count_acknowledgments=DB::table('acknowledgments as a')
+        ->join('siita_db.users as u', 'u.university_id','=','a.user_id')
+        ->select('a.*')
+        ->where('u.university_id',auth()->user()->university_id)
+        ->count();
+      
+      $evidences=DB::table('evidences as e')
+        ->join('siita_db.users as u', 'u.university_id','=','e.student_id')
+        ->select('e.*')
+        ->where('u.university_id',auth()->user()->university_id)
+        ->get();
+      
+      
+      
+      $count_evidences=DB::table('evidences as e')
+        ->join('siita_db.users as u', 'u.university_id','=','e.student_id')
+        ->select('e.*')
+        ->where('u.university_id',auth()->user()->university_id)
+        ->count();
+           
+        return view('egresado.perfil', compact('evidences','count_evidences','acknowledgments','count_acknowledgments','student_medals','count_medals','count_experiences','experiences','skills_student','users','trabajos_pendientes','count_jobs','contador_pendientes','contador_aceptados','contador_rechazados','contador_competencias','competences','competencias_pendientes','competencias_aceptadas','contador_proyectos','projects','proyectos_agregados','proyectos_eliminados'));
     }
 
     public function editprofile($id){
@@ -209,7 +263,12 @@ class EgresadosController extends Controller
         $users=User::find($id);
         $image = Input::file('image');
         $image2 = Input::get('image_2');
+      if($image==null){
+        Alert::info('No se actualizo la imagen')->autoclose(4000);
+        return back();
+      }
 
+      if($image->getClientOriginalExtension()=="png" || $image->getClientOriginalExtension()=="jpg" || $image->getClientOriginalExtension()=="jpeg" || $image->getClientOriginalExtension()=="gif"){
         //Actualizar foto, elimina la anterior
         if ($image!=null) {
             if ($image2!='storage/no_image.png') {
@@ -217,10 +276,17 @@ class EgresadosController extends Controller
             }
             $path=Input::file('image')->store('/public/students');
             $image_url = 'storage/students/'.Input::file('image')->hashName();
-            DB::update('UPDATE siita_db.users SET image_url = ? WHERE id = ?', [$image_url, $id]);
-        }
-        Alert::success('Se ha actualizado tu perfil','Bien Hecho!!!')->autoclose(4000);
+            DB::update('UPDATE siita_db.users SET image_url = ? WHERE id = ?', [$image_url, $id]); 
+            Alert::success('Se ha actualizado tu perfil','Bien Hecho!!!')->autoclose(4000);
+            return back();
+        }  
+        
+        
+      }else{
+        Alert::info("Solo se permiten archivos .jpg, .jpeg, .png o .gif ",'No se actualizo la imagen')->autoclose(4000);
         return back();
+      }
+        
     }
 
     //Pagina para ver el perfil de otros egresados
@@ -265,12 +331,29 @@ class EgresadosController extends Controller
         ->first();
         
 
-        $status=DB::table('status_job')
+        $contador=DB::table('status_job')
         ->where('id_job','=',$id)
         ->where('id_student','=',$id_student->university_id)
         ->count();
-
-        return view('egresado.vacante', compact('jobs','status'));
+      
+        $status=DB::table('status_job')
+        ->where('id_job','=',$id)
+        ->where('id_student','=',$id_student->university_id)
+        ->first();
+        
+        if($contador==0){
+          return view('egresado.vacante', compact('jobs','contador','status'));
+        }else{
+          if($status->status=="Aceptado"){
+          Alert::success("Tu solicitud ha sido aceptada","Felicidades");
+        }
+        if($status->status=="Pendiente"){
+          Alert::info("Tu solicitud esta pendiente");
+        }
+          return view('egresado.vacante', compact('jobs','contador','status'));
+        }
+      
+        
     }
 
     public function sendjob(){
@@ -461,8 +544,6 @@ class EgresadosController extends Controller
             Alert::error('No se registro el proyecto', 'Error');
             return redirect()->route('profile_student',[auth()->user()->id]);
           }
-
-          return back();
          
     }
   
@@ -648,7 +729,430 @@ class EgresadosController extends Controller
         return redirect()->route('profile_student',[auth()->user()->id]);
         
     }
+  
+  //Pagina para ver el perfil del egresado
+    public function addworkexperiences($id){
+        //Mostrar un perfil de usuario con el id correspondiente
+        $users=User::findOrFail($id);
+        $countries = Country::pluck('name','id'); 
 
-   
+        //Mostrar la carrera del alumno correspondiente
+        $users=DB::table('siita_db.students')
+        ->join('siita_db.users','siita_db.students.user_id','=','siita_db.users.id')
+        ->join('siita_db.careers','siita_db.careers.id','=','siita_db.students.career_id')
+        ->select('siita_db.students.*', 'siita_db.users.*','siita_db.careers.*')
+        ->where('siita_db.students.user_id','=',$id)
+        ->get();
+      
+        return view('egresado.addworkexperience', compact('users','countries'));
+    }
+  
+  public function store_workexperiences(Request $request){
+        $data = request()->validate([
+            'position' => 'required|max:128',
+            'start_date' => 'required',
+            'finish_date' => 'required',
+            'description' => 'required',
+            'company' => 'required',
+            'country'=>'required',
+            'state'=>'required',
+            'city'=>'required',
+          ],[
+            'position.required' => ' * Este campo es obligatorio.',
+            'position.max' => ' * Este campo debe contener sólo 128 caracteres.',
+            'company.required' => ' * Este campo es obligatorio.',
+            'country.required' => ' * Este campo es obligatorio.',
+            'state.required' => ' * Este campo es obligatorio.',
+            'city.required' => ' * Este campo es obligatorio.',
+            'description.required' => ' * Este campo es obligatorio.',
+            'start_date.required' => ' * Este campo es obligatorio.',
+            'finish_date.required' => ' * Este campo es obligatorio.',
+          ]);
+            
+          $fecha_actual=date("Y-m-d");
+
+          if(Input::get('start_date')>= Input::get('finish_date')){
+            Alert::error('Fecha de inicio no puede ser mayor a la de finalización', 'Error');
+            return back();
+          }else if (Input::get('start_date')>$fecha_actual ){
+            Alert::error('Fecha de finalización excede a la fecha actual', 'Error');
+            return back();
+          }
+
+          $work_experience = new work_experience;
+  
+          //Se obtienen los valores de la vista
+          $work_experience->user_id = Input::get('university_id');
+          $work_experience->position = Input::get('position');
+          $work_experience->company = Input::get('company');
+          $work_experience->country = Input::get('country');
+          $work_experience->state = Input::get('state');
+          $work_experience->city = Input::get('city');
+          $work_experience->start_date = Input::get('start_date');
+          $work_experience->finish_date = Input::get('finish_date');
+          $work_experience->description = Input::get('description');
+          
+          
+        //Se almacena y se muestran mensajes en caos de registro exitoso
+          if ($work_experience->save()) {
+            Alert::success('La experiencia laboral ha sido agregado correctamente correctamente','Bien Hecho!!!')->autoclose(4000);
+            
+            return redirect()->route('profile_student',[auth()->user()->id]);
+          } else {
+            Alert::error('No se registro la experiencia laboral', 'Error');
+            return redirect()->route('profile_student',[auth()->user()->id]);
+          }
+         
+    }
+  public function editworkexperience($id){
+         //Mostrar un perfil de usuario con el id correspondiente
+        $work_experience=work_experience::findOrFail($id);
+        
+        $countries = Country::pluck('name','id');
+        $states = State::all()->where('country_id','=',$work_experience->country)->pluck('name','id');
+        $cities = City::all()->where('state_id','=',$work_experience->state)->pluck('name','id');
+    
+        
+      
+        //Mostrar la carrera del alumno correspondiente
+        $users=DB::table('siita_db.students')
+        ->join('siita_db.users','siita_db.students.user_id','=','siita_db.users.id')
+        ->join('siita_db.careers','siita_db.careers.id','=','siita_db.students.career_id')
+        ->select('siita_db.students.*', 'siita_db.users.*','siita_db.careers.*')
+        ->where('siita_db.students.user_id','=',auth()->user()->id)
+        ->get();
+      
+         return view('egresado.editworkexperience', compact('users','work_experience','countries','states','cities'));
+    }
+  
+  public function update_workexperience($id){
+          
+          $fecha_actual=date("Y-m-d");
+
+          if(Input::get('start_date')>= Input::get('finish_date')){
+            Alert::error('Fecha de inicio no puede ser mayor a la de finalización', 'Error');
+            return back();
+          }else if (Input::get('finish_date')>$fecha_actual){
+            Alert::error('Fecha de finalización excede a la fecha actual', 'Error');
+            return redirect()->route('students.show', ['id' => Input::get('matricula')]);
+          }
+    
+           $work_experience=work_experience::find($id);
+            $work_experience=DB::table('work_experiences as we')
+          ->select('we.*')
+          ->where('we.id',$id)
+          ->update(['position' => request('position'),'company' => request('company'),'country' => request('country'),'state' => request('state'),'city' => request('city'),'start_date' => request('start_date'),'finish_date' => request('finish_date'),'description' => request('description')]);
+          //swal("Good job!", "You clicked the button!", "success");
+          Alert::success('La experiencia laboral ha sido actualizado correctamente correctamente','Bien Hecho!!!')->autoclose(4000);
+          return back();
+         
+    }
+  
+  public function deleteworkexperiences($id){
+         //Mostrar un perfil de usuario con el id correspondiente
+        $work_experience=DB::table('work_experiences as we')
+          ->join('siita_db.users as u','u.university_id','we.user_id')
+          ->select('we.*')
+          ->where('we.id',$id)
+          ->first();
+        
+      
+        //Mostrar la carrera del alumno correspondiente
+        $users=DB::table('siita_db.students')
+        ->join('siita_db.users','siita_db.students.user_id','=','siita_db.users.id')
+        ->join('siita_db.careers','siita_db.careers.id','=','siita_db.students.career_id')
+        ->select('siita_db.students.*', 'siita_db.users.*','siita_db.careers.*')
+        ->where('siita_db.students.user_id','=',auth()->user()->id)
+        ->get();
+      
+         return view('egresado.deleteworkexperience', compact('users','work_experience'));
+    }
+  
+  public function destroy_workexperience($id){
+        $id=request('idwork');
+        $work_experience=DB::table('work_experiences')
+        ->where('id',$id)
+        ->first();
+        if($work_experience->deleted==0){
+          $work_experience=DB::table('work_experiences')
+           ->where('id',$id)
+           ->update(['deleted' => 1]);
+          Alert::success('Tu experiencia laboral ha sido eliminada','Bien Hecho!!!')->autoclose(4000);
+          return redirect()->route('profile_student',[auth()->user()->id]);
+        }else{
+          $work_experience=DB::table('work_experiences')
+           ->where('id',$id)
+           ->update(['deleted' => 0]);
+          Alert::success('Tu experiencia laboral ha sido restaurada','Bien Hecho!!!')->autoclose(4000);
+          return redirect()->route('profile_student',[auth()->user()->id]);
+        }
+
+    }
+  
+  public function addacknowledgments($id){
+        //Mostrar un perfil de usuario con el id correspondiente
+        $users=User::findOrFail($id);
+        
+
+        //Mostrar la carrera del alumno correspondiente
+        $users=DB::table('siita_db.students')
+        ->join('siita_db.users','siita_db.students.user_id','=','siita_db.users.id')
+        ->join('siita_db.careers','siita_db.careers.id','=','siita_db.students.career_id')
+        ->select('siita_db.students.*', 'siita_db.users.*','siita_db.careers.*')
+        ->where('siita_db.students.user_id','=',$id)
+        ->get();
+      
+        return view('egresado.addacknowledgment', compact('users'));
+    }
+  
+  public function store_acknowledgments(Request $request){
+        $data = request()->validate([
+            'title' => 'required|max:128',
+            'date' => 'required',
+            'description' => 'required',
+            'transmitter' => 'required',
+          ],[
+            'title.required' => ' * Este campo es obligatorio.',
+            'title.max' => ' * Este campo debe contener sólo 128 caracteres.',
+            'transmitter.required' => ' * Este campo es obligatorio.',
+            'description.required' => ' * Este campo es obligatorio.',
+            'date.required' => ' * Este campo es obligatorio.',
+          ]);
+            
+          $fecha_actual=date("Y-m-d");
+          if (Input::get('date')>$fecha_actual ){
+            Alert::error('Tu fecha se excede a la fecha actual', 'Error')->autoclose(4000);
+            return back();
+          }
+
+          $acknowledgment = new acknowledgments;
+  
+          //Se obtienen los valores de la vista
+          $acknowledgment->user_id = Input::get('university_id');
+          $acknowledgment->title = Input::get('title');
+          $acknowledgment->transmitter = Input::get('transmitter');
+          $acknowledgment->date = Input::get('date');
+          $acknowledgment->description = Input::get('description');
+          
+          
+        //Se almacena y se muestran mensajes en caos de registro exitoso
+          if ($acknowledgment->save()) {
+            Alert::success('El reconocimiento ha sido agregado correctamente correctamente','Bien Hecho!!!')->autoclose(4000);
+            
+            return redirect()->route('profile_student',[auth()->user()->id]);
+          } else {
+            Alert::error('No se registro el reconocimiento', 'Error');
+            return redirect()->route('profile_student',[auth()->user()->id]);
+          }
+         
+    }
+  
+   public function editacknowledgment($id){
+         //Mostrar un perfil de usuario con el id correspondiente
+        $acknowledgment=acknowledgments::findOrFail($id);
+      
+        //Mostrar la carrera del alumno correspondiente
+        $users=DB::table('siita_db.students')
+        ->join('siita_db.users','siita_db.students.user_id','=','siita_db.users.id')
+        ->join('siita_db.careers','siita_db.careers.id','=','siita_db.students.career_id')
+        ->select('siita_db.students.*', 'siita_db.users.*','siita_db.careers.*')
+        ->where('siita_db.students.user_id','=',auth()->user()->id)
+        ->get();
+      
+         return view('egresado.editacknowledgment', compact('users','acknowledgment'));
+    }
+  public function update_acknowledgment($id){
+          
+          $fecha_actual=date("Y-m-d");
+          if (Input::get('date')>$fecha_actual ){
+            Alert::error('Tu fecha se excede a la fecha actual', 'Error')->autoclose(4000);
+            return back();
+          }
+    
+           $acknowledgment=acknowledgments::find($id);
+            $acknowledgment=DB::table('acknowledgments as a')
+          ->select('a.*')
+          ->where('a.id',$id)
+          ->update(['title' => request('title'),'transmitter' => request('transmitter'),'date' => request('date'),'description' => request('description')]);
+          //swal("Good job!", "You clicked the button!", "success");
+          Alert::success('El reconocimiento ha sido actualizado correctamente correctamente','Bien Hecho!!!')->autoclose(4000);
+          return back();
+         
+    }
+  
+  public function deleteacknowledgments($id){
+         //Mostrar un perfil de usuario con el id correspondiente
+        $acknowledgment=DB::table('acknowledgments as a')
+          ->join('siita_db.users as u','u.university_id','a.user_id')
+          ->select('a.*')
+          ->where('a.id',$id)
+          ->first();
+        
+      
+        //Mostrar la carrera del alumno correspondiente
+        $users=DB::table('siita_db.students')
+        ->join('siita_db.users','siita_db.students.user_id','=','siita_db.users.id')
+        ->join('siita_db.careers','siita_db.careers.id','=','siita_db.students.career_id')
+        ->select('siita_db.students.*', 'siita_db.users.*','siita_db.careers.*')
+        ->where('siita_db.students.user_id','=',auth()->user()->id)
+        ->get();
+      
+         return view('egresado.deleteacknowledgments', compact('users','acknowledgment'));
+    }
+  
+  public function destroy_acknowledgment($id){
+        $id=request('idacknowledgment');
+        $acknowledgment=DB::table('acknowledgments')
+        ->where('id',$id)
+        ->first();
+        if($acknowledgment->deleted==0){
+          $acknowledgment=DB::table('acknowledgments')
+           ->where('id',$id)
+           ->update(['deleted' => 1]);
+          Alert::success('Tu reconocimiento ha sido eliminado','Bien Hecho!!!')->autoclose(4000);
+          return redirect()->route('profile_student',[auth()->user()->id]);
+        }else{
+          $acknowledgment=DB::table('acknowledgments')
+           ->where('id',$id)
+           ->update(['deleted' => 0]);
+          Alert::success('Tu reconocimiento ha sido restaurado','Bien Hecho!!!')->autoclose(4000);
+          return redirect()->route('profile_student',[auth()->user()->id]);
+        }
+
+    }
+  
+  public function addevidences($id){
+        //Mostrar un perfil de usuario con el id correspondiente
+        $users=User::findOrFail($id);
+        
+
+        //Mostrar la carrera del alumno correspondiente
+        $users=DB::table('siita_db.students')
+        ->join('siita_db.users','siita_db.students.user_id','=','siita_db.users.id')
+        ->join('siita_db.careers','siita_db.careers.id','=','siita_db.students.career_id')
+        ->select('siita_db.students.*', 'siita_db.users.*','siita_db.careers.*')
+        ->where('siita_db.students.user_id','=',$id)
+        ->get();
+      
+        return view('egresado.addevidence', compact('users'));
+    }
+  
+  public function store_evidences(Request $request){
+        $data = request()->validate([
+            'name' => 'required|max:128',
+            'path' => 'required',
+          ],[
+            'name.required' => ' * Este campo es obligatorio.',
+            'name.max' => ' * Este campo debe contener sólo 128 caracteres.',
+            'path.required' => ' * Este campo es obligatorio.',
+          ]);
+           
+          $file=Input::file('path');
+          
+          if($file==null){
+            Alert::info('No se subio el archivo')->autoclose(4000);
+            return back();
+          }
+
+        if($file->getClientOriginalExtension()=="png" || $file->getClientOriginalExtension()=="jpg" || $file->getClientOriginalExtension()=="jpeg" || $file->getClientOriginalExtension()=="gif" || $file->getClientOriginalExtension()=="pdf"){
+          $evidence = new Evidences;
+  
+          //Se obtienen los valores de la vista
+          $evidence->student_id = Input::get('university_id');
+          $evidence->name= Input::get('name');
+          
+          $path=$request->file('path')->store('/public/evidences');
+          $evidence->path = 'storage/evidences/'.Input::file('path')->hashName();
+          
+          
+        //Se almacena y se muestran mensajes en caos de registro exitoso
+          if ($evidence->save()) {
+            Alert::success('La evidencia ha sido agregado correctamente correctamente','Bien Hecho!!!')->autoclose(4000);
+            
+            return redirect()->route('profile_student',[auth()->user()->id]);
+          } else {
+            Alert::error('No se registro la evidencia', 'Error')->autoclose(4000);
+            return redirect()->route('profile_student',[auth()->user()->id]);
+          }
+          
+        }else{
+            Alert::error('Solo se permiten archivos .jpg, .jpeg, .png, .gif o .pdf ', 'Error');
+            return back();
+        }
+          
+          
+         
+    }
+  
+  protected function downloadFile($src){
+    if(is_file($src)){
+      $finfo=finfo_open(FILEINFO_MIME_TYPE);
+      $content_type=finfo_file($finfo,$src);
+      finfo_close($finfo);
+      $file_name=basename($src).PHP_EOL;
+      $size=filesize($src);
+      header("Content-Type: $content_type");
+      header("Content-Disposition: attachment; filename=$file_name");
+      header("Content-Transfer-Encoding: binary");
+      header("Content-Length: $size");
+      readfile($src);
+      return true;
+    }else{
+      return false;
+    }
+  }
+  
+  public function download($id){
+    
+    $path=DB::table('evidences')
+      ->select('path')
+      ->where('id',$id)
+      ->first();
+    if(!$this->downloadFile($path->path)){
+      return redirect()->back();
+    }
+  }
+  
+  public function deleteevidences($id){
+         //Mostrar un perfil de usuario con el id correspondiente
+        $evidence=DB::table('evidences as e')
+          ->join('siita_db.users as u','u.university_id','e.student_id')
+          ->select('e.*')
+          ->where('e.id',$id)
+          ->first();
+        
+      
+        //Mostrar la carrera del alumno correspondiente
+        $users=DB::table('siita_db.students')
+        ->join('siita_db.users','siita_db.students.user_id','=','siita_db.users.id')
+        ->join('siita_db.careers','siita_db.careers.id','=','siita_db.students.career_id')
+        ->select('siita_db.students.*', 'siita_db.users.*','siita_db.careers.*')
+        ->where('siita_db.students.user_id','=',auth()->user()->id)
+        ->get();
+      
+         return view('egresado.deleteevidences', compact('users','evidence'));
+    }
+  
+  public function destroy_evidence($id){
+        $id=request('idevidence');
+        $evidence=DB::table('evidences')
+        ->where('id',$id)
+        ->first();
+        if($evidence->deleted==0){
+          $evidence=DB::table('evidences')
+           ->where('id',$id)
+           ->update(['deleted' => 1]);
+          Alert::success('Tu evidencia ha sido eliminada','Bien Hecho!!!')->autoclose(4000);
+          return redirect()->route('profile_student',[auth()->user()->id]);
+        }else{
+          $evidence=DB::table('evidences')
+           ->where('id',$id)
+           ->update(['deleted' => 0]);
+          Alert::success('Tu evidencia ha sido restaurada','Bien Hecho!!!')->autoclose(4000);
+          return redirect()->route('profile_student',[auth()->user()->id]);
+        }
+
+    }
+
 
 }

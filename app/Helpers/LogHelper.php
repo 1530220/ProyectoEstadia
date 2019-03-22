@@ -73,9 +73,9 @@ function insertToLog($user_id, $action, $item_id, $item_name, $cantidad=0)
     }
     if($cantidad==0){
         if(substr($item_name, -1)=='a' || substr($item_name, -1)=='A' || substr($item_name, -1)=='á'){
-            $message = $message . 'una ';
+           // $message = $message . 'una ';
         }else{
-            $message = $message . 'un ';
+          //  $message = $message . 'un ';
         }
     }
     else{

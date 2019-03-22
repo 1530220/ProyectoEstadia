@@ -35,8 +35,14 @@
 				<div class="page-header-title">
 					<i class="icofont icofont-eye-alt bg-c-pink"></i>
 					<div class="d-inline">
-						<h4 style="text-transform: none;">Detalles del Alumno con la Matricula: {{ $student->university_id }} </h4>
-						<span style="text-transform: none;">Mostrando todos los detalles del alumno seleccionado.</span>
+            @if (Auth::user()->type == 4 || Auth::user()->type == 5)
+              <h4 style="text-transform: none;">Detalles del Tutorado con la Matricula: {{ $student->university_id }} </h4>
+						  <span style="text-transform: none;">Mostrando todos los detalles del tutorado seleccionado.</span>
+            @else(Auth::user()->type == 1 || Auth::user()->type == 2)
+              <h4 style="text-transform: none;">Detalles del Alumno con la Matricula: {{ $student->university_id }} </h4>
+						  <span style="text-transform: none;">Mostrando todos los detalles del alumno seleccionado.</span>
+            @endif
+
 					</div>
 				</div>
 			</div>
@@ -48,10 +54,17 @@
 								<i class="icofont icofont-home"></i>
 							</a>
 						</li>
-						<li class="breadcrumb-item"><a href="{{ route('students.list') }}">Alumnos</a>
-						</li>
-						<li class="breadcrumb-item">Detalles de Alumno
-						</li>
+            @if (Auth::user()->type == 4 || Auth::user()->type == 5)
+              <li class="breadcrumb-item"><a href="{{ route('students.list') }}">Tutorados</a>
+              </li>
+              <li class="breadcrumb-item">Detalles de Tutorado
+              </li>
+            @else(Auth::user()->type == 1 || Auth::user()->type == 2)
+              <li class="breadcrumb-item"><a href="{{ route('students.list') }}">Alumnos</a>
+              </li>
+              <li class="breadcrumb-item">Detalles de Alumno
+              </li>
+            @endif
 					</ul>
 				</div>
 			</div>
@@ -192,14 +205,87 @@
 				</div>
 			</div>
 		</div>
+    
+  <div class="row">
+			<div class="col-sm-12">
+				<div class="card">
+					<div class="card-block">
+						<h4 class="sub-title">Portafolio de Evidencias del estudiante</h4>
+            <br>
+           
 
+            <div class="card-block table-border-style">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  @if ($evidences->isNotEmpty())
+                    <thead>
+                      <tr>
+                        <th class="all" scope="col">ID</th>
+                        <th scope="col" >Archivo</th>
+                        <th scope="col" >Visualizar</th>
+                        <th scope="col" >Descargar</th>
+                        @if (Auth::user()->type == 1 || Auth::user()->type == 2)
+                        <th scope="col" >Eliminar</th>
+                        @endif
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @foreach ($evidences as $evidence)
+                        <tr>
+                          <td>{{ $evidence->id }}</td>
+                          <td>{{ $evidence->name }}</td>
+                          <td><a target="_blank" href="{{asset($evidence->path)}}" class="btn btn-warning col-lg-5" ><span class="icofont icofont-eye-alt"></span></a></h6> </div> </td>
+                          <td><a href="{{url('/evidences/download',['id'=>$evidence->id])}}" class="btn btn-primary col-lg-5"><span class="fa fa-download"></span></a></td>
+                           @if (Auth::user()->type == 1 || Auth::user()->type == 2)
+                          <td>
+														<form id="form" name="form" action="{{ route('evidences.destroy', ['id' => $evidence->id])}}" method="POST">
+                                {{ csrf_field() }}
+                                {{ method_field('DELETE') }}
+                              
+                                  <button type="submit" class="btn btn-danger col-lg-5" style="margin: 3px;" id="eliminar" name="eliminar" onclick="archiveFunction()" title="Eliminar evidencia con el id {{ $evidence->id }}"><span class="icofont icofont-ui-delete"></span></button>
+                              
+                            </form>
+                          </td>          
+                          @endif
+                        </tr>
+                      @endforeach
+                    </tbody>
+                  @else
+                    <center>
+                      <div class="alert alert-primary icons-alert">
+                        <strong>No existen evidencias en el Portafolio del estudiante</strong>
+                        <p>El estudiante no ha subido ninguna evidencia.</p>
+                      </div>
+
+                    </center>
+                  @endif
+                </table>
+              </div>
+					  </div>
+          </div>
+          
+          @if (Auth::user()->type == 1 || Auth::user()->type == 2)
+
+              <div class="card-footer">
+                <div class="row">
+                  <div class="col-sm-4"></div>
+                  <a href="{{ route('evidences.create', ['id' => $student->university_id]) }}" class="col-sm-4 btn btn-inverse"><strong> Cargar Evidencia</strong></a>
+                </div>  
+              </div>  
+         @endif
+          
+				</div>
+			</div>
+		</div>
+
+    
 		<div class="row">
 
 			<div class="col-sm-12">
 				<div class="card">
 					<div class="card-block">
 						<h4 class="sub-title">Habilidades que posee el estudiante</h4>
-
+            <br>
 						@if ($skills->isNotEmpty())
 							<div class="row">
 								<div class="col-sm-2">
@@ -211,20 +297,23 @@
 								<div class="col-sm-6">
 									<h6><strong>Puntuación</strong></h6>
 								</div>
-								
+								 @if (Auth::user()->type == 1 || Auth::user()->type == 2)
 								<div class="col-sm-2">
 									<center><h6><strong>Eliminar</strong></h6></center>
 								</div>
-							</div>
+                @endif
+							</div><br>
 							@foreach ($skills as $skill)
 								<div class="row">
 									@if ($skill->deleted!='0')
+                    @if (Auth::user()->type == 1 || Auth::user()->type == 2)
 										<div class="col-sm-2">
 											<p style="color:firebrick;"><strong>{{$skill->name}}</strong></p>
 										</div>
 										<div class="col-sm-2">
 											<p style="color:firebrick;">{{$skill->updated_at}}</p>
 										</div>
+                    @endif
 									@else
 										<div class="col-sm-2">
 											<p>{{$skill->name}}</p>
@@ -233,22 +322,45 @@
 											<p>{{$skill->updated_at}}</p>
 										</div>
 									@endif
-									
+                  
+                  @if ($skill->deleted!='0')
+									 @if (Auth::user()->type == 1 || Auth::user()->type == 2)
 									<div class="col-sm-5">
 										<div class="progress progress-xl">
 											<div class="progress-bar progress-bar-striped progress-bar-info" role="progressbar" style="width: {{$skill->score}}%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
 										</div>
 									</div>
+                  @endif
+                  @endif
+                  
+                  @if ($skill->deleted=='0')
+                    @if (Auth::user()->type == 1 || Auth::user()->type == 2)
+                    <div class="col-sm-5">
+                      <div class="progress progress-xl">
+                        <div class="progress-bar progress-bar-striped progress-bar-info" role="progressbar" style="width: {{$skill->score}}%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                      </div>
+                    </div>
+                    @else 
+                    <div class="col-sm-7">
+                      <div class="progress progress-xl">
+                        <div class="progress-bar progress-bar-striped progress-bar-info" role="progressbar" style="width: {{$skill->score}}%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                      </div>
+                    </div>
+                    @endif
+                  @endif
 									@if ($skill->deleted!='0')
-									<div class="col-sm-1">
+                    @if (Auth::user()->type == 1 || Auth::user()->type == 2)
+                    <div class="col-sm-1">
 											<h6 style="color:firebrick;"><strong>{{$skill->score}}%</strong></h6>
 										</div>
+                    @endif
 									@else
 										<div class="col-sm-1">
 											<h6><strong>{{$skill->score}}%</strong></h6>
 										</div>
 									@endif
-								
+								  
+                   @if (Auth::user()->type == 1 || Auth::user()->type == 2)
 									<div class="col-sm-2">
 										@if($skill->deleted=='0')
 											<form id="form" name="form" action="{{ route('skill.destroy', ['id' => $skill->id])}}" method="POST">
@@ -267,6 +379,7 @@
 											</center>
 										</form>
 									</div>	
+                    @endif
 								</div>
 							@endforeach	
 						@else
@@ -279,18 +392,21 @@
 						</center>
 						@endif	
 					</div>
-					<div class="card-footer">
-						@if ($skills->isNotEmpty())
-							<div class="row">
-								<div class="col-sm-4"></div>
-								<a href="{{ route('skill.edit', ['id' => $student->university_id]) }}" class="col-sm-4 btn btn-primary"><strong> Modificar Puntuaciones</strong></a>
-							</div><br>
-						@endif
-						<div class="row">
-							<div class="col-sm-4"></div>
-							<a href="{{ route('skills.asignar', ['id' => $student->university_id]) }}" class="col-sm-4 btn btn-inverse"><strong> Asignar Habilidades</strong></a>
-						</div>
-					</div>
+          @if (Auth::user()->type == 1 || Auth::user()->type == 2)
+            <div class="card-footer">
+              @if ($skills->isNotEmpty())
+                <div class="row">
+                  <div class="col-sm-4"></div>
+                  <a href="{{ route('skill.edit', ['id' => $student->university_id]) }}" class="col-sm-4 btn btn-primary"><strong> Modificar Puntuaciones</strong></a>
+                </div><br>
+              @endif
+              <div class="row">
+                <div class="col-sm-4"></div>
+                <a href="{{ route('skills.asignar', ['id' => $student->university_id]) }}" class="col-sm-4 btn btn-inverse"><strong> Asignar Habilidades</strong></a>
+              </div>
+            </div>
+            @endif
+            
 				</div>
 			</div>
 		</div>
@@ -300,7 +416,7 @@
 				<div class="card">
 					<div class="card-block">
 					<h4 class="sub-title">Competencias que posee el estudiante</h4>
-
+            <br>
 					@if ($competences->isNotEmpty())
 						<div class="row">
 							<div class="col-sm-3">
@@ -316,7 +432,7 @@
 							<div class="col-sm-2">
 								<center><h6><strong>Acciones</strong></h6></center>
 							</div>
-						</div>
+						</div><br>
 						@foreach ($competences as $competence)
 							<div class="row">
 								@if ($competence->deleted!='0')
@@ -405,10 +521,10 @@
 								<center>  
 									@if ($medal->deleted == '0')
 										<img src="{{$medal->image}}" alt="{{$medal->name}}" title="{{$medal->name}}" width="150"><hr>
-										<h6>{{$medal->name}}</h6>
+										<h6><a href="{{ route('medals.show', ['id' => $medal->id]) }}"><strong>{{$medal->name}}</strong></a></h6>
 									@else
 										<img style="opacity: 0.4;" src="{{$medal->image}}" alt="{{$medal->name}}" title="{{$medal->name}}" width="150"><hr>
-										<h6 style="color:firebrick;"><strong>{{$medal->name}}</strong></h6>
+										<h6 style="color:firebrick;"><a href="{{ route('medals.show', ['id' => $medal->id]) }}"><strong>{{$medal->name}}</strong></a></h6>
 									@endif
 
 									@if($medal->deleted=='0')
@@ -458,6 +574,7 @@
 							<h4 class="sub-title">Proyectos en los que ha colaborado el estudiante</h4>
 						<div class="dt-responsive table-responsive">
 							<table id="simpletable-1" class="table table-striped table-bordered nowrap">
+                @if (Auth::user()->type == 1 || Auth::user()->type == 2)
 								@if ($projects->isNotEmpty())
 									<thead id="table_header">
 										<tr>
@@ -479,11 +596,13 @@
 													<td>{{ $project->finish_date}}</td>
 													<td>{{ $project->company}}</td>
 												@else
+                          
 													<td style="color:red; font-weight:bold">{{ $project->id }}</td>
-													<td>{{ $project->name }}</td>
-													<td>{{ $project->start_date}}</td>
-													<td>{{ $project->finish_date}}</td>
-													<td>{{ $project->company}}</td>
+													<td style="color:red;">{{ $project->name }}</td>
+													<td style="color:red;">{{ $project->start_date}}</td>
+													<td style="color:red;">{{ $project->finish_date}}</td>
+													<td style="color:red;">{{ $project->company}}</td>
+                          
 												@endif
 												<td>
 													@if($project->deleted=='0')
@@ -495,7 +614,11 @@
 															{{ csrf_field() }}
 													@endif
 														<center>
+                              
+                              
 															<a href="{{ route('projects.show', ['id' => $project->id]) }}" class="btn btn-warning" title="Ver detalles del proyecto con el id {{ $project->id }}" style="margin: 3px;"><span class="icofont icofont-eye-alt"></span></a>
+                              
+                               @if (Auth::user()->type == 1 || Auth::user()->type == 2)
 															<a href="{{ route('projects.edit', ['id' => $project->id]) }}" class="btn btn-primary" title="Editar proyecto con el id {{ $project->id }}" style="margin: 3px;"><span class="icofont icofont-ui-edit"></span></a>
 
 															@if($project->deleted=='0')
@@ -503,10 +626,11 @@
 															@else
 																<button type="submit" class="btn btn-success" style="margin: 3px;" id="restaurar" name="restaurar" onclick="restoreFunction()" title="Restaurar proyecto con el id {{ $project->id }}"><span class="fas fa-reply"></span></a>
 															@endif
+                              @endif
 														</center>
 													</form>
 												</td>
-											</tr>
+											  </tr>
 										@endforeach
 									</tbody>
 								@else
@@ -518,7 +642,45 @@
 
 									</center>
 								@endif
+                @endif
+                
+                @if (Auth::user()->type == 4 || Auth::user()->type == 5)
+								@if ($projects_tutor->isNotEmpty())
+									<thead id="table_header">
+										<tr>
+											<th class="all" scope="col">ID</th>
+											<th scope="col" >Nombre</th>
+											<th scope="col" >Fecha de Inicio</th>
+											<th scope="col" >Fecha de Finalización</th>
+											<th scope="col" >Empresa</th>
+											<th scope="col" >Acciones</th>
+										</tr>
+									</thead>
+									<tbody>
+										@foreach ($projects_tutor as $project)
+											<tr>
+													<td style="font-weight:bold">{{ $project->id }}</td>
+													<td>{{ $project->name }}</td>
+													<td>{{ $project->start_date}}</td>
+													<td>{{ $project->finish_date}}</td>
+													<td>{{ $project->company}}</td>
+												
+												<td><center>
+                          <a href="{{ route('projects.show', ['id' => $project->id]) }}" class="btn btn-warning" title="Ver detalles del proyecto con el id {{ $project->id }}" style="margin: 3px;"><span class="icofont icofont-eye-alt"></span></a>
+												</center></td>
+											  </tr>
+										@endforeach
+									</tbody>
+								@else
+									<center>
+										<div class="alert alert-primary icons-alert">
+											<strong>No existen registros</strong>
+											<p>El estudiante no ha registrado ningún proyecto.</p>
+										</div>
 
+									</center>
+								@endif
+                @endif
 							</table>
 						</div>
 					</div>
@@ -536,6 +698,7 @@
 
 						<div class="dt-responsive table-responsive">
 							<table id="simpletable-2" class="table table-striped table-bordered nowrap">
+                @if (Auth::user()->type == 1 || Auth::user()->type == 2)
 								@if ($acknowledgments->isNotEmpty())
 									<thead id="table_header">
 										<tr>
@@ -556,9 +719,9 @@
 													<td>{{ $acknowledgment->date}}</td>
 												@else
 													<td style="color:red; font-weight:bold">{{ $acknowledgment->id }}</td>
-													<td>{{ $acknowledgment->title }}</td>
-													<td>{{ $acknowledgment->transmitter}}</td>
-													<td>{{ $acknowledgment->date}}</td>
+													<td style="color:red;">{{ $acknowledgment->title }}</td>
+													<td style="color:red;">{{ $acknowledgment->transmitter}}</td>
+													<td style="color:red;">{{ $acknowledgment->date}}</td>
 												@endif
 												<td>
 													@if($acknowledgment->deleted=='0')
@@ -571,13 +734,15 @@
 													@endif
 														<center>
 															<a href="{{ route('acknowledgments.show', ['id' => $acknowledgment->id]) }}" class="btn btn-warning" title="Ver detalles del reconocimiento con el id {{ $acknowledgment->id }}" style="margin: 3px;"><span class="icofont icofont-eye-alt"></span></a>
-															<a href="{{ route('acknowledgments.edit', ['id' => $acknowledgment->id]) }}" class="btn btn-primary" title="Editar reconocimiento con el id {{ $acknowledgment->id }}" style="margin: 3px;"><span class="icofont icofont-ui-edit"></span></a>
+															 @if (Auth::user()->type == 1 || Auth::user()->type == 2)
+                              <a href="{{ route('acknowledgments.edit', ['id' => $acknowledgment->id]) }}" class="btn btn-primary" title="Editar reconocimiento con el id {{ $acknowledgment->id }}" style="margin: 3px;"><span class="icofont icofont-ui-edit"></span></a>
 
 															@if($acknowledgment->deleted=='0')
 																<button type="submit" class="btn btn-danger" style="margin: 3px;" id="eliminar" name="eliminar" onclick="archiveFunction()" title="Eliminar reconocimiento con el id {{ $acknowledgment->id }}"><span class="icofont icofont-ui-delete"></span></button>
 															@else
 																<button type="submit" class="btn btn-success" style="margin: 3px;" id="restaurar" name="restaurar" onclick="restoreFunction()" title="Restaurar reconocimiento con el id {{ $acknowledgment->id }}"><span class="fas fa-reply"></span></a>
 															@endif
+                              @endif
 														</center>
 													</form>
 												</td>
@@ -593,7 +758,43 @@
 
 									</center>
 								@endif
+                @endif
+                
+                @if (Auth::user()->type == 4 || Auth::user()->type == 5)
+                @if ($acknowledgments_tutor->isNotEmpty())
+									<thead id="table_header">
+										<tr>
+											<th class="all" scope="col">ID</th>
+											<th scope="col" >Titulo</th>
+											<th scope="col" >Emisor</th>
+											<th scope="col" >Fecha</th>
+											<th scope="col" >Acciones</th>
+										</tr>
+									</thead>
+									<tbody>
+										@foreach ($acknowledgments_tutor as $acknowledgment)
+											<tr>
+													<td style="font-weight:bold">{{ $acknowledgment->id }}</td>
+													<td>{{ $acknowledgment->title }}</td>
+													<td>{{ $acknowledgment->transmitter}}</td>
+													<td>{{ $acknowledgment->date}}</td>
+												
+												<td><center>
+                          <a href="{{ route('acknowledgments.show', ['id' => $acknowledgment->id]) }}" class="btn btn-warning" title="Ver detalles del reconocimiento con el id {{ $acknowledgment->id }}" style="margin: 3px;"><span class="icofont icofont-eye-alt"></span></a>
+												</center></td>
+											</tr>
+										@endforeach
+									</tbody>
+								@else
+									<center>
+										<div class="alert alert-primary icons-alert">
+											<strong>No existen registros</strong>
+											<p>El estudiante no ha registrado ningún reconocimiento.</p>
+										</div>
 
+									</center>
+								@endif
+                @endif
 							</table>
 						</div>
 					</div>
@@ -613,6 +814,7 @@
 
 						<div class="dt-responsive table-responsive">
 							<table id="simpletable-3" class="table table-striped table-bordered nowrap">
+                @if (Auth::user()->type == 1 || Auth::user()->type == 2)
 								@if ($work_experiences->isNotEmpty())
 									<thead id="table_header">
 										<tr>
@@ -635,10 +837,10 @@
 													<td>{{ $work_experience->finish_date}}</td>
 												@else
 													<td style="color:red; font-weight:bold">{{ $work_experience->id }}</td>
-													<td>{{ $work_experience->position }}</td>
-													<td>{{ $work_experience->company}}</td>
-													<td>{{ $work_experience->start_date}}</td>
-													<td>{{ $work_experience->finish_date}}</td>
+													<td style="color:red;">{{ $work_experience->position }}</td>
+													<td style="color:red;">{{ $work_experience->company}}</td>
+													<td style="color:red;">{{ $work_experience->start_date}}</td>
+													<td style="color:red;">{{ $work_experience->finish_date}}</td>
 												@endif
 												<td>
 													@if($work_experience->deleted=='0')
@@ -651,13 +853,15 @@
 													@endif
 														<center>
 															<a href="{{ route('work_experiences.show', ['id' => $work_experience->id]) }}" class="btn btn-warning" title="Ver detalles de experiencia laboral con el id {{ $work_experience->id }}" style="margin: 3px;"><span class="icofont icofont-eye-alt"></span></a>
-															<a href="{{ route('work_experiences.edit', ['id' => $work_experience->id]) }}" class="btn btn-primary" title="Editar experiencia laboral con el id {{ $work_experience->id }}" style="margin: 3px;"><span class="icofont icofont-ui-edit"></span></a>
+															@if (Auth::user()->type == 1 || Auth::user()->type == 2)
+                              <a href="{{ route('work_experiences.edit', ['id' => $work_experience->id]) }}" class="btn btn-primary" title="Editar experiencia laboral con el id {{ $work_experience->id }}" style="margin: 3px;"><span class="icofont icofont-ui-edit"></span></a>
 
 															@if($work_experience->deleted=='0')
 																<button type="submit" class="btn btn-danger" style="margin: 3px;" id="eliminar" name="eliminar" onclick="archiveFunction()" title="Eliminar experiencia laboral con el id {{ $work_experience->id }}"><span class="icofont icofont-ui-delete"></span></button>
 															@else
 																<button type="submit" class="btn btn-success" style="margin: 3px;" id="restaurar" name="restaurar" onclick="restoreFunction()" title="Restaurar experiencia laboral con el id {{ $work_experience->id }}"><span class="fas fa-reply"></span></a>
 															@endif
+                              @endif
 														</center>
 													</form>
 												</td>
@@ -673,7 +877,47 @@
 
 									</center>
 								@endif
+                @endif
+                
+                @if (Auth::user()->type == 4 || Auth::user()->type == 5)
+                @if ($work_experiences_tutor->isNotEmpty())
+									<thead id="table_header">
+										<tr>
+											<th class="all" scope="col">ID</th>
+											<th scope="col" >Cargo</th>
+											<th scope="col" >Empresa</th>
+											<th scope="col" >Fecha de Inicio</th>
+											<th scope="col" >Fecha de Finalización</th>
+											<th scope="col" >Acciones</th>
+										</tr>
+									</thead>
+									<tbody>
+										@foreach ($work_experiences_tutor as $work_experience)
+											<tr>
+													<td style="font-weight:bold">{{ $work_experience->id }}</td>
+													<td>{{ $work_experience->position }}</td>
+													<td>{{ $work_experience->company}}</td>
+													<td>{{ $work_experience->start_date}}</td>
+													<td>{{ $work_experience->finish_date}}</td>
+												
+												<td>
+														<center>
+															<a href="{{ route('work_experiences.show', ['id' => $work_experience->id]) }}" class="btn btn-warning" title="Ver detalles de experiencia laboral con el id {{ $work_experience->id }}" style="margin: 3px;"><span class="icofont icofont-eye-alt"></span></a>
+														</center>
+												</td>
+											</tr>
+										@endforeach
+									</tbody>
+								@else
+									<center>
+										<div class="alert alert-primary icons-alert">
+											<strong>No existen registros</strong>
+											<p>El estudiante no ha registrado ninguna experiencia laboral.</p>
+										</div>
 
+									</center>
+								@endif
+                @endif
 							</table>
 						</div>
 					</div>

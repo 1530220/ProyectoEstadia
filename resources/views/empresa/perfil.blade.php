@@ -2,27 +2,6 @@
 @section('titulo')
     Perfil Empresa
 @endsection
-@section('menu')
-<div class="box-shadow-for-ui">
-        <div class="uou-block-2b">
-          <div class="container"> <a href="/dashboard"><img src="/assets/images/logoupv.png" alt="" width="200px" height="100px"></a> <a href="#" class="mobile-sidebar-button mobile-sidebar-toggle"><span></span></a>
-            <nav class="nav">
-              <ul class="sf-menu">
-                <li><a href="/dashboard" style="color:white;"><i class="fas fa-home"></i> Inicio</a></li>
-                <li> <a href="/tus_trabajos" style="color:white;"><i class="fas fa-clipboard-list"></i> Tus Trabajos</a> </li>
-                <li> <a href="/egresados" style="color:white;"><i class="fas fa-user-graduate"></i> Egresados</a> </li>
-                <li> <a href="/perfil_empresa/{{auth()->user()->id}}" style="color:white;"><i class="fas fa-building"></i>  Tu perfil</a></li>
-                <li><a href="/conexiones_empresa/{{auth()->user()->id}}" style="color:white;"><i class="fab fa-connectdevelop"></i> Conexiones</a></li>
-                <li><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" style="color:white;"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
-                  <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                  {{ csrf_field() }}
-              </ul>
-            </nav>
-          </div>
-        </div>
-        <!-- end .uou-block-2b --> 
-      </div>
-@endsection
 
 @section('contenido')
 <div class="compny-profile"> 
@@ -172,7 +151,8 @@
                   <h3>Descripción general</h3>
                   <div class="profile-in">
                     @foreach ($companies as $company)
-                      <p>{{$company->description}}</p>
+                      
+                      <textarea rows="15" cols="50" class="form-control" placeholder="Descripción de la empresa" style="color:black" readonly>{{$company->description}}</textarea>
                       
                     <!-- Video -->
                     <!--<iframe src="https://www.youtube.com/embed/uVju5--RqtY"></iframe>-->
@@ -426,32 +406,4 @@
     </div>
   </div>
 </div>
-@endsection
-@section('pie_pagina')
-    <!-- Footer -->
-  <div class="uou-block-4a secondary dark">
-      <div class="container">
-        <ul class="links">
-          <li><a href="#">Privacy Policy</a></li>
-          <li><a href="#">Terms &amp; Conditions</a></li>
-        </ul>
-        <p>Copyright &copy; 2015 <a href="#">UOUAPPS</a>. All Rights reserved.</p>
-      </div>
-    </div>
-    <!-- end .uou-block-4a --> 
-    
-    <div class="uou-block-11a">
-      <h5 class="title">Menu</h5>
-      <a href="#" class="mobile-sidebar-close">&times;</a>
-      <nav class="main-nav">
-        <ul>
-          <li><a href="/inicio_empresa" style="color:white;"><i class="fa  fa-home"></i> Inicio</a></li>
-          <li> <a href="/tus_trabajos" style="color:white;"><i class="fas fa-clipboard-list"></i> Tus Trabajos</a> </li>
-          <li> <a href="/egresados" style="color:white;"><i class="fas fa-users"></i> Egresados</a> </li>
-          <li> <a href="/perfil_empresa" style="color:white;"><i class="fas fa-user"></i> Tu perfil</a></li>
-          <li><a href="/conexiones_empresa" style="color:white;"><i class="fab fa-connectdevelop"></i> Conexiones</a></li>
-          <li><a href="/" style="color:white;"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
-        </ul>
-      </nav>
-      <hr>
 @endsection

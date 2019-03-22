@@ -67,6 +67,8 @@ $.ajax({
     <link rel="stylesheet" type="text/css" href="{{ asset('bower_components/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}">
     <!-- Style.css -->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}">
+      <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/component.css') }}">
+  
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/jquery.mCustomScrollbar.css') }}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{{ asset('bower_components/bootstrap-tagsinput/css/bootstrap-tagsinput.css') }}" />
@@ -75,7 +77,6 @@ $.ajax({
     <link rel="stylesheet" type="text/css" href="{{ asset('bower_components/switchery/css/switchery.min.css') }}">
     <!--Sweetalert css-->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/sweetalert.min.css') }}" />
-
     <!-- C3 chart -->
     <link rel="stylesheet" href="{{ asset('bower_components/c3/css/c3.css') }}" type="text/css" media="all">
 
@@ -178,11 +179,13 @@ $.ajax({
                                 </a>
                                 <ul class="show-notification profile-notification">
                                     <li>
+                                      @if(Auth::user()->type == 1)
                                       <li>
                                           <a href="{{ route('profile.show_own_profile') }}">
                                               <i class="ti-user"></i> Perfil
                                           </a>
                                       </li>
+                                      @endif
                                       <li>
                                         <a class="" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -333,11 +336,13 @@ $.ajax({
 
     <script type="text/javascript" src="{{ asset('assets/pages/chart/knob/knob-custom-chart.js') }}"></script>
     <script src="{{ asset('assets/pages/chart/knob/jquery.knob.js') }}"></script>
-
+  
 
     <script type="text/javascript" src="{{ asset('bower_components/bootstrap-tagsinput/js/bootstrap-tagsinput.js') }}"></script>
 
 
+  
+  
     <script type="text/javascript" src="{{ asset('assets/js/dropdown.js') }}"></script>
     <!-- Modal -->
 	<div id="loading_modal_pdf" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

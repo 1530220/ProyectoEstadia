@@ -21,9 +21,10 @@ class MedalsController extends Controller
     public function index()
     {
         $medals = DB::table('medals')->where('id','!=','4294967295')->get();
-
+        $medals_tutor = DB::table('medals')->where('deleted','=',0)->get();
         return view('medals.list')
           ->with('medals',$medals)
+          ->with('medals_tutor',$medals_tutor)
           ->with('title', 'Listado de Medallas');
     }
 
@@ -226,12 +227,21 @@ class MedalsController extends Controller
     }
 
     public function restoreStudentMedal(Request $request){
-      DeleteHelper::instance()->restoreLogicalDelete('students_medals','id',$request->id);
+      $student = students_medals::find($request->id);
+      $student_medals = students_medals::find($request->id);
+      $medal = DB::table("medals")->where("id","=",$student_medals->medal_id)->first();
+      
+      if($medal->deleted == 1){
+          Alert::error('No se puede reasignar debido a que la medalla se encuentra eliminada', 'Error');
+          return redirect()->route('students.show', ['id' => $student->student_id]);
+      }else{
+          DeleteHelper::instance()->restoreLogicalDelete('students_medals','id',$request->id);
 
-        Alert::success('Exitosamente','Medalla restaurada en el estudiante');
-        $student = students_medals::find($request->id);
+          Alert::success('Exitosamente','Medalla restaurada en el estudiante');
 
-        insertToLog(Auth::user()->id, 'recover', $request->id, "medalla del estudiante {$student->student_id}");
-        return redirect()->route('students.show', ['id' => $student->student_id]);
+          insertToLog(Auth::user()->id, 'recover', $request->id, "medalla del estudiante {$student->student_id}");
+          return redirect()->route('students.show', ['id' => $student->student_id]);
+      } 
+     
     }
 }

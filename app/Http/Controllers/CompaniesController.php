@@ -8,6 +8,8 @@ use App\Country;
 use App\State;
 use App\City;
 use App\User;
+use App\StatusJob;
+use App\job;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Helpers\DeleteHelper;
@@ -337,6 +339,18 @@ class CompaniesController extends Controller
   
     public function destroy(Company $company)
     {
+        $jobs = job::where("id_company","=",$company->id)->get();
+          
+        foreach($jobs as $job){
+          $status_job = StatusJob::where("id_job","=",$job->id)->get();
+       
+          foreach($status_job as $status){
+            $delete_status = StatusJob::find($status->id);
+            $delete_status->delete();
+          }
+        }
+
+      
         DeleteHelper::instance()->onCascadeLogicalDelete('companies','id',$company->id);
 
         Alert::success('Exitosamente','Empresa Eliminada');

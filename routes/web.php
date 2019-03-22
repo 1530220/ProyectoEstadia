@@ -1,5 +1,4 @@
 <?php
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -49,47 +48,6 @@ Route::group(['middleware'=>['auth']], function () {
      * Rutas para para las operaciones AJAX    *
      *******************************************/
 
-    //Permite obtener los estudiantes que estan asignados al profesor seleccionado
-    Route::post('/operations/ajax/tutorias/getStudentsFromTeacher', 'TutoriaController@getStudentsFromTeacher')->name('tutorias.get_students');
-
-    //Permite obtener los estudiantes que estan asignados al profesor seleccionado
-    Route::post('/operations/ajax/tutorias/getProblemsOfTypeAttention', 'TutoriaController@getProblemsOfTypeAttention')->name('tutorias.get_problems_of_type_attention');
-
-    //Permite obtener los estudiantes que estan asignados al profesor seleccionado
-    Route::post('/operations/ajax/tutorias/getStudentDetails', 'TutoriaController@getStudentDetails')->name('tutorias.get_student_details');
-
-    //Permite obtener los estudiantes que estan asignados al profesor seleccionado
-    Route::post('/operations/ajax/asesorias/getStudentsFromTeacher', 'AsesoriaController@getStudentsFromTeacher')->name('asesorias.get_students');
-
-    //Permite obtener los estudiantes que estan asignados al profesor seleccionado
-    Route::post('/operations/ajax/asesorias/getProblemsOfTypeAttention', 'AsesoriaController@getProblemsOfTypeAttention')->name('asesorias.get_problems_of_type_attention');
-
-    //Permite obtener los detalles de los estudiantes
-    Route::post('/operations/ajax/asesorias/getStudentDetails', 'AsesoriaController@getStudentDetails')->name('asesorias.get_student_details');
-
-    //Permite obtener las horas de disponibilidad de algun profesor
-    Route::post('/operations/ajax/schedule/getAvailableHours', 'ScheduleController@getAvailableHours')->name('schedule.get_available_hours');
-
-    //Permite obtener todas las horas de disponibilidad asignadas al profesor
-    Route::post('/operations/ajax/schedule/getAllAvailableHours', 'ScheduleController@getAllAvailableHours')->name('schedule.get_all_available_hours');
-
-    //Permite obtener los id de las horas de disponbilidad
-    Route::post('/operations/ajax/schedule/getListOfAvailableHoursId', 'ScheduleController@getListOfAvailableHoursId')->name('schedule.get_list_of_available_hours_id');
-
-    //Permite obtener el reporte de asesoria
-    Route::post('/operations/ajax/reports/get_asesoria_report', 'ReportController@get_asesoria_report')->name('reports.get_asesoria_report');
-
-    //Permite obtener el reporte de tutoria
-    Route::post('/operations/ajax/reports/get_tutoria_report', 'ReportController@get_tutoria_report')->name('reports.get_tutoria_report');
-
-    //Permite obtener el reporte de tutoria
-    Route::post('/operations/ajax/reports/get_jtg_tutoria_report', 'ReportController@get_jtg_tutoria_report')->name('reports.get_jtg_tutoria_report');
-
-    //Permite obtener el reporte de tutoria
-    Route::post('/operations/ajax/reports/get_solicitud_report', 'ReportController@get_solicitud_report')->name('reports.get_solicitud_report');
-
-    //Permite obtener el valor de una grafica
-    Route::post('/operations/ajax/reports/get_value_for_chart', 'ReportController@get_value_for_chart')->name('reports.get_value_for_chart');
 
     Route::post('/operations/ajax/companies/verific_column', 'CompaniesController@verific_column')->name('companies.verific_column');
     Route::post('/operations/ajax/companies/verific_email', 'CompaniesController@verific_email')->name('companies.verific_email');
@@ -99,7 +57,9 @@ Route::group(['middleware'=>['auth']], function () {
     Route::post('/operations/ajax/contacts/verific_contact_email_edit', 'ContactsController@verific_contact_email_edit')->name('contacts.verific_contact_email_edit');
     Route::post('/operations/ajax/contacts/verific_contact_email', 'ContactsController@verific_contact_email')->name('contacts.verific_contact_email');
   
-   Route::post('/operations/ajax/connections/verific_companies', 'ConnectionsController@verific_companies')->name('connections.verific_companies');
+    Route::post('/operations/ajax/connections/verific_companies', 'ConnectionsController@verific_companies')->name('connections.verific_companies');
+  
+    Route::post('/operations/ajax/status_job/verific_jobs', 'StatusJobController@verific_jobs')->name('status_job.verific_jobs');
    //Route::post('/operations/ajax/login/verificar_type', 'LoginController@verificar_type')->name('login.verificar_type');
     /**************  Termina operaciones AJAX  ***************/
 
@@ -135,34 +95,6 @@ Route::group(['middleware'=>['auth']], function () {
         Route::post('/users/restore', 'UserController@restore')->name('users.restore');
         /**************  Termina usuarios  ***************/
 
-        /*******************************************
-         * Rutas para el mantenimiento de carreras *
-         *******************************************/
-
-        //Ver el listado de carreras
-        Route::get('/careers', 'CareerController@index')->name('careers.list');
-
-        //Mostrar los detalles de una carrera
-        Route::get('/careers/{ca}', 'CareerController@show')->where('ca', '[0-9]+')->name('careers.show');
-
-        //Crear una carrera
-        Route::get('/careers/new', 'CareerController@create')->name('careers.create');
-
-        //Editar una carrera
-        Route::get('/careers/{career}/edit', 'CareerController@edit')->where('id', '[0-9]+')->name('careers.edit');
-
-        //Almacenar los datos de una carrera
-        Route::post('/careers', 'CareerController@store');
-
-        //Eliminar una carrera
-        Route::delete('/careers/{career}', 'CareerController@destroy')->name('careers.destroy');
-
-        //Actualizar una carrera
-        Route::put('/careers/{career}', 'CareerController@update')->name('careers.update');
-
-        //Restaurar una carrera
-        Route::post('/careers/restore', 'CareerController@restore')->name('careers.restore');
-        /**************  Termina carreras  ***************/
 
         Route::get('/skills', 'SkillsController@index')->name('skills.list');
         Route::get('/skills/new', 'SkillsController@create')->name('skills.create');
@@ -182,25 +114,13 @@ Route::group(['middleware'=>['auth']], function () {
         Route::post('/skills/asignar/{id}','SkillsController@guardarAsignaciones')->name('skills.guardarAsignaciones');
 
 
-        Route::get('/competences', 'CompetencesController@index')->name('competences.list');
         Route::get('/competences/new', 'CompetencesController@create')->name('competences.create');
         Route::post('/competences', 'CompetencesController@store');
         Route::get('/competences/{id}', 'CompetencesController@show')->where('id', '[0-9]+')->name('competences.show');
         Route::get('/competences/{competence}/edit', 'CompetencesController@edit')->where('id', '[0-9]+')->name('competences.edit');
         Route::put('/competences/{competence}', 'CompetencesController@update')->name('competences.update');
         Route::delete('/competences/{competence}', 'CompetencesController@destroy')->name('competences.destroy');
-        Route::post('/competences/restore', 'CompetencesController@restore')->name('competences.restore');
-        Route::get('/competence/{competence}/edit', 'CompetencesController@editStudentCompetence')->where('id', '[0-9]+')->name('competence.edit');
-        Route::put('/competence/{competence}', 'CompetencesController@updateStudentCompetence')->name('competence.update');
-        Route::delete('/competence/{competence}', 'CompetencesController@destroyStudentCompetence')->name('competence.destroy');
-        Route::post('/competence/restore', 'CompetencesController@restoreStudentCompetence')->name('competence.restore');
-
-        Route::get('/competences/asignar/{id}', 'CompetencesController@asignar')->name('competences.asignar');
-        Route::post('/competences/asignar/{id}','CompetencesController@guardarAsignaciones')->name('competences.guardarAsignaciones');
-
-        Route::get('/competences/solicitudes', 'CompetencesController@solicitudes')->name('competences.solicitudes');
-        Route::get('/competences/solicitudes/{competence}', 'CompetencesController@answerAccepted')->name('competences.answerAccepted');
-        Route::get('/competences/solicitudes/answer/{competence}', 'CompetencesController@answerRejected')->name('competences.answerRejected');
+        
 
         Route::get('/sectors', 'SectorController@index')->name('sectors.list');
         Route::get('/sectors/new', 'SectorController@create')->name('sectors.create');
@@ -211,25 +131,16 @@ Route::group(['middleware'=>['auth']], function () {
         Route::delete('/sectors/{sector}', 'SectorController@destroy')->name('sectors.destroy');
         Route::post('/sectors/restore', 'SectorController@restore')->name('sectors.restore');
 
-        Route::get('/medals', 'MedalsController@index')->name('medals.list');
         Route::get('/medals/new', 'MedalsController@create')->name('medals.create');
         Route::post('/medals', 'MedalsController@store');
-        Route::get('/medals/{id}', 'MedalsController@show')->where('id', '[0-9]+')->name('medals.show');
         Route::get('/medals/{medal}/edit', 'MedalsController@edit')->where('id', '[0-9]+')->name('medals.edit');
         Route::put('/medals/{medal}', 'MedalsController@update')->name('medals.update');
         Route::delete('/medals/{medal}', 'MedalsController@destroy')->name('medals.destroy');
         Route::post('/medals/restore', 'MedalsController@restore')->name('medals.restore');
-        
-        Route::get('/medals/asignar/{id}', 'MedalsController@asignar')->name('medals.asignar');
-        Route::post('/medals/asignar/{id}','MedalsController@guardarAsignaciones')->name('medals.guardarAsignaciones');
-
-        Route::delete('/medal/{medal}', 'MedalsController@destroyStudentMedal')->name('medal.destroy');
-        Route::post('/medal/restore', 'MedalsController@restoreStudentMedal')->name('medal.restore');
 
         Route::get('/projects', 'ProjectsController@index')->name('projects.list');
         Route::get('/projects/new', 'ProjectsController@create')->name('projects.create');
         Route::post('/projects', 'ProjectsController@store');
-        Route::get('/projects/{id}', 'ProjectsController@show')->where('id', '[0-9]+')->name('projects.show');
         Route::get('/projects/{project}/edit', 'ProjectsController@edit')->where('id', '[0-9]+')->name('projects.edit');
         Route::put('/projects/{project}', 'ProjectsController@update')->name('projects.update');
         Route::delete('/projects/{project}', 'ProjectsController@destroy')->name('projects.destroy');
@@ -238,7 +149,6 @@ Route::group(['middleware'=>['auth']], function () {
         Route::get('/acknowledgments', 'AcknowledgmentsController@index')->name('acknowledgments.list');
         Route::get('/acknowledgments/new', 'AcknowledgmentsController@create')->name('acknowledgments.create');
         Route::post('/acknowledgments', 'AcknowledgmentsController@store');
-        Route::get('/acknowledgments/{id}', 'AcknowledgmentsController@show')->where('id', '[0-9]+')->name('acknowledgments.show');
         Route::get('/acknowledgments/{acknowledgment}/edit', 'AcknowledgmentsController@edit')->where('id', '[0-9]+')->name('acknowledgments.edit');
         Route::put('/acknowledgments/{acknowledgment}', 'AcknowledgmentsController@update')->name('acknowledgments.update');
         Route::delete('/acknowledgments/{acknowledgment}', 'AcknowledgmentsController@destroy')->name('acknowledgments.destroy');
@@ -247,7 +157,6 @@ Route::group(['middleware'=>['auth']], function () {
         Route::get('/work_experiences', 'WorkExperiencesController@index')->name('work_experiences.list');
         Route::get('/work_experiences/new', 'WorkExperiencesController@create')->name('work_experiences.create');
         Route::post('/work_experiences', 'WorkExperiencesController@store');
-        Route::get('/work_experiences/{id}', 'WorkExperiencesController@show')->where('id', '[0-9]+')->name('work_experiences.show');
         Route::get('/work_experiences/{work_experience}/edit', 'WorkExperiencesController@edit')->where('id', '[0-9]+')->name('work_experiences.edit');
         Route::put('/work_experiences/{work_experience}', 'WorkExperiencesController@update')->name('work_experiences.update');
         Route::delete('/work_experiences/{work_experience}', 'WorkExperiencesController@destroy')->name('work_experiences.destroy');
@@ -290,6 +199,21 @@ Route::group(['middleware'=>['auth']], function () {
         Route::put('/connections/{connection}', 'ConnectionsController@update')->name('connections.update');
         Route::delete('/connections/{connection}', 'ConnectionsController@destroy')->name('connections.destroy');
         Route::post('/connections/restore', 'ConnectionsController@restore')->name('connections.restore');
+      
+        Route::get('/evidences', 'EvidencesController@index')->name('evidences.list');
+        Route::get('/evidences/new/{id}', 'EvidencesController@create')->where('id', '[0-9]+')->name('evidences.create');
+        Route::post('/evidences/cargar/{id}', 'EvidencesController@store')->name('evidences.cargarEvidencia');
+        Route::delete('/evidences/{evidence}', 'EvidencesController@destroy')->name('evidences.destroy');
+        
+        Route::get('/status_job', 'StatusJobController@index')->name('status_job.list');
+        Route::get('/status_job/new', 'StatusJobController@create')->name('status_job.create');
+  
+        Route::get('/status_job/postulaciones/{job}', 'StatusJobController@answerAccepted')->name('status_job.answerAccepted');
+        Route::get('/status_job/postulaciones/answer/{job}', 'StatusJobController@answerRejected')->name('status_job.answerRejected');
+        
+        Route::get('/status_job/postular/{id}', 'StatusJobController@guardarPostulacion')->name('status_job.guardarPostulacion');
+        Route::get('/status_job/postular/cancelar/{id}', 'StatusJobController@cancelarPostulacion')->name('status_job.cancelarPostulacion');
+        
         /***************************************************
          *  Rutas para importar CSV al sistema *
          ***************************************************/
@@ -316,156 +240,55 @@ Route::group(['middleware'=>['auth']], function () {
       Route::get('/tutorias/{id}', 'TutoriaController@show')->where('id', '[0-9]+')->name('tutorias.show');
     });
 
-    /**
-     * Rutas para: Depto. Salud, Depto. Psicologia
-     */
-    Route::group(['middleware'=>['access:6,7']], function(){
-      //Mostrar los detalles de un tutoria
-      Route::get('/tutorias/{id}/update', 'TutoriaController@updateCanalizationState')->where('id', '[0-9]+')->name('tutorias.updateCanalizationState');
-
-      //Actualizar el estado de canalizacion de una tutoria
-      Route::put('/tutorias/updateCanalizationState/{tutoria}', 'TutoriaController@storeUpdateCanalizationState')->name('tutorias.storeUpdateCanalizationState');
-    });
-
-    /**
-     * Rutas para: Estudiantes
-     */
-    /*Route::group(['middleware'=>['access:3']], function(){
-        //Aprobar una tutoria
-        Route::get('/tutorias/{id}/aproved', 'TutoriaController@tutoriaAproved')->name('tutorias.aproved');
-
-        //Rechazar una tutoria
-        Route::get('/tutorias/{id}/cancelled', 'TutoriaController@tutoriaCancelled')->name('tutorias.cancelled');
-
-        //Aprobar una asesoria
-        Route::get('/asesorias/{id}/aproved', 'AsesoriaController@asesoriaAproved')->name('asesorias.aproved');
-
-        //Rechazar una asesoria
-        Route::get('/asesorias/{id}/cancelled', 'AsesoriaController@asesoriaCancelled')->name('asesorias.cancelled');
-    });*/
-
-    /**
-     * Rutas para: Administradores, Usuarios, Estudiantes, Profesores, Tutores, Depto. Salud, Depto. Psicologia
-     */
-    Route::group(['middleware'=>['access:1,2,4,5,6,7']], function(){
-      //Ver el listado de asesorias
-      Route::get('/asesorias', 'AsesoriaController@index')->name('asesorias.list');
-
-      //Mostrar los detalles de un asesoria
-      Route::get('/asesorias/{asesoria}', 'AsesoriaController@show')->where('asesoria', '[0-9]+')->name('asesorias.show');
-    });
-
-    /**
-     * Rutas para: Administradores, Usuarios, Profesores, Tutores
-     */
-    Route::group(['middleware'=>['access:1,2,4,5']], function(){
-        //Modificar una asesoria
-        Route::get('/asesorias/{id}/edit', 'AsesoriaController@edit')->where('id', '[0-9]+')->name('asesorias.edit');
-
-        //Crear una asesoria(siendo tutor)
-        Route::get('/asesorias/new', 'AsesoriaController@create')->name('asesorias.create');
-
-        //Almacenar los datos de una asesoria
-        Route::post('/asesorias/new', 'AsesoriaController@store')->name('asesorias.store');
-
-        //Actualizar un asesoria
-        Route::put('/asesorias/{id}', 'AsesoriaController@update');
-
-        //Eliminar un asesoria
-        Route::delete('/asesorias/{asesoria}', 'AsesoriaController@destroy')->name('asesorias.destroy');
-
-        //Recuperar las asesorias borradas
-        Route::post('/asesorias/restore', 'AsesoriaController@restore')->name('asesorias.restore');
-    });
-
+  
     /**
      * Rutas solo para administradores o tutores o estudiantes
      */
     Route::group(['middleware'=>['access:1,2,5']], function(){
-        /*******************************************
-         * Rutas para el mantenimiento de tutorias *
-         *******************************************/
+        
+        Route::get('/competences', 'CompetencesController@index')->name('competences.list');
+        Route::get('/competences/not_evaluated', 'CompetencesController@not_evaluated')->name('competences.not_evaluated');
+        Route::get('/competences/{id}', 'CompetencesController@show')->where('id', '[0-9]+')->name('competences.show');
+        Route::post('/competences/restore', 'CompetencesController@restore')->name('competences.restore');
+        Route::get('/competence/{competence}/edit', 'CompetencesController@editStudentCompetence')->where('id', '[0-9]+')->name('competence.edit');
+        Route::put('/competence/{competence}', 'CompetencesController@updateStudentCompetence')->name('competence.update');
+        Route::delete('/competence/{competence}', 'CompetencesController@destroyStudentCompetence')->name('competence.destroy');
+        Route::post('/competence/restore', 'CompetencesController@restoreStudentCompetence')->name('competence.restore');
 
-        //Editar un tutoria
-        Route::get('/tutorias/{id}/edit', 'TutoriaController@edit')->where('id', '[0-9]+')->name('tutorias.edit');
 
-        //Crear una tutoria
-        Route::get('/tutorias/new', 'TutoriaController@create')->name('tutorias.create');
-
-        //Almacenar los datos de una tutoria
-        Route::post('/tutorias/new', 'TutoriaController@store')->name('tutorias.store');
-
-        //Eliminar un tutoria
-        Route::delete('/tutorias/{tutoria}', 'TutoriaController@destroy')->name('tutorias.destroy');
-
-        //Restaurar una tutoria
-        Route::post('/tutorias/restore', 'TutoriaController@restore')->name('tutorias.restore');
-
-        //Actualizar un tutoria
-        Route::put('/tutorias/{tutoria}', 'TutoriaController@update')->name('tutorias.update');
-
-        //Actualizar un tutoria
-        Route::get('/tutorias/{tutoria}/do', 'TutoriaController@do')->name('tutorias.do');
-
-        //Mostrar los detalles de un tutoria(jtg)
-        Route::get('/tutorias/jtg/{id}', 'JtgTutoriaController@show')->where('id', '[0-9]+')->name('tutorias.jtg.show');
-
-        //Ver el listado de tutorias(jtg)
-        Route::get('/tutorias/jtg', 'JtgTutoriaController@index')->name('tutorias.jtg.list');
-
-        //Crear una tutoria(jtg)
-        Route::get('/tutorias/jtg/new', 'JtgTutoriaController@create')->name('tutorias.jtg.create');
-
-        //Almacenar los datos de una tutoria(jtg)
-        Route::post('/tutorias/jtg/new', 'JtgTutoriaController@store')->name('tutorias.jtg.store');
-
-        //Eliminar un tutoria(jtg)
-        Route::delete('/tutorias/jtg/{tutoria}', 'JtgTutoriaController@destroy')->name('tutorias.jtg.destroy');
-
-        //Restaurar una tutoria(jtg)
-        Route::post('/tutorias/jtg/restore', 'JtgTutoriaController@restore')->name('tutorias.jtg.restore');
-
-        //Editar un tutoria(jtg)
-        Route::get('/tutorias/jtg/{id}/edit', 'JtgTutoriaController@edit')->where('id', '[0-9]+')->name('tutorias.jtg.edit');
-
-        //Actualizar un tutoria(jtg)
-        Route::put('/tutorias/jtg/{tutoria}', 'JtgTutoriaController@update')->name('tutorias.jtg.update');
-        /**************  Termina tutorias  ***************/
+        Route::get('/competences/solicitudes', 'CompetencesController@solicitudes')->name('competences.solicitudes');
+        Route::get('/competences/solicitudes/{competence}', 'CompetencesController@answerAccepted')->name('competences.answerAccepted');
+        Route::get('/competences/solicitudes/answer/{competence}', 'CompetencesController@answerRejected')->name('competences.answerRejected');
+      
+        Route::get('/competences/asignar/{id}', 'CompetencesController@asignar')->name('competences.asignar');
+        Route::post('/competences/asignar/{id}','CompetencesController@guardarAsignaciones')->name('competences.guardarAsignaciones');
+      
+        Route::get('/evidences/download/{id}','EvidencesController@download');
+        
+        Route::get('/medals', 'MedalsController@index')->name('medals.list');
+        Route::get('/medals/asignar/{id}', 'MedalsController@asignar')->name('medals.asignar');
+        Route::post('/medals/asignar/{id}','MedalsController@guardarAsignaciones')->name('medals.guardarAsignaciones');
+        
+        Route::get('/medals/{id}', 'MedalsController@show')->where('id', '[0-9]+')->name('medals.show');
+        Route::delete('/medal/{medal}', 'MedalsController@destroyStudentMedal')->name('medal.destroy');
+        Route::post('/medal/restore', 'MedalsController@restoreStudentMedal')->name('medal.restore');
+      
+        Route::get('/projects/{id}', 'ProjectsController@show')->where('id', '[0-9]+')->name('projects.show');
+      
+        Route::get('/acknowledgments/{id}', 'AcknowledgmentsController@show')->where('id', '[0-9]+')->name('acknowledgments.show');
+      
+        Route::get('/work_experiences/{id}', 'WorkExperiencesController@show')->where('id', '[0-9]+')->name('work_experiences.show');
+      
+      Route::get('/movements', 'LogController@indexMovements')->name('log.movementslist');
     });
 
-    Route::group(['middleware'=>['access:1,8']], function(){
+    Route::group(['middleware'=>['access:1,3,8']], function(){
         Route::get('/states/{id}', 'WorkExperiencesController@getStates');
         Route::get('/cities/{id}', 'WorkExperiencesController@getCities');
 
     });
 
-    //Route::group(['middleware'=>['access:1,2,3,5']], function(){
-        /*******************************************
-         *Rutas para schedule*
-         *******************************************/
-/*
-        //Editar una cita de tutoria
-        Route::get('/schedule/editTutoria/{id}', 'ScheduleController@editCitaTutoria')->where('id', '[0-9]+')->name('schedule.tutoria.edit');
-
-        //Eliminar una cita tutoria
-        Route::delete('/schedule/delete/{id}', 'ScheduleController@destroyCitaTutoria')->name('schedule.tutoria.destroy');
-
-        //Actualizar un cita de tutoria
-        Route::put('/schedule/updateTutoria/{id}', 'ScheduleController@updateCitaTutoria');
-
-        //Recuperar las tutorias borradas
-        Route::post('/schedule/restore/tutorias', 'ScheduleController@restoreCitaTutoria')->name('schedule.tutoria.restore');
-
-        //Permite acceder al listado de citas de tutorias
-        Route::get('/schedule/tutoria', 'ScheduleController@indexCitasTutorias')->name('schedule.tutoria.list');
-
-        //Permite acceder a la vista de schedule cita de tutorias
-        Route::get('/schedule/new/tutoria', 'ScheduleController@createCitaTutorias')->name('schedule.tutoria.create');
-
-        //Permite almacenar la cita de tutorias en la BD
-        Route::post('/schedule/new/tutoria', 'ScheduleController@storeCitaTutorias')->name('schedule.storeTutoria');*/
-        /**************  Termina schedule  ***************/
-    //});
+    
 
     /******************************************
      * Rutas para estudiantes                 *
@@ -691,7 +514,7 @@ Route::group(['middleware'=>['auth']], function () {
         Route::get('/sessions/{id}', 'LogController@showSession')->where('id', '[0-9]+')->name('sessions.show');
 
         //Lista de Log de movimientos
-        Route::get('/movements', 'LogController@indexMovements')->name('log.movementslist');
+        
 
         //Mostrar Perfil del Usuario
         Route::get('/movements/{id}', 'LogController@showMovement')->where('id', '[0-9]+')->name('movements.show');
@@ -716,7 +539,7 @@ Route::get('/ofertas_trabajo','EgresadosController@ofertas_trabajo');
 
 Route::get('/lista_egresados','EgresadosController@lista_egresados')->name('students_upv');
 
-Route::get('/lista_egresados/ajax','EgresadosController@lista_egresados_ajax');//
+//Route::get('/lista_egresados/ajax','EgresadosController@lista_egresados_ajax');//
 
 Route::get('/perfil_egresado/{users}','EgresadosController@perfil_egresado')->name('profile_student');
   
@@ -739,16 +562,60 @@ Route::get('/perfil_usuario/{users}','EgresadosController@perfil_usuario');
 Route::get('/egresado_perfil_empresa/{comapnies}','EgresadosController@egresado_perfil_empresa');
 
 Route::get('/conexiones_egresado/{users}','EgresadosController@conexiones_egresado');
+  
 
 Route::get('/vacante/{jobs}','EgresadosController@vacante');
 
 Route::post('/vacante/{jobs}','EgresadosController@sendjob');
 
 Route::DELETE('/vacante/{jobs}','EgresadosController@destroy_sendjob');
+  
 
 Route::get('/agregar_competencias/{users}','EgresadosController@addcompetence');
 
 Route::post('/agregar_competencias/{competences}','EgresadosController@store_addcompetences');
+  
+
+  
+Route::get('/agregar_experiencias/{users}','EgresadosController@addworkexperiences');
+  
+Route::post('/agregar_experiencias/{users}','EgresadosController@store_workexperiences');
+  
+Route::get('/editar_experiencias/{users}','EgresadosController@editworkexperience');
+  
+Route::PATCH('/editar_experiencias/{users}','EgresadosController@update_workexperience');
+  
+Route::get('/eliminar_experiencias/{users}','EgresadosController@deleteworkexperiences');
+  
+Route::PATCH('/eliminar_experiencias/{users}','EgresadosController@destroy_workexperience');
+  
+
+Route::get('/agregar_reconocimientos/{users}','EgresadosController@addacknowledgments');
+  
+Route::post('/agregar_reconocimientos/{users}','EgresadosController@store_acknowledgments');
+  
+Route::get('/editar_reconocimientos/{users}','EgresadosController@editacknowledgment');
+  
+Route::PATCH('/editar_reconocimientos/{users}','EgresadosController@update_acknowledgment');
+  
+Route::get('/eliminar_reconocimientos/{users}','EgresadosController@deleteacknowledgments');
+  
+Route::PATCH('/eliminar_reconocimientos/{users}','EgresadosController@destroy_acknowledgment');
+  
+
+Route::get('/agregar_evidencias/{users}','EgresadosController@addevidences');
+  
+Route::post('/agregar_evidencias/{users}','EgresadosController@store_evidences');
+  
+Route::get('/eliminar_evidencias/{users}','EgresadosController@deleteevidences');
+  
+Route::PATCH('/eliminar_evidencias/{users}','EgresadosController@destroy_evidence');
+  
+  
+  
+Route::get('user/download/{id}','EgresadosController@download');
+  
+
 });
 
 Route::get('type/{type}', 'SweetAlertController@notification');

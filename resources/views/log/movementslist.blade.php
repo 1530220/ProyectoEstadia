@@ -2,29 +2,9 @@
 
 @section('title',"Bolsa de Trabajo - Historial de Movimientos")
 
-@switch(Auth::user()->type)
-	@case(1)
-		@section('body')
-		@break
-	@case(2)
-		@section('bodyUsuario')
-		@break
-	@case(3)
-		@section('bodyStudent')
-		@break
-	@case(4)
-		@section('bodyTeacher')
-		@break
-	@case(5)
-		@section('bodyTutor')
-		@break
-	@case(6)
-		@section('bodyUserSalud')
-		@break
-	@case(7)
-		@section('bodyUserPsicologia')
-		@break
-@endswitch
+
+@section('body')
+
 <!-- Main-body start -->
 <div class="main-body">
 	<!-- Page-header start -->
@@ -95,6 +75,101 @@
 								<tfoot>
 									<tr id="table_footer">
 										<th style="padding-right: 2.8%" scope="col">ID</th>
+										<th style="padding-right: 2.8%" scope="col">Mensaje</th>
+										<th style="padding-right: 2.8%" scope="col">Fecha</th>
+										<th style="padding-right: 2.8%" scope="col">Acciones</th>
+									</tr>
+								</tfoot>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+@endsection
+
+@section('bodyTutor')
+
+<!-- Main-body start -->
+<div class="main-body">
+	<!-- Page-header start -->
+	<div class="page-header card">
+		<div class="row align-items-end">
+			<div class="col-lg-8">
+				<div class="page-header-title">
+					<i class="fa fa-history" style="background-color:#ac7c64;"></i>
+					<div class="d-inline">
+						<h4 style="text-transform: none;">Historial</h4>
+						<span style="text-transform: none;">Historial de movimientos realizados por {{Auth()->user()->first_name}} {{Auth()->user()->last_name}} {{Auth()->user()->second_last_name}}.</span>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-4">
+				<div class="page-header-breadcrumb">
+					<ul class="breadcrumb-title">
+						<li class="breadcrumb-item">
+							<a href="{{ route('dashboard') }}">
+								<i class="icofont icofont-home"></i>
+							</a>
+						</li>
+						<li class="breadcrumb-item">Historial de Movimientos
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Page-header end -->
+
+	<!-- Page-body start -->
+	<div class="page-body">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="card">
+					<div class="card-block">
+						<div class="dt-responsive table-responsive">
+							<table style="width:100%;" id="custom_datatable" class="table table-striped table-bordered">
+								@if ($sessions->isNotEmpty())
+								<thead id="table_header">
+									<tr>
+										<th scope="col" style="width: 70%;">Mensaje</th>
+										<th scope="col" style="width: 20%;">Fecha</th>
+										<th class="all" scope="col" style="width: 0%;">Acciones</th>
+									</tr>
+								</thead>
+								<tbody>
+									@foreach ($sessions as $session)
+									<tr>
+											<td>{{ $session->message }}</td>
+											<td>{{ $session->date }}</td>
+                   
+                      @switch($session->action)
+                        @case(3)
+                          <td>Añadió</td>
+                        @break
+                        @case(4)
+                          <td>Actualizó</td>
+                        @break
+                        @case(5)
+                           <td>Eliminó</td>
+                        @break
+                        @case(6)
+                          <td>Restauró</td>
+                        @break
+                      @endswitch
+										
+									</tr>
+									@endforeach
+								</tbody>
+								@else
+								<center>
+										<p>No hay movimientos registrados</p>
+								</center>
+								@endif
+								<tfoot>
+									<tr id="table_footer">
 										<th style="padding-right: 2.8%" scope="col">Mensaje</th>
 										<th style="padding-right: 2.8%" scope="col">Fecha</th>
 										<th style="padding-right: 2.8%" scope="col">Acciones</th>

@@ -6,23 +6,8 @@
 	@case(1)
 		@section('body')
 		@break
-	@case(2)
-		@section('bodyUsuario')
-		@break
-	@case(3)
-		@section('bodyStudent')
-		@break
-	@case(4)
-		@section('bodyTeacher')
-		@break
 	@case(5)
 		@section('bodyTutor')
-		@break
-	@case(6)
-		@section('bodyUserSalud')
-		@break
-	@case(7)
-		@section('bodyUserPsicologia')
 		@break
 @endswitch
 
@@ -57,8 +42,14 @@
 								<i class="icofont icofont-home"></i>
 							</a>
 						</li>
-						<li class="breadcrumb-item">Alumnos
-						</li>
+             @if (Auth::user()->type == 4 || Auth::user()->type == 5)
+              <li class="breadcrumb-item">Tutorados
+						  </li>
+            @else(Auth::user()->type == 1 || Auth::user()->type == 2)
+              <li class="breadcrumb-item">Alumnos
+						  </li>
+            @endif
+
 					</ul>
 				</div>
 			</div>

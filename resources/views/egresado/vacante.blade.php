@@ -60,7 +60,8 @@
               <!--</div>
             </div>
           </div>-->
-          @if ($status==0)
+         
+          @if ($contador==0)
             <form method="POST"  action="/vacante/{{$job->id}}">
             {{ csrf_field() }}
             <input type="hidden" name="id_job" value="{{$job->id}}" >
@@ -68,12 +69,18 @@
             <center><button type="submit" class="btn btn-primary " value="Pendiente" name="status">Estoy Interesado</a></center>
             </form>
           @else
+           @if($status->status=="Pendiente")
             <form method="POST"  action="/vacante/{{$job->id}}">
               {{method_field('DELETE')}}  
               {{ csrf_field() }}
               <center><button type="submit" class="btn btn-secondary" name="status" >Cancelar Solicitud</a></center>
             </form>
+          @else
+             <center><button type="button" class="btn btn-success" disabled="true"><i class="fas fa-check"></i> Aceptado</a></center>
+          @endif
           @endif 
+         
+          
         </article> <!-- end .uou-block-7f -->
 
 

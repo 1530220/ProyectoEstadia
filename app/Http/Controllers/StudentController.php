@@ -125,8 +125,14 @@ class StudentController extends Controller
                     'medals.name as name',
                     'medals.image as image')
             ->where('students_medals.student_id','=',$id)->get();
+        
+        $evidences = DB::table("evidences")->where("student_id",'=',$id)->get();
+      
+        $projects_tutor = DB::table('projects')->where('projects.user_id','=',$id)->where("deleted","=",0)->get();
+        $acknowledgments_tutor = DB::table('acknowledgments')->where('acknowledgments.user_id','=',$id)->where("deleted","=",0)->get();
+        $work_experiences_tutor = DB::table('work_experiences')->where('work_experiences.user_id','=',$id)->where("deleted","=",0)->get();
         //Retorna a la vista de detalles de alumno
-        return view('students.show', compact('student','projects','acknowledgments','work_experiences','competences','skills','medals'));
+        return view('students.show', compact('student','projects','acknowledgments','work_experiences','competences','skills','medals','evidences','projects_tutor','acknowledgments_tutor','work_experiences_tutor'));
     }
 
     /**

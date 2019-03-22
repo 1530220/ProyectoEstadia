@@ -64,8 +64,7 @@ class HomeController extends Controller
               ->where('siita_db.students.user_id',Auth::user()->id)
               ->first();
           if( $students->deleted==0){
-            $mensaje=Auth::user()->first_name." ".Auth::user()->last_name." ".Auth::user()->second_last_name;
-            Alert::message( $mensaje,'Bienvenido!!!')->autoclose(4500);
+            
            $jobs=DB::table('jobs')
            ->join('companies as c','c.id','=','jobs.id_company')
           ->join('sectors as s','s.id','=','jobs.id_sector')
@@ -79,6 +78,31 @@ class HomeController extends Controller
             break;
           }
         case 5: //INFORMACION DASHBOARD PARA TUTORES
+          $tutorados = DB::table('siita_db.students as students')->where("students.tutor_user_id","=",Auth::user()->id)->count();
+          $solicitudes = DB::table('students_competences as solicitudes')
+          ->join('siita_db.users as users','solicitudes.student_id','=','users.university_id')
+          ->join('competences','solicitudes.competence_id','=','competences.id')
+          ->join('siita_db.students as students',"students.user_id","=","users.id")
+          ->select('solicitudes.*',
+                  'users.first_name',
+                  'users.last_name',
+                  'users.second_last_name',
+                  'competences.name')
+                  ->where('solicitudes.status','=',0)
+                  ->where('students.tutor_user_id',"=",Auth::user()->id)
+                  ->count();
+          $evaluar = DB::table("students_competences")
+                ->join("siita_db.users as users","students_competences.student_id","=","users.university_id")
+                ->join("siita_db.students as students","users.id","=","students.user_id")
+                ->select("students_competences.*")
+                  ->where("students.tutor_user_id","=",Auth::user()->id)
+                  ->where("students_competences.deleted","=",0)
+                  ->where("students_competences.status","=",1)
+                  ->where("students_competences.evaluated","=",0)->count();
+          
+          return view('home')->with("tutorados",$tutorados)
+                            ->with("solicitudes",$solicitudes)
+                            ->with("evaluar",$evaluar);
            break;
        case 8: //INFORMACION DASHBOARD PARA EMPRESA
             $companies=DB::table('companies')
@@ -86,8 +110,6 @@ class HomeController extends Controller
               ->first();
           
          if( $companies->deleted==0){
-           $mensaje=Auth::user()->last_name;
-            Alert::message( $mensaje,'Bienvenido!!!')->autoclose(4500);
             $job_requests=DB::table('status_job as status')
           ->join('jobs as j','j.id','=','status.id_job')
           ->join('companies as c','c.id','=','j.id_company')

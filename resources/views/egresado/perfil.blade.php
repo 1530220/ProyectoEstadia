@@ -30,14 +30,14 @@
               <!-- Nav Tabs -->
               <div class="col-md-12">
                 <ul class="nav nav-tabs">
-                  <li class="active"><a data-toggle="tab" href="#profile">Su Perfil</a></li>
-                  <li><a data-toggle="tab" href="#jobs">Sus trabajos ({{$count_jobs}})</a></li>
+                  <li class="active"><a data-toggle="tab" href="#profile">Mi Perfil</a></li>
+                  <li><a data-toggle="tab" href="#jobs">Mis trabajos ({{$count_jobs}})</a></li>
                   <!--li><a data-toggle="tab" href="#contact">Contact</a></li-->
-                  <li><a data-toggle="tab" href="#portfolio">Su Galeria</a></li>
+                  <li><a data-toggle="tab" href="#portfolio">Mis Medallas</a></li>
                   <!--li><a data-toggle="tab" href="#blog-tab">Blog Posts</a></li-->
-                  <li><a data-toggle="tab" href="#Con-tab">Sus conexiones</a></li>
-                  <li><a data-toggle="tab" href="#flowrs-tabs">Sus Seguidores (241)</a></li>
-                  <li><a data-toggle="tab" href="#foll-tabs">Siguiendo</a></li>
+                  <li><a data-toggle="tab" href="#Con-tab">Mis Reconocimientos</a></li>
+                  <li><a data-toggle="tab" href="#flowrs-tabs">Mis Evidencias</a></li>
+                  <li><a data-toggle="tab" href="#foll-tabs">Siguiendo (241)</a></li>
                 <li><a href="/editar_egresado/{{auth()->user()->id}}"><i class="fas fa-edit"></i> Editar Perfil</a></li>
                 </ul>
               </div>
@@ -61,12 +61,60 @@
                             </div>
                             <div class="media-body">
                               
-                              <center><button class="btn btn-primary">
-                             Añadir Experiencia Laboral
-                            </button></center>
+                              <center><a href="/agregar_experiencias/{{auth()->user()->id}}"><button class="btn btn-primary"><i class="fas fa-plus"></i> Agregar Experiencia Laboral</button></a></center>
+                              <br>
                               <ul class="single-category">
-                                <li><p>hola </p></li>
-                                <li><p>hola </p></li>
+                                @if($count_experiences==0)
+                                
+                                <div class="listing listing-1">
+                            <div class="listing-section">
+                              <div class="listing-ver-3">
+                                 <center><h6>Aun haz agregado experiencia laboral</h6></center>
+                              </div>
+                            </div>
+                          </div>
+                                
+                                @else
+                                
+                                @foreach($experiences as $experience)
+                                @if($experience->deleted==0)
+                                  <div class="similar">
+                              <div class="media">
+                                <div class="media-body">
+                                  <h6>* Posicion de la empresa:   {{$experience->position}}</h6>
+                                   <label>* Descripción:</label>
+                                <p>
+                                    {{$experience->description}}
+                                  </p>
+                                  <br>
+                                  <a href="/editar_experiencias/{{$experience->id}}" ><button class="btn btn-warning" title="Editar"><i class="fas fa-edit"></i></button></a>  
+                                  <a href="/eliminar_experiencias/{{$experience->id}}" ><button class="btn btn-error" title="Eliminar"><i class="fas fa-trash-alt"></i></button></a>
+                                </div>
+                              </div>
+                            </div>
+                                @else
+                                <div class="similar">
+                              <div class="media">
+                                <div class="media-body">
+                                  <h6>* Posicion de la empresa:   {{$experience->position}}</h6>
+                                   <label>* Descripción:</label>
+                                <p>
+                                    {{$experience->description}}
+                                  </p>
+                                  <br>
+                                  <a href="/editar_experiencias/{{$experience->id}}" ><button class="btn btn-warning" title="Editar"><i class="fas fa-edit"></i></button></a>  
+                                  <a href="/eliminar_experiencias/{{$experience->id}}" ><button class="btn btn-success" title="Restaurar"><i class="fas fa-undo-alt"></i></button></a>
+                                </div>
+                              </div>
+                            </div>
+                                
+                                @endif
+                                  
+                                  
+                                @endforeach
+                                
+                                @endif
+
                               </ul>
                             </div>
                           </div>
@@ -80,37 +128,6 @@
                           <h5 class="main-title">Habilidades</h5>
                           <div class="job-skills"> 
                             @foreach($skills_student as $ss )
-                            
-                            <!-- Modal POPUP -->
-            <div class="modal fade" id="{{$ss->id}}" tabindex="-1" role="dialog">
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="container">
-                    <h6><a class="close" href="#." data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a></h6>
-                    
-                    <!-- Forms -->
-                    
-                    <form method="post" action="/perfil_egresado/{{auth()->user()->id}}">
-                      {{method_field('DELETE')}}  
-                      {{ csrf_field() }} 
-                      <ul class="row">
-                        <center><h6>¿Seguro que quieres eliminar esta habilidad ({{$ss->name}})?</h6></center>
-                        <li class="col-xs-4">
-                          <center><a  class="close" href="#." data-dismiss="modal" aria-label="Close"><button class="btn btn-error">Cancelar</button></a></center>
-                        </li>
-                        <li class="col-xs-5">
-                          
-                          <input type="hidden" name="idskill" value="{{$ss->id}}"
-                          
-                          <center><button class="btn btn-primary" type="submit" >Eliminar</button></center>
-                        </li>
-                      </ul>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
-                        
                             <!-- Logo Design -->
                             <ul class="row">
                               <li class="col-sm-3">
@@ -119,7 +136,7 @@
                               <li class="col-sm-9">
                                 
                                 <div class="progress">
-                                  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {{$ss->score}}%;"> </div>
+                                  <div class="progress-bar" role="progressbar" aria-valuenow="{{$ss->score}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$ss->score}}%;"> </div>
                                 </div>
                                 <label>{{$ss->score}} / 100</label> <a href="/editar_habilidades/{{$ss->id}}" ><button class="btn btn-warning" title="Editar"><i class="fas fa-edit"></i></button></a>  <a href="/eliminar_habilidades/{{$ss->id}}" ><button class="btn btn-error" title="Eliminar"><i class="fas fa-trash-alt"></i></button></a>
                               </li>
@@ -127,7 +144,7 @@
                             
                             @endforeach
                             <br>
-                            <center><a href="/agregar_habilidades/{{auth()->user()->id}}"><i class="fas fa-plus"></i> Agregar Habilidades</a></center>
+                            <center><a href="/agregar_habilidades/{{auth()->user()->id}}"><button class="btn btn-primary"><i class="fas fa-plus"></i> Agregar Habilidades</button></a></center>
                           </div>
                         </div>
                         
@@ -140,7 +157,7 @@
                               <div class="listing-ver-3">
                                  <center><h6>Aun no tienes proyectos</h6></center>
                               </div>
-                              <center><a href="/agregar_proyectos/{{auth()->user()->id}}"><i class="fas fa-plus"></i> Agregar Proyectos</a></center>
+                              <center><a href="/agregar_proyectos/{{auth()->user()->id}}"><button class="btn btn-primary"><i class="fas fa-plus"></i> Agregar Proyectos</button></a></center>
                             </div>
                           </div>
                           @else
@@ -265,7 +282,7 @@
                             </div>
                           @endif
                           @endforeach
-                          <center><a href="/agregar_proyectos/{{auth()->user()->id}}"><i class="fas fa-plus"></i> Agregar Proyectos</a></center>
+                      <center><a href="/agregar_proyectos/{{auth()->user()->id}}"><button class="btn btn-primary"><i class="fas fa-plus"></i> Agregar Proyectos</button></a></center>
                           @endif
                              
                         </div>
@@ -279,7 +296,7 @@
                               <div class="listing-ver-3">
                                  <center><h6>Aun no tienes competencias</h6></center>
                               </div>
-                              <center><a href="/agregar_competencias/{{auth()->user()->id}}"><i class="fas fa-plus"></i> Agregar Competencias</a></center>
+                              <center><a href="/agregar_competencias/{{auth()->user()->id}}"><button class="btn btn-primary"><i class="fas fa-plus"></i> Agregar Competencias</button></a></center>
                             </div>
                           </div>
                           @else
@@ -337,7 +354,7 @@
                             </div>
                           @endif
                           @endforeach
-                          <center><a href="/agregar_competencias/{{auth()->user()->id}}"><i class="fas fa-plus"></i> Agregar Competencias</a></center>
+                          <center><a href="/agregar_competencias/{{auth()->user()->id}}"><button class="btn btn-primary"><i class="fas fa-plus"></i> Agregar Competencias</button></a></center>
                           @endif
                              
                         </div>
@@ -566,292 +583,83 @@
                   <!-- Portfolio -->
                   <div id="portfolio" class="tab-pane fade">
                     <div class="profile-main">
-                      <h3>Portfolio</h3>
+                      <h3>Mis Medallas</h3>
                       <div class="profile-in">
-                        <div class="uou-portfolio"> 
-                          <!-- Portfolio Item -->
-                          <section class="portfolio">
-                            <div class="portfolio-filters-content"> 
-                              <!-- Portfolio Item -->
-                              <article class="development design"> <a href="/img/portfolio-1.jpg" class="swipebox"> <img src="img/portfolio-1.jpg" alt="" class="work img-responsive"> <span class="overlay"> <i class="fa fa-plus"></i> <b class="title"><strong>Photo Session</strong>Brands</b> </span> </a> </article>
-                              <!-- Portfolio Item -->
-                              <article class="design"> <a href="img/portfolio-2.jpg" class="swipebox"> <img src="img/portfolio-2.jpg" alt="" class="work img-responsive"> <span class="overlay"> <i class="fa fa-plus"></i> <b class="title"><strong>Photo Session</strong>Brands</b> </span> </a> </article>
-                              <!-- Portfolio Item -->
-                              <article class="development branding"> <a href="img/portfolio-3.jpg" class="swipebox"> <img src="img/portfolio-3.jpg" alt="" class="work img-responsive"> <span class="overlay"> <i class="fa fa-plus"></i> <b class="title"><strong>Photo Session</strong>Brands</b> </span> </a> </article>
-                              <!-- Portfolio Item -->
-                              <article class="development design"> <a href="img/portfolio-6.jpg" class="swipebox"> <img src="img/portfolio-6.jpg" alt="" class="work img-responsive"> <span class="overlay"> <i class="fa fa-plus"></i> <b class="title"><strong>Photo Session</strong>Brands</b> </span> </a> </article>
-                              <!-- Portfolio Item -->
-                              <article class="branding development"> <a href="img/portfolio-4.jpg" class="swipebox"> <img src="img/portfolio-4.jpg" alt="" class="work img-responsive"> <span class="overlay"> <i class="fa fa-plus"></i> <b class="title"><strong>Photo Session</strong>Brands</b> </span> </a> </article>
-                              <!-- Portfolio Item -->
-                              <article class="mobile branding"> <a href="img/portfolio-5.jpg" class="swipebox"> <img src="img/portfolio-5.jpg" alt="" class="work img-responsive"> <span class="overlay"> <i class="fa fa-plus"></i> <b class="title"><strong>Photo Session</strong>Brands</b> </span> </a> </article>
-                              <!-- Portfolio Item -->
-                              <article class="branding"> <a href="img/portfolio-7.jpg" class="swipebox"> <img src="img/portfolio-7.jpg" alt="" class="work img-responsive"> <span class="overlay"> <i class="fa fa-plus"></i> <b class="title"><strong>Photo Session</strong>Brands</b> </span> </a> </article>
-                              <!-- Portfolio Item -->
-                              <article class="branding"> <a href="img/portfolio-2.jpg" class="swipebox"> <img src="img/portfolio-2.jpg" alt="" class="work img-responsive"> <span class="overlay"> <i class="fa fa-plus"></i> <b class="title"><strong>Photo Session</strong>Brands</b> </span> </a> </article>
-                              <!-- Portfolio Item -->
-                              <article class="design development"> <a href="img/portfolio-8.jpg" class="swipebox"> <img src="img/portfolio-8.jpg" alt="" class="work img-responsive"> <span class="overlay"> <i class="fa fa-plus"></i> <b class="title"><strong>Photo Session</strong>Brands</b> </span> </a> </article>
+                        @if ($count_medals==0)
+                          <div class="listing listing-1">
+                            <div class="listing-section">
+                              <div class="listing-ver-3">
+                                 <center><h6>Aun no tienes medallas</h6></center>
+                              </div>
                             </div>
-                          </section>
-                        </div>
-                        <!-- end uou-portfolio --> 
+                          </div>
+                          @else
+                          @foreach ($student_medals as $student_medal)
+                           @if ($student_medal->deleted==0 )
+                            <div class="similar">
+                              <div class="media">
+                                <div class="media-body">
+                                  <h6>{{$student_medal->name}}</h6>
+                                  <img src="{{$student_medal->image}}" width="100px" height="100px">
+                                  <label>* Descripción: {{$student_medal->description}}</label>
+                                </div>
+                              </div>
+                            </div>
+                          @endif
+                          @endforeach
+                          @endif
+                       
                       </div>
                     </div>
                   </div>
                   
-                  <!-- Blog Post -->
-                  <div id="blog-tab" class="tab-pane fade">
-                    <div class="profile-main">
-                      <h3>Blog Post</h3>
-                      <div class="profile-in">
-                        <div class="row">
-                          <div class="col-md-12">
-                            <article class="uou-block-7f"> <img src="img/blog-image-1.jpg" alt="" class="thumb">
-                              <div class="meta"> <span class="time-ago">3 days ago</span> <span class="category">Posted in: <a href="#">Design</a></span> <a href="#" class="comments">12 Comments</a> </div>
-                              <h1><a href="#">Perspiciatis Sint Pariatur Velit Corrupti</a></h1>
-                              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Proin nibh augue, suscipit a, scelerisque sed, lacinia in, mi. Cras vel lorem. Etiam pellentesque aliquet tellus. Phasellus pharetra nulla ac diam.
-                                Etiam pellentesque aliquet tellus. Phasellus pharetra nulla ac diam.
-                                Etiam pellentesque aliquet tellus. Phasellus pharetra nulla ac diam.</p>
-                              <a href="#" class="btn btn-small btn-primary">Read More</a> </article>
-                            <!-- end .uou-block-7f -->
-                            
-                            <article class="uou-block-7f"> <img src="img/blog-image-2.jpg" alt="" class="thumb">
-                              <div class="meta"> <span class="time-ago">3 days ago</span> <span class="category">Posted in: <a href="#">Design</a></span> <a href="#" class="comments">12 Comments</a> </div>
-                              <h1><a href="#">Perspiciatis Sint Pariatur Velit Corrupti</a></h1>
-                              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Proin nibh augue, suscipit a, scelerisque sed, lacinia in, mi. Cras vel lorem. Etiam pellentesque aliquet tellus. Phasellus pharetra nulla ac diam.
-                                Etiam pellentesque aliquet tellus. Phasellus pharetra nulla ac diam.
-                                Etiam pellentesque aliquet tellus. Phasellus pharetra nulla ac diam.</p>
-                              <a href="#" class="btn btn-small btn-primary">Read More</a> </article>
-                            <!-- end .uou-block-7f -->
-                            
-                            <article class="uou-block-7f"> <img src="img/blog-image-3.jpg" alt="" class="thumb">
-                              <div class="meta"> <span class="time-ago">3 days ago</span> <span class="category">Posted in: <a href="#">Design</a></span> <a href="#" class="comments">12 Comments</a> </div>
-                              <h1><a href="#">Perspiciatis Sint Pariatur Velit Corrupti</a></h1>
-                              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Proin nibh augue, suscipit a, scelerisque sed, lacinia in, mi. Cras vel lorem. Etiam pellentesque aliquet tellus. Phasellus pharetra nulla ac diam.
-                                Etiam pellentesque aliquet tellus. Phasellus pharetra nulla ac diam.
-                                Etiam pellentesque aliquet tellus. Phasellus pharetra nulla ac diam.</p>
-                              <a href="#" class="btn btn-small btn-primary">Read More</a> </article>
-                            <!-- end .uou-block-7f -->
-                            
-                            <article class="uou-block-7f"> <img src="img/blog-image-4.jpg" alt="" class="thumb">
-                              <div class="meta"> <span class="time-ago">3 days ago</span> <span class="category">Posted in: <a href="#">Design</a></span> <a href="#" class="comments">12 Comments</a> </div>
-                              <h1><a href="#">Perspiciatis Sint Pariatur Velit Corrupti</a></h1>
-                              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Proin nibh augue, suscipit a, scelerisque sed, lacinia in, mi. Cras vel lorem. Etiam pellentesque aliquet tellus. Phasellus pharetra nulla ac diam.
-                                Etiam pellentesque aliquet tellus. Phasellus pharetra nulla ac diam.
-                                Etiam pellentesque aliquet tellus. Phasellus pharetra nulla ac diam.</p>
-                              <a href="#" class="btn btn-small btn-primary">Read More</a> </article>
-                            <!-- end .uou-block-7f -->
-                            
-                            <article class="uou-block-7f"> <img src="img/blog-image-5.jpg" alt="" class="thumb">
-                              <div class="meta"> <span class="time-ago">3 days ago</span> <span class="category">Posted in: <a href="#">Design</a></span> <a href="#" class="comments">12 Comments</a> </div>
-                              <h1><a href="#">Perspiciatis Sint Pariatur Velit Corrupti</a></h1>
-                              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Proin nibh augue, suscipit a, scelerisque sed, lacinia in, mi. Cras vel lorem. Etiam pellentesque aliquet tellus. Phasellus pharetra nulla ac diam.
-                                Etiam pellentesque aliquet tellus. Phasellus pharetra nulla ac diam.
-                                Etiam pellentesque aliquet tellus. Phasellus pharetra nulla ac diam.</p>
-                              <a href="#" class="btn btn-small btn-primary">Read More</a> </article>
-                            <!-- end .uou-block-7f -->
-                            
-                            <div class="text-center pt20">
-                              <ul class="uou-paginatin list-unstyled">
-                                <li class="active"><a href="#">1</a></li>
-                                <li><a href="#">2</a></li>
-                                <li><a href="#">3</a></li>
-                                <li><a href="#">4</a></li>
-                                <li><a href="#">5</a></li>
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
-                        <!-- end row --> 
-                        
-                        <!-- end blog-content --> 
-                        
-                      </div>
-                    </div>
-                  </div>
                   
                   <!-- Blog Post -->
                   <div id="Con-tab" class="tab-pane fade">
                     <div class="profile-main">
-                      <h3>Personas en Conexión</h3>
+                      <h3>Mis Reconocimientos</h3>
                       <div class="profile-in">
-                        <div class="folow-persons">
-                          <ul>
-                            
-                            <!-- MEMBER -->
-                            <li>
-                              <div class="row">
-                                <div class="col-xs-4"> 
-                                  <!-- Check Box -->
-                                  <div class="checkbox">
-                                    <input id="checkbox1-1" class="styled" type="checkbox">
-                                    <label for="checkbox1-1"></label>
-                                  </div>
-                                  <!-- Name -->
-                                  <div class="fol-name">
-                                    <div class="avatar"> <img src="images/sm-avatar.jpg" alt=""> </div>
-                                    <h6>Collin Weiland</h6>
-                                    <span>Web Developer</span> </div>
-                                </div>
-                                <!-- Location -->
-                                <div class="col-xs-3 n-p-r n-p-l"> <span>San Francisco, USA</span> </div>
-                                <!-- Network -->
-                                <div class="col-xs-3 n-p-r"> <span>21 Followers</span> <span>10 Following</span> </div>
-                                <!-- Connections -->
-                                <div class="col-xs-2 n-p-r n-p-l"> <span>31 Connections</span> </div>
+                        <center><a href="/agregar_reconocimientos/{{auth()->user()->id}}"><button class="btn btn-primary"><i class="fas fa-plus"></i> Agregar Reconocimientos</button></a></center><br>
+                         @if ($count_acknowledgments==0)
+                          <div class="listing listing-1">
+                            <div class="listing-section">
+                              <div class="listing-ver-3">
+                                 <center><h6>Aun no tienes reconocimientos</h6></center>
                               </div>
-                            </li>
-                            
-                            <!-- MEMBER -->
-                            <li>
-                              <div class="row"> 
-                                <!-- Title -->
-                                <div class="col-xs-4"> 
-                                  <!-- Check Box -->
-                                  <div class="checkbox">
-                                    <input id="checkbox1-2" class="styled" type="checkbox">
-                                    <label for="checkbox1-2"></label>
-                                  </div>
-                                  <!-- Name -->
-                                  <div class="fol-name">
-                                    <div class="avatar"> <img src="images/sm-avatar.jpg" alt=""> </div>
-                                    <h6>Collin Weiland</h6>
-                                    <span>Web Developer</span> </div>
+                            </div>
+                          </div>
+                          @else
+                          @foreach ($acknowledgments as $acknowledgment)
+                           @if ($acknowledgment->deleted==0 )
+                            <div class="similar">
+                              <div class="media">
+                                <div class="media-body">
+                                  <h6>* Titulo del reconocimiento:  {{$acknowledgment->title}}</h6>
+                                  <label>* Empresa que se lo otorga:  {{$acknowledgment->transmitter}}</label><br>
+                                  <label>* Fecha:  {{$acknowledgment->date}}</label><br>
+                                  <label>* Descripción </label>
+                                  <textarea rows="10" cols="10" class="form-control" placeholder="Descripción del reconocimiento" style="color:black" readonly>{{$acknowledgment->description}}</textarea>
+                                  <a href="/editar_reconocimientos/{{$acknowledgment->id}}" ><button class="btn btn-warning" title="Editar"><i class="fas fa-edit"></i></button></a>  <a href="/eliminar_reconocimientos/{{$acknowledgment->id}}" ><button class="btn btn-error" title="Eliminar"><i class="fas fa-trash-alt"></i></button></a>
                                 </div>
-                                <!-- Location -->
-                                <div class="col-xs-3 n-p-r n-p-l"> <span>San Francisco, USA</span> </div>
-                                <!-- Network -->
-                                <div class="col-xs-3 n-p-r"> <span>21 Followers</span> <span>10 Following</span> </div>
-                                <!-- Connections -->
-                                <div class="col-xs-2 n-p-r n-p-l"> <span>31 Connections</span> </div>
                               </div>
-                            </li>
-                            
-                            <!-- MEMBER -->
-                            <li>
-                              <div class="row"> 
-                                <!-- Title -->
-                                <div class="col-xs-4"> 
-                                  <!-- Check Box -->
-                                  <div class="checkbox">
-                                    <input id="checkbox1-3" class="styled" type="checkbox">
-                                    <label for="checkbox1-3"></label>
-                                  </div>
-                                  <!-- Name -->
-                                  <div class="fol-name">
-                                    <div class="avatar"> <img src="images/sm-avatar.jpg" alt=""> </div>
-                                    <h6>Collin Weiland</h6>
-                                    <span>Web Developer</span> </div>
+                            </div>
+                          @endif
+                           @if ($acknowledgment->deleted==1 )
+                            <div class="similar">
+                              <div class="media">
+                                <div class="media-body">
+                                  <h6>* Titulo del reconocimiento:  {{$acknowledgment->title}}</h6>
+                                  <label>* Empresa que se lo otorga:  {{$acknowledgment->transmitter}}</label><br>
+                                  <label>* Fecha:  {{$acknowledgment->date}}</label><br>
+                                  <label>* Descripción </label>
+                                  <textarea rows="10" cols="10" class="form-control" placeholder="Descripción del reconocimiento" style="color:black" readonly>{{$acknowledgment->description}}</textarea>
+                                  <a href="/editar_reconocimientos/{{$acknowledgment->id}}" ><button class="btn btn-warning" title="Editar"><i class="fas fa-edit"></i></button></a>  <a href="/eliminar_reconocimientos/{{$acknowledgment->id}}" ><button class="btn btn-success" title="Restaurar"><i class="fas fa-undo-alt"></i></button></a>
                                 </div>
-                                <!-- Location -->
-                                <div class="col-xs-3 n-p-r n-p-l"> <span>San Francisco, USA</span> </div>
-                                <!-- Network -->
-                                <div class="col-xs-3 n-p-r"> <span>21 Followers</span> <span>10 Following</span> </div>
-                                <!-- Connections -->
-                                <div class="col-xs-2 n-p-r n-p-l"> <span>31 Connections</span> </div>
                               </div>
-                            </li>
-                            
-                            <!-- MEMBER -->
-                            <li>
-                              <div class="row"> 
-                                <!-- Title -->
-                                <div class="col-xs-4"> 
-                                  <!-- Check Box -->
-                                  <div class="checkbox">
-                                    <input id="checkbox1-4" class="styled" type="checkbox">
-                                    <label for="checkbox1-4"></label>
-                                  </div>
-                                  <!-- Name -->
-                                  <div class="fol-name">
-                                    <div class="avatar"> <img src="images/sm-avatar.jpg" alt=""> </div>
-                                    <h6>Collin Weiland</h6>
-                                    <span>Web Developer</span> </div>
-                                </div>
-                                <!-- Location -->
-                                <div class="col-xs-3 n-p-r n-p-l"> <span>San Francisco, USA</span> </div>
-                                <!-- Network -->
-                                <div class="col-xs-3 n-p-r"> <span>21 Followers</span> <span>10 Following</span> </div>
-                                <!-- Connections -->
-                                <div class="col-xs-2 n-p-r n-p-l"> <span>31 Connections</span> </div>
-                              </div>
-                            </li>
-                            
-                            <!-- MEMBER -->
-                            <li>
-                              <div class="row"> 
-                                <!-- Title -->
-                                <div class="col-xs-4"> 
-                                  <!-- Check Box -->
-                                  <div class="checkbox">
-                                    <input id="checkbox1-5" class="styled" type="checkbox">
-                                    <label for="checkbox1-5"></label>
-                                  </div>
-                                  <!-- Name -->
-                                  <div class="fol-name">
-                                    <div class="avatar"> <img src="images/sm-avatar.jpg" alt=""> </div>
-                                    <h6>Collin Weiland</h6>
-                                    <span>Web Developer</span> </div>
-                                </div>
-                                <!-- Location -->
-                                <div class="col-xs-3 n-p-r n-p-l"> <span>San Francisco, USA</span> </div>
-                                <!-- Network -->
-                                <div class="col-xs-3 n-p-r"> <span>21 Followers</span> <span>10 Following</span> </div>
-                                <!-- Connections -->
-                                <div class="col-xs-2 n-p-r n-p-l"> <span>31 Connections</span> </div>
-                              </div>
-                            </li>
-                            
-                            <!-- MEMBER -->
-                            <li>
-                              <div class="row"> 
-                                <!-- Title -->
-                                <div class="col-xs-4"> 
-                                  <!-- Check Box -->
-                                  <div class="checkbox">
-                                    <input id="checkbox1-6" class="styled" type="checkbox">
-                                    <label for="checkbox1-6"></label>
-                                  </div>
-                                  <!-- Name -->
-                                  <div class="fol-name">
-                                    <div class="avatar"> <img src="images/sm-avatar.jpg" alt=""> </div>
-                                    <h6>Collin Weiland</h6>
-                                    <span>Web Developer</span> </div>
-                                </div>
-                                <!-- Location -->
-                                <div class="col-xs-3 n-p-r n-p-l"> <span>San Francisco, USA</span> </div>
-                                <!-- Network -->
-                                <div class="col-xs-3 n-p-r"> <span>21 Followers</span> <span>10 Following</span> </div>
-                                <!-- Connections -->
-                                <div class="col-xs-2 n-p-r n-p-l"> <span>31 Connections</span> </div>
-                              </div>
-                            </li>
-                            
-                            <!-- MEMBER -->
-                            <li>
-                              <div class="row"> 
-                                <!-- Title -->
-                                <div class="col-xs-4"> 
-                                  <!-- Check Box -->
-                                  <div class="checkbox">
-                                    <input id="checkbox1-7" class="styled" type="checkbox">
-                                    <label for="checkbox1-7"></label>
-                                  </div>
-                                  <!-- Name -->
-                                  <div class="fol-name">
-                                    <div class="avatar"> <img src="images/sm-avatar.jpg" alt=""> </div>
-                                    <h6>Collin Weiland</h6>
-                                    <span>Web Developer</span> </div>
-                                </div>
-                                <!-- Location -->
-                                <div class="col-xs-3 n-p-r n-p-l"> <span>San Francisco, USA</span> </div>
-                                <!-- Network -->
-                                <div class="col-xs-3 n-p-r"> <span>21 Followers</span> <span>10 Following</span> </div>
-                                <!-- Connections -->
-                                <div class="col-xs-2 n-p-r n-p-l"> <span>31 Connections</span> </div>
-                              </div>
-                            </li>
-                          </ul>
-                        </div>
+                            </div>
+                          @endif
+                          @endforeach
+                          @endif
                       </div>
                     </div>
                   </div>
@@ -859,186 +667,41 @@
                   <!-- Blog Post -->
                   <div id="flowrs-tabs" class="tab-pane fade">
                     <div class="profile-main">
-                      <h3>Seguidores</h3>
+                      <h3>Mis Evidencias</h3>
                       <div class="profile-in">
-                        <div class="folow-persons">
-                          <ul>
-                            
-                            <!-- MEMBER -->
-                            <li>
-                              <div class="row">
-                                <div class="col-xs-4"> 
-                                  <!-- Check Box -->
-                                  <div class="checkbox">
-                                    <input id="checkbox2-1" class="styled" type="checkbox">
-                                    <label for="checkbox2-1"></label>
-                                  </div>
-                                  <!-- Name -->
-                                  <div class="fol-name">
-                                    <div class="avatar"> <img src="images/sm-avatar.jpg" alt=""> </div>
-                                    <h6>Collin Weiland</h6>
-                                    <span>Web Developer</span> </div>
-                                </div>
-                                <!-- Location -->
-                                <div class="col-xs-3 n-p-r n-p-l"> <span>San Francisco, USA</span> </div>
-                                <!-- Network -->
-                                <div class="col-xs-3 n-p-r"> <span>21 Followers</span> <span>10 Following</span> </div>
-                                <!-- Connections -->
-                                <div class="col-xs-2 n-p-r n-p-l"> <span>31 Connections</span> </div>
+                        <center><a href="/agregar_evidencias/{{auth()->user()->id}}"><button class="btn btn-primary"><i class="fas fa-plus"></i> Agregar Evidencias</button></a></center><br>
+                         @if ($count_evidences==0)
+                          <div class="listing listing-1">
+                            <div class="listing-section">
+                              <div class="listing-ver-3">
+                                 <center><h6>Aun no tienes evidencias</h6></center>
                               </div>
-                            </li>
-                            
-                            <!-- MEMBER -->
-                            <li>
-                              <div class="row"> 
-                                <!-- Title -->
-                                <div class="col-xs-4"> 
-                                  <!-- Check Box -->
-                                  <div class="checkbox">
-                                    <input id="checkbox2-2" class="styled" type="checkbox">
-                                    <label for="checkbox2-2"></label>
-                                  </div>
-                                  <!-- Name -->
-                                  <div class="fol-name">
-                                    <div class="avatar"> <img src="images/sm-avatar.jpg" alt=""> </div>
-                                    <h6>Collin Weiland</h6>
-                                    <span>Web Developer</span> </div>
+                            </div>
+                          </div>
+                          @else
+                          @foreach ($evidences as $evidence)
+                           @if ($evidence->deleted==0 )
+                            <div class="similar">
+                              <div class="media">
+                                <div class="media-body">
+                                  <h6>* Nombre de la evidencia:  {{$evidence->name}}</h6>
+                                  <a target="_blank" href="{{asset($evidence->path)}}" class="btn btn-primary" title="Visualizar archivo" ><span class="fas fa-eye"></span></a> <a href="{{url('/user/download',['id'=>$evidence->id])}}" class="btn btn-warning" title="Descargar"><span class="fas fa-download"></span></a>  <a href="/eliminar_evidencias/{{$evidence->id}}" ><button class="btn btn-error" title="Eliminar"><i class="fas fa-trash-alt"></i></button></a>
                                 </div>
-                                <!-- Location -->
-                                <div class="col-xs-3 n-p-r n-p-l"> <span>San Francisco, USA</span> </div>
-                                <!-- Network -->
-                                <div class="col-xs-3 n-p-r"> <span>21 Followers</span> <span>10 Following</span> </div>
-                                <!-- Connections -->
-                                <div class="col-xs-2 n-p-r n-p-l"> <span>31 Connections</span> </div>
                               </div>
-                            </li>
-                            
-                            <!-- MEMBER -->
-                            <li>
-                              <div class="row"> 
-                                <!-- Title -->
-                                <div class="col-xs-4"> 
-                                  <!-- Check Box -->
-                                  <div class="checkbox">
-                                    <input id="checkbox2-3" class="styled" type="checkbox">
-                                    <label for="checkbox2-3"></label>
-                                  </div>
-                                  <!-- Name -->
-                                  <div class="fol-name">
-                                    <div class="avatar"> <img src="images/sm-avatar.jpg" alt=""> </div>
-                                    <h6>Collin Weiland</h6>
-                                    <span>Web Developer</span> </div>
+                            </div>
+                          @endif
+                           @if ($evidence->deleted==1 )
+                            <div class="similar">
+                              <div class="media">
+                                <div class="media-body">
+                                  <h6>* Nombre de la evidencia:  {{$evidence->name}}</h6>
+                                  <a target="_blank" href="{{asset($evidence->path)}}" class="btn btn-primary" title="Visualizar archivo" ><span class="fas fa-eye"></span></a> <a href="{{url('/user/download',['id'=>$evidence->id])}}" class="btn btn-warning" title="Descargar"><span class="fas fa-download"></span></a>  <a href="/eliminar_evidencias/{{$evidence->id}}" ><button class="btn btn-success" title="Restaurar"><i class="fas fa-undo-alt"></i></button></a>
                                 </div>
-                                <!-- Location -->
-                                <div class="col-xs-3 n-p-r n-p-l"> <span>San Francisco, USA</span> </div>
-                                <!-- Network -->
-                                <div class="col-xs-3 n-p-r"> <span>21 Followers</span> <span>10 Following</span> </div>
-                                <!-- Connections -->
-                                <div class="col-xs-2 n-p-r n-p-l"> <span>31 Connections</span> </div>
                               </div>
-                            </li>
-                            
-                            <!-- MEMBER -->
-                            <li>
-                              <div class="row"> 
-                                <!-- Title -->
-                                <div class="col-xs-4"> 
-                                  <!-- Check Box -->
-                                  <div class="checkbox">
-                                    <input id="checkbox2-4" class="styled" type="checkbox">
-                                    <label for="checkbox2-4"></label>
-                                  </div>
-                                  <!-- Name -->
-                                  <div class="fol-name">
-                                    <div class="avatar"> <img src="images/sm-avatar.jpg" alt=""> </div>
-                                    <h6>Collin Weiland</h6>
-                                    <span>Web Developer</span> </div>
-                                </div>
-                                <!-- Location -->
-                                <div class="col-xs-3 n-p-r n-p-l"> <span>San Francisco, USA</span> </div>
-                                <!-- Network -->
-                                <div class="col-xs-3 n-p-r"> <span>21 Followers</span> <span>10 Following</span> </div>
-                                <!-- Connections -->
-                                <div class="col-xs-2 n-p-r n-p-l"> <span>31 Connections</span> </div>
-                              </div>
-                            </li>
-                            
-                            <!-- MEMBER -->
-                            <li>
-                              <div class="row"> 
-                                <!-- Title -->
-                                <div class="col-xs-4"> 
-                                  <!-- Check Box -->
-                                  <div class="checkbox">
-                                    <input id="checkbox2-5" class="styled" type="checkbox">
-                                    <label for="checkbox2-5"></label>
-                                  </div>
-                                  <!-- Name -->
-                                  <div class="fol-name">
-                                    <div class="avatar"> <img src="images/sm-avatar.jpg" alt=""> </div>
-                                    <h6>Collin Weiland</h6>
-                                    <span>Web Developer</span> </div>
-                                </div>
-                                <!-- Location -->
-                                <div class="col-xs-3 n-p-r n-p-l"> <span>San Francisco, USA</span> </div>
-                                <!-- Network -->
-                                <div class="col-xs-3 n-p-r"> <span>21 Followers</span> <span>10 Following</span> </div>
-                                <!-- Connections -->
-                                <div class="col-xs-2 n-p-r n-p-l"> <span>31 Connections</span> </div>
-                              </div>
-                            </li>
-                            
-                            <!-- MEMBER -->
-                            <li>
-                              <div class="row"> 
-                                <!-- Title -->
-                                <div class="col-xs-4"> 
-                                  <!-- Check Box -->
-                                  <div class="checkbox">
-                                    <input id="checkbox2-6" class="styled" type="checkbox">
-                                    <label for="checkbox2-6"></label>
-                                  </div>
-                                  <!-- Name -->
-                                  <div class="fol-name">
-                                    <div class="avatar"> <img src="images/sm-avatar.jpg" alt=""> </div>
-                                    <h6>Collin Weiland</h6>
-                                    <span>Web Developer</span> </div>
-                                </div>
-                                <!-- Location -->
-                                <div class="col-xs-3 n-p-r n-p-l"> <span>San Francisco, USA</span> </div>
-                                <!-- Network -->
-                                <div class="col-xs-3 n-p-r"> <span>21 Followers</span> <span>10 Following</span> </div>
-                                <!-- Connections -->
-                                <div class="col-xs-2 n-p-r n-p-l"> <span>31 Connections</span> </div>
-                              </div>
-                            </li>
-                            
-                            <!-- MEMBER -->
-                            <li>
-                              <div class="row"> 
-                                <!-- Title -->
-                                <div class="col-xs-4"> 
-                                  <!-- Check Box -->
-                                  <div class="checkbox">
-                                    <input id="checkbox2-7" class="styled" type="checkbox">
-                                    <label for="checkbox2-7"></label>
-                                  </div>
-                                  <!-- Name -->
-                                  <div class="fol-name">
-                                    <div class="avatar"> <img src="images/sm-avatar.jpg" alt=""> </div>
-                                    <h6>Collin Weiland</h6>
-                                    <span>Web Developer</span> </div>
-                                </div>
-                                <!-- Location -->
-                                <div class="col-xs-3 n-p-r n-p-l"> <span>San Francisco, USA</span> </div>
-                                <!-- Network -->
-                                <div class="col-xs-3 n-p-r"> <span>21 Followers</span> <span>10 Following</span> </div>
-                                <!-- Connections -->
-                                <div class="col-xs-2 n-p-r n-p-l"> <span>31 Connections</span> </div>
-                              </div>
-                            </li>
-                          </ul>
-                        </div>
+                            </div>
+                          @endif
+                          @endforeach
+                          @endif
                       </div>
                     </div>
                   </div>

@@ -46,8 +46,11 @@
 								<thead id="table_header">
 									<tr>
 										<th class="all" scope="col">ID</th>
-										<th scope="col">Nombre</th>
-										<th class="all" style="width:25%;" scope="col">Acciones</th>
+										<th scope="col">Matricula</th>
+                    <th scope="col">Alumno</th>
+                    <th scope="col">Empresa</th>
+                    <th scope="col">Fecha Conexión</th>
+										<th class="all" style="width:25%;" scope="col">Borrar Conexión</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -55,9 +58,15 @@
 									<tr>
 										@if($connection->deleted=='0')
 											<th scope="row">{{ $connection->id }}</th>
+                      <td scope="row">{{ $connection->student_id_login}}</td>
+                      <td scope="row">{{$connection->first_name}} {{$connection->last_name}} {{$connection->second_last_name}}</td>
+                      <td scope="row">{{ $connection->name}}</td>
 											<td>{{ $connection->date }}</td>
 										@else
 											<th style="color:red" scope="row">{{ $connection->id }}</th>
+                      <td style="color:red" scope="row">{{ $connection->student_id_login}}</td>
+                      <td style="color:red" scope="row">{{$connection->first_name}} {{$connection->last_name}} {{$connection->second_last_name}}</td>
+                      <td style="color:red" scope="row">{{ $connection->name}}</td>
 											<td style="color:red">{{ $connection->date }}</td>
 										@endif
 										<td>
@@ -70,7 +79,6 @@
 													{{ csrf_field() }}
 											@endif
 												<center>
-													<a href="{{ route('connections.show', ['id' => $connection->id]) }}" class="btn btn-warning" title="Ver detalles de conexion con el id {{ $connection->id }}" style="margin: 3px;"><span class="icofont icofont-eye-alt"></span></a>
 													@if($connection->deleted=='0')
 														<button type="submit" class="btn btn-danger" style="margin: 3px;" id="eliminar" name="eliminar" onclick="archiveFunction()" title="Eliminar conexion con el id {{ $connection->id }}"><span class="icofont icofont-ui-delete"></span></button>
 													@else
@@ -85,7 +93,10 @@
 								<tfoot>
 									<tr id="table_footer">
 										<th style="padding-right: 2.8%" scope="col">ID</th>
-										<th style="padding-right: 2.8%" scope="col">Nombre</th>
+                    <th style="padding-right: 2.8%" scope="col">Matricula</th>
+										<th style="padding-right: 2.8%" scope="col">Alumno</th>
+                    <th style="padding-right: 2.8%" scope="col">Empresa</th>
+                    <th style="padding-right: 2.8%" scope="col">Fecha Conexión</th>
 										<th style="padding-left: 1.2%" scope="col" style="width:0%;"></th>
 									</tr>
 								</tfoot>

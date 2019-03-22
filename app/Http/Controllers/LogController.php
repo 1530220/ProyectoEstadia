@@ -11,6 +11,7 @@ use App\Http\Requests;
 use Alert;
 use App\Helpers\DeleteHelper;
 use App\log;
+use Illuminate\Support\Facades\Auth;
 
 class LogController extends Controller
 {
@@ -31,11 +32,20 @@ class LogController extends Controller
 
   public function indexMovements()
   {
-    $sessions = DB::table('log')
+    if(Auth::user()->type == 5){
+        $sessions = DB::table('log')
         ->join('siita_db.users as users', 'log.user_id', '=', 'users.id')
         ->select('users.*', 'log.*')
         ->where('action', '!=', '1')
-        ->where('action', '!=', '2')->get();
+        ->where('action', '!=', '2')
+        ->where('user_id',"=",Auth::user()->id)->get(); 
+    }else{
+      $sessions = DB::table('log')
+        ->join('siita_db.users as users', 'log.user_id', '=', 'users.id')
+        ->select('users.*', 'log.*')
+        ->where('action', '!=', '1')
+        ->where('action', '!=', '2')->get(); 
+    }
 
     return view('log.movementslist')
       ->with('sessions',$sessions)

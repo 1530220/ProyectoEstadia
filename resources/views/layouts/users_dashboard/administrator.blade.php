@@ -117,6 +117,31 @@
             </li>
         </ul>
     </li>
+  
+  <li  id="students_li" class="pcoded-hasmenu {{ explode('.', $view_name)[0]=='status_job' ? 'active pcoded-trigger' : '' }}">
+        <a href="javascript:void(0)">
+            <span class="pcoded-micon"><i class="fas fa-user"></i><b>A</b></span>
+            <span class="pcoded-mtext" data-i18n="nav.social.main">Postulaciones</span>
+            <span class="pcoded-mcaret"></span>
+        </a>
+        <ul class="pcoded-submenu">
+            <li class="{{ Route::currentRouteNamed('status_job.list') ? 'active' : '' }}">
+                <a href="{{ route('status_job.list') }}">
+                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                    <span class="pcoded-mtext" data-i18n="nav.social.fb-wall">Listado de Postulaciones</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li class="{{ Route::currentRouteNamed('status_job.create') ? 'active' : '' }}">
+                <a href="{{ route('status_job.create') }}">
+                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                    <span class="pcoded-mtext" data-i18n="nav.social.fb-wall">Postular Alumno a Vacante</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+        </ul>
+    </li>
+  
     <li class="pcoded-hasmenu {{ explode('.', $view_name)[0]=='sectors' ? 'active pcoded-trigger' : '' }}">
         <a href="javascript:void(0)">
             <span class="pcoded-micon" style="background-color:slateblue;"><i class="fa fa-bars"></i><b>AS</b></span>

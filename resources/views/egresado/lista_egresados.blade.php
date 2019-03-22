@@ -36,14 +36,6 @@
                            @endforeach
                           </datalist>
                       </div>
-                     <!-- <div class="field">
-                          //Form::text('sort', null, ['list'=>'sort','placeholder' => 'Ordenar por']) }}
-                            <datalist id="sort">
-                              <option value="Nombre">
-                              <option value="Carrera">
-                              <option value="Matricula">
-                            </datalist>
-                        </div>-->
                       
                 </div>
                 <div class="search-button">
@@ -60,8 +52,13 @@
       <section class="pro-mem">
         <div class="container pb30">
           <h3>Lista de Egresados</h3>
+          @if($students_count==1)
+          <label>* Se encontró un {{$students_count}} alumno</label>
+          @else
+          <label>* Se encontraron {{$students_count}} alumnos</label>
+          @endif
           <div class="row">
-              {!! $students_upv->links()!!}
+              
               @foreach ($students_upv as $student_upv)
               <div class="col-sm-3">
                 <div class="uou-block-6a"> <img src="{{ asset($student_upv->image_url)}}" alt="{{$student_upv->first_name}}"  style="width:100%;max-width:275px;height:100%;max-height:200px;">

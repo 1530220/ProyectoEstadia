@@ -117,6 +117,7 @@
                                     </div>
                                     <div class="form-group col-md-8">
                                     <label>* Imagen nueva</label>
+                                    <label>( OJO tiene que ser archivos .jpg, .jpeg, .png o .gif )</label>
                                     <input type='file' name="image" onchange="readURL(this);" accept="image/*" />
                                     </div>
                                     </div>

@@ -107,7 +107,7 @@
 									              @endif
                                  </div>
                                  <div class="form-group col-md-6">
-                                 <label>* Fecha de inicio del proyecto</label>
+                                 <label>* Fecha de termino del proyecto</label>
                                  <input type="date" name="finish_date" title="Fecha de Finalización del Proyecto" value="{{ old('finish_date') }}" required>
                                  @if ($errors->has('inicio'))
 										            <div class="col-form-label" style="color:red;">{{$errors->first('finish_date')}}</div>
