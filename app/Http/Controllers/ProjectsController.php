@@ -66,10 +66,10 @@ class ProjectsController extends Controller
           $fecha_actual=date("Y-m-d");
 
           if(Input::get('inicio')>= Input::get('fin')){
-            Alert::error('Fecha de inicio no puede ser mayor a la de finalización', 'Error');
+            Alert::error('Fecha de inicio no puede ser mayor a la de finalización', 'Error')->autoclose(4000);
             return redirect()->route('students.show', ['id' => Input::get('matricula')]);
           }else if (Input::get('fin')>$fecha_actual){
-            Alert::error('Fecha de finalización excede a la fecha actual', 'Error');
+            Alert::error('Fecha de finalización excede a la fecha actual', 'Error')->autoclose(4000);
             return redirect()->route('students.show', ['id' => Input::get('matricula')]);
           }
 
@@ -87,13 +87,13 @@ class ProjectsController extends Controller
   
           //Se almacena y se muestran mensajes en caos de registro exitoso
           if ($project->save()) {
-            Alert::success('Exitosamente','Proyecto Registrado');
+            Alert::success('Exitosamente','Proyecto Registrado')->autoclose(4000);
   
             insertToLog(Auth::user()->id, 'added', Input::get('id'), "proyecto");
   
             return redirect()->route('students.show', ['id' => Input::get('matricula')]);
           } else {
-            Alert::error('No se registro el proyecto', 'Error');
+            Alert::error('No se registro el proyecto', 'Error')->autoclose(4000);
             return redirect()->route('students.show', ['id' => Input::get('matricula')]);
           }
     }
@@ -158,10 +158,10 @@ class ProjectsController extends Controller
           $fecha_actual=date("Y-m-d");
 
           if(Input::get('inicio')>= Input::get('fin')){
-            Alert::error('Fecha de inicio no puede ser mayor a la de finalización', 'Error');
+            Alert::error('Fecha de inicio no puede ser mayor a la de finalización', 'Error')->autoclose(4000);
             return redirect()->route('students.show', ['id' => Input::get('matricula')]);
           }else if (Input::get('fin')>$fecha_actual){
-            Alert::error('Fecha de finalización excede a la fecha actual', 'Error');
+            Alert::error('Fecha de finalización excede a la fecha actual', 'Error')->autoclose(4000);
             return redirect()->route('students.show', ['id' => Input::get('matricula')]);
           }
 
@@ -178,13 +178,13 @@ class ProjectsController extends Controller
   
           //Se almacena y se muestran mensajes en caos de registro exitoso
           if ($project->update()) {
-            Alert::success('Exitosamente','Proyecto Modificado');
+            Alert::success('Exitosamente','Proyecto Modificado')->autoclose(4000);
   
             insertToLog(Auth::user()->id, 'updated', Input::get('id'), "proyecto");
   
             return redirect()->route('students.show', ['id' => Input::get('matricula')]);
           } else {
-            Alert::error('No se modificó el proyecto', 'Error');
+            Alert::error('No se modificó el proyecto', 'Error')->autoclose(4000);
             return redirect()->route('students.show', ['id' => Input::get('matricula')]);
           }
     }
@@ -199,7 +199,7 @@ class ProjectsController extends Controller
     {
         DeleteHelper::instance()->onCascadeLogicalDelete('projects','id',$project->id);
 
-        Alert::success('Exitosamente','Proyecto Eliminado');
+        Alert::success('Exitosamente','Proyecto Eliminado')->autoclose(4000);
 
         insertToLog(Auth::user()->id, 'deleted', $project->id, "proyecto");
 
@@ -210,7 +210,7 @@ class ProjectsController extends Controller
     {
         DeleteHelper::instance()->restoreLogicalDelete('projects','id',$request->id);
 
-        Alert::success('Exitosamente','Proyecto Restaurado');
+        Alert::success('Exitosamente','Proyecto Restaurado')->autoclose(4000);
 
         insertToLog(Auth::user()->id, 'recover', $request->id, "proyecto");
         $project = project::find($request->id);

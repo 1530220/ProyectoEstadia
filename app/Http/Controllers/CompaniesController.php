@@ -80,12 +80,12 @@ class CompaniesController extends Controller
         ]);
 
         if(Input::get('country') == "0"){
-            Alert::error('Se debe seleccionar un pais', 'Error');
+            Alert::error('Se debe seleccionar un pais', 'Error')->autoclose(4000);
             return redirect()->route('companies.create');
         }
         
         if(Input::get('city') == "placeholder"){
-            Alert::error('Se debe seleccionar una ciudad', 'Error');
+            Alert::error('Se debe seleccionar una ciudad', 'Error')->autoclose(4000);
             return redirect()->route('companies.create');          
         }
         
@@ -132,11 +132,11 @@ class CompaniesController extends Controller
         //Se muestran los mensajes de cofirmacion para cada tipo de usuario y se realiza
         //el almacenamiento necesario para cada tipo de usuario
         if($company->save()){
-            Alert::success('Exitosamente', 'Empresa Registrada');
+            Alert::success('Exitosamente', 'Empresa Registrada')->autoclose(4000);
             insertToLog(Auth::user()->id, 'added', Input::get('id'), "empresa");
             return redirect()->route('companies.list');
         }else{
-            Alert::error('Empresa no registrada', 'Error');
+            Alert::error('Empresa no registrada', 'Error')->autoclose(4000);
             return redirect()->route('companies.list');  
         }
         
@@ -223,15 +223,15 @@ class CompaniesController extends Controller
         ]);
 
         if(Input::get('country') == "0"){
-            Alert::error('Se debe seleccionar un pais', 'Error');
+            Alert::error('Se debe seleccionar un pais', 'Error')->autoclose(4000);
             return redirect()->route('companies.create');
         }
         if(Input::get('state') == "placeholder"){
-            Alert::error('Se debe seleccionar un estado', 'Error');
+            Alert::error('Se debe seleccionar un estado', 'Error')->autoclose(4000);
             return redirect()->route('companies.create');
         }
         if(Input::get('city') == "placeholder"){
-            Alert::error('Se debe seleccionar una ciudad', 'Error');
+            Alert::error('Se debe seleccionar una ciudad', 'Error')->autoclose(4000);
             return redirect()->route('companies.create');          
         }
         
@@ -280,11 +280,11 @@ class CompaniesController extends Controller
         //Se muestran los mensajes de cofirmacion para cada tipo de usuario y se realiza
         //el almacenamiento necesario para cada tipo de usuario
         if($company->update()){
-            Alert::success('Exitosamente', 'Empresa Modificada');
+            Alert::success('Exitosamente', 'Empresa Modificada')->autoclose(4000);
             insertToLog(Auth::user()->id, 'updated', Input::get('id'), "empresa");
             return redirect()->route('companies.list');
         }else{
-            Alert::error('Empresa no modificada', 'Error');
+            Alert::error('Empresa no modificada', 'Error')->autoclose(4000);
             return redirect()->route('companies.list');  
         }
     }
@@ -353,7 +353,7 @@ class CompaniesController extends Controller
       
         DeleteHelper::instance()->onCascadeLogicalDelete('companies','id',$company->id);
 
-        Alert::success('Exitosamente','Empresa Eliminada');
+        Alert::success('Exitosamente','Empresa Eliminada')->autoclose(4000);
 
         insertToLog(Auth::user()->id, 'deleted', $company->id, "empresa");
 
@@ -364,7 +364,7 @@ class CompaniesController extends Controller
     {
         DeleteHelper::instance()->restoreLogicalDelete('companies','id',$request->id);
 
-        Alert::success('Exitosamente','Empresa Restaurada');
+        Alert::success('Exitosamente','Empresa Restaurada')->autoclose(4000);
 
         insertToLog(Auth::user()->id, 'recover', $request->id, "empresa");
         return redirect()->route('companies.list');

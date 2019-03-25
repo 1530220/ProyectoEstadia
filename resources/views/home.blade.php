@@ -91,7 +91,7 @@
                       <div class="card-block-small">
                           <i class="fab fa-connectdevelop card1-icon"  style="background-color:cornflowerblue"></i>
                           <span class="f-w-600" style="color:cornflowerblue">Conexiones</span>
-                          <h4>{{  3 }}</h4>
+                          <h4>{{  $conections }}</h4>
                       </div>
                   </div></a>
                   <br><br>

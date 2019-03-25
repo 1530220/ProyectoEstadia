@@ -267,7 +267,7 @@
             </ul>
         </li>
     <li class="{{ explode('.', $view_name)[0]=='imports.list' ? 'active pcoded-trigger' : '' }}">
-                    <a href="#">
+                    <a href="{{ route('imports.list')}}">
             <span class="pcoded-micon" style="background-color:#13a57c;"><i class="fas fa-file-import"></i><b>T</b></span>
             <span class="pcoded-mtext" data-i18n="nav.task.main">Importar</span>
             <span class="pcoded-mcaret"></span>

@@ -48,13 +48,13 @@ class StatusJobController extends Controller
       $status_job->id_job = $id;
       $status_job->status = "Pendiente";
       if ($status_job->save()) {
-            Alert::success('Exitosamente','El alumno '.$request->matricula." ha sido postulado en la vacante seleccionada");
+            Alert::success('Exitosamente','El alumno '.$request->matricula." ha sido postulado en la vacante seleccionada")->autoclose(4000);
   
             insertToLog(Auth::user()->id, 'added', $status_job->id, "postulacion");
   
             return redirect()->route('status_job.list');
           } else {
-            Alert::error('No se realizo la postulación', 'Error');
+            Alert::error('No se realizo la postulación', 'Error')->autoclose(4000);
             return redirect()->route('status_job.list');
           }
     }
@@ -63,13 +63,13 @@ class StatusJobController extends Controller
       $status_job = StatusJob::find($id);
       
       if($status_job->delete()){
-          Alert::success('Exitosamente','Postulación Cancelada');
+          Alert::success('Exitosamente','Postulación Cancelada')->autoclose(4000);
 
           insertToLog(Auth::user()->id, 'deleted', $id, "postulación");
 
           return redirect()->route('status_job.list');
       }else{
-          Alert::error('No se canceló la postulación', 'Error');
+          Alert::error('No se canceló la postulación', 'Error')->autoclose(4000);
 
           return redirect()->route('status_job.list');
       }
@@ -78,12 +78,12 @@ class StatusJobController extends Controller
     public function answerAccepted(StatusJob $job){
       $job->status = "Aceptado";
       if($job->update()){
-          Alert::success('Exitosamente','Postulante Aceptado');
+          Alert::success('Exitosamente','Postulante Aceptado')->autoclose(4000);
 
           insertToLog(Auth::user()->id, 'updated', $job->id, "postulación");
           return redirect()->route('status_job.list');
       }else{
-          Alert::error('No se aceptó el postulante', 'Error');
+          Alert::error('No se aceptó el postulante', 'Error')->autoclose(4000);
 
           return redirect()->route('status_job.list');
       }
@@ -91,13 +91,13 @@ class StatusJobController extends Controller
     
     public function answerRejected(StatusJob $job){
       if($job->delete()){
-          Alert::success('Exitosamente','Postulante Rechazado');
+          Alert::success('Exitosamente','Postulante Rechazado')->autoclose(4000);
 
           insertToLog(Auth::user()->id, 'deleted', $job->id, "postulación");
 
           return redirect()->route('status_job.list');
       }else{
-          Alert::error('No se rechazó el postulante', 'Error');
+          Alert::error('No se rechazó el postulante', 'Error')->autoclose(4000);
 
           return redirect()->route('status_job.list');
       }

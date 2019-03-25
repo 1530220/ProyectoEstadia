@@ -57,7 +57,7 @@
 									<ul class="nav nav-tabs" role="tablist">
 
 										<li id="tab-1" role="presentation" class="active" aria-expanded="false">
-											<a id="a-1" href="#step1" data-toggle="tab" aria-controls="step1" role="tab" title="Step 1" class="active" aria-expanded="true">
+											<a id="a-1" href="#step1" data-toggle="tab" aria-controls="step1" role="tab" title="Seleccionar tipo de importación" class="active" aria-expanded="true">
 												<span class="round-tab">
 													<i class="glyphicon glyphicon-folder-open"></i>
 												</span>
@@ -65,14 +65,14 @@
 										</li>
 
 										<li id="tab-2" role="presentation" class="" aria-expanded="false">
-											<a id="a-2" href="#step2" data-toggle="tab" aria-controls="step2" role="tab" title="Step 2" class="active" aria-expanded="true">
+											<a id="a-2" href="#step2" data-toggle="tab" aria-controls="step2" role="tab" title="Instrucciones" class="active" aria-expanded="true">
 												<span class="round-tab">
 													<i class="glyphicon glyphicon-pencil"></i>
 												</span>
 											</a>
 										</li>
 										<li id="tab-3" role="presentation" class="">
-											<a id="a-3" href="#step3" data-toggle="tab" aria-controls="step3" role="tab" title="Step 3" class="" aria-expanded="false">
+											<a id="a-3" href="#step3" data-toggle="tab" aria-controls="step3" role="tab" title="Subir archivo CSV" class="" aria-expanded="false">
 												<span class="round-tab">
 													<i class="glyphicon glyphicon-picture"></i>
 												</span>
@@ -80,7 +80,7 @@
 										</li>
 
 										<li id="tab-4" role="presentation" class="">
-											<a id="a-4" href="#complete" data-toggle="tab" aria-controls="complete" role="tab" title="Complete" class="active" aria-expanded="true">
+											<a id="a-4" href="#complete" data-toggle="tab" aria-controls="complete" role="tab" title="Completado" class="active" aria-expanded="true">
 												<span class="round-tab">
 													<i class="glyphicon glyphicon-ok"></i>
 												</span>
@@ -112,79 +112,107 @@
 	<div hidden>
 		<div class="tab-pane active" role="tabpanel" id="step1">
 			<div class="form-group row" style="margin-top: -20px; margin-left:20px; margin-right:20px;">
-				<h4><strong>Seleccione el tipo de importación que desee realizar:</strong></h4>
+				<h4><strong>Seleccione el tipo de importación que desea realizar:</strong></h4>
 				<br />
 			</div>
 			<div class="page-body">
 				<div class="row">
 					<!-- card1 start -->
 					<!-- user card start -->
-					<div class="col-sm-4">
-						<div class="card bg-c-yellow text-white widget-visitor-card" style="cursor:pointer">
-							<div class="card-block-small text-center" id="import_careers_btn">
-								<h2 id="import_careers_text" class="noselect">Carreras</h2>
-								<br />
-								<h6></h6>
-								<i id="import_careers_icon" class="fa fa-cubes"></i>
+					<div class="col-sm-6">
+						<div class="card text-white widget-visitor-card" style="cursor:pointer; background-color:lightseagreen;">
+							<div class="card-block-small text-center" id="import_companies_btn">
+								<h2 id="import_companies_text" class="noselect">Empresas</h2>
+								<br/>
+								<i id="import_companies_icon" class="fa fa-building"></i>
 							</div>
 						</div>
 					</div>
-					<div class="col-sm-4">
-						<div class="card text-white widget-visitor-card" style="background-color:#9b0946" >
-							<div class="card-block-small text-center" id="import_classes_btn" style="cursor:pointer">
-								<h2 id="import_classes_text" class="noselect">Materias</h2>
+          
+					<div class="col-sm-6">
+						<div class="card text-white widget-visitor-card" style="background-color:seagreen" >
+							<div class="card-block-small text-center" id="import_contacts_btn" style="cursor:pointer">
+								<h2 id="import_contacts_text" class="noselect">Contactos</h2>
 								<br />
-								<h6></h6>
-								<i id="import_classes_icon" class="fas fa-book-open"></i>
+								<i id="import_contacts_icon" class="fa fa-users"></i>
 							</div>
 						</div>
 					</div>
-					<div class="col-sm-4">
-						<div class="card text-white widget-visitor-card" style="background-color:#ab7967" >
-							<div class="card-block-small text-center" id="import_users_btn" style="cursor:pointer">
-								<h2 id="import_users_text" class="noselect">Usuarios</h2>
+          
+        </div>
+        <div class="row">
+          
+					<div class="col-sm-6">
+						<div class="card text-white widget-visitor-card" style="background-color:tomato" >
+							<div class="card-block-small text-center" id="import_jobs_btn" style="cursor:pointer">
+								<h2 id="import_jobs_text" class="noselect">Vacantes</h2>
 								<br />
-								<h6></h6>
-								<i id="import_users_icon" class="fa fa-users"></i>
+								<i id="import_jobs_icon" class="fa fa-briefcase"></i>
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="row">
-					<div class="col-sm-4">
-						<div class="card bg-c-green text-white widget-visitor-card" style="max-height:143px; cursor:pointer">
-							<div class="card-block-small text-center" id="import_tutors_btn">
-								<h2 id="import_tutors_text" class="noselect">Tutores y Profesores</h2>
+				
+				
+					<div class="col-sm-6">
+						<div class="card text-white widget-visitor-card" style="max-height:143px; cursor:pointer; background-color:slateblue;">
+							<div class="card-block-small text-center" id="import_sectors_btn">
+								<h2 id="import_sectors_text" class="noselect">Sectores</h2>
 								<br />
-								<h6></h6>
-								<i id="import_tutors_icon" class="fas fa-user-graduate"></i>
+								<i id="import_sectors_icon" class="fa fa-bars"></i>
 							</div>
 						</div>
 					</div>
-					<div class="col-sm-4">
-						<div class="card bg-c-pink text-white widget-visitor-card" style="cursor:pointer">
-							<div class="card-block-small text-center" id="import_students_btn">
-								<h2 id="import_students_text" class="noselect">Alumnos</h2>
+          
+        </div>
+        <div class="row">
+          
+					<div class="col-sm-6">
+						<div class="card text-white widget-visitor-card" style="cursor:pointer; background-color:firebrick;">
+							<div class="card-block-small text-center" id="import_skills_btn">
+								<h2 id="import_skills_text" class="noselect">Habilidades</h2>
 								<br />
-								<h6></h6>
-								<i id="import_students_icon" class="fa fa-user"></i>
+								<i id="import_skills_icon" class="fa fa-tag"></i>
 							</div>
 						</div>
 					</div>
-					<div class="col-sm-4">
-						<div class="card text-white widget-visitor-card" style="background-color:#5E1287" >
-							<div class="card-block-small text-center" id="import_assignation_btn" style="cursor:pointer">
-								<h2 id="import_assignation_text" class="noselect">Asignacion</h2>
+          
+					<div class="col-sm-6">
+						<div class="card text-white widget-visitor-card" style="background-color:darkcyan" >
+							<div class="card-block-small text-center" id="import_competences_btn" style="cursor:pointer">
+								<h2 id="import_competences_text" class="noselect">Competencias</h2>
 								<br />
-								<h6></h6>
-								<i id="import_assignation_icon" class="fas fa-link"></i>
+								<i id="import_competences_icon" class="fa fa-star"></i>
 							</div>
 						</div>
 					</div>
-
+          
+        </div>
+        <div class="row">
+          
+          <div class="col-sm-6">
+						<div class="card bg-c-yellow text-white widget-visitor-card" style="cursor:pointer;">
+							<div class="card-block-small text-center" id="import_medals_btn">
+								<h2 id="import_medals_text" class="noselect">Medallas</h2>
+								<br />
+								<i id="import_medals_icon" class="fa fa-trophy"></i>
+							</div>
+						</div>
+					</div>
+          
+          <div class="col-sm-6">
+						<div class="card text-white widget-visitor-card" style="cursor:pointer; background-color:cornflowerblue;">
+							<div class="card-block-small text-center" id="import_connections_btn">
+								<h2 id="import_connections_text" class="noselect">Conexiones</h2>
+								<br />
+								<i id="import_connections_icon" class="fab fa-connectdevelop"></i>
+							</div>
+						</div>
+					</div>
+          
 				</div>
 			</div>
 		</div>
+    
 		<div class="tab-pane" role="tabpanel" id="step2">
 			<div class="form-group row" style="margin-top: -20px; margin-left:20px; margin-right:20px;">
 				<strong><h4>Instrucciones para importar <span style="font-weight: bold; font-size: 20px" id="instructions_title"></span></h4></strong>
@@ -308,34 +336,42 @@
 
 		if(importation_from_get!=""){
 			switch(importation_from_get){
-				case 'students':
-					actual_importation="Alumnos";
+				case 'companies':
+					actual_importation="Empresas";
 					break;
-				case 'tutors':
-					actual_importation="Tutores";
+				case 'contacts':
+					actual_importation="Contactos";
 					break;
-				case 'careers':
-					actual_importation="Carreras";
+				case 'jobs':
+					actual_importation="Vacantes";
 					break;
-				case 'asignation':
-					actual_importation="Asignacion";
+				case 'sectors':
+					actual_importation="Sectores";
 					break;
-				case 'classes':
-					actual_importation="Materias";
+				case 'skills':
+					actual_importation="Habilidades";
 					break;
-				case 'users':
-					actual_importation="Usuarios";
+				case 'competences':
+					actual_importation="Competencias";
+					break;
+        case 'medals':
+					actual_importation="Medallas";
+					break;
+        case 'connections':
+					actual_importation="Conexiones";
 					break;
 			}
 		}
 		var instructions_for=[];
 
-		instructions_for['Alumnos']=' <div class="row"><div class="col-sm-12 col-xl-12"><img src="{{asset('import_help/images/students.png')}}" class="img-fluid p-b-10 rounded"></div></div><div class="row"> <div class="col-sm-12 col-xl-12"> <p><strong>NOTA: Este módulo requiere de la importación de carreras y la importación de tutores.</strong></p> <div class="col-sm-12 col-xl-6"> <p>Se necesita un archivo CSV, que contenga las siguientes columnas:</p> <ul> <li style="margin-left: 20px;"><strong> - </strong>ID_alumno</li> <li style="margin-left: 20px;"><strong> - </strong>Matricula</li> <li style="margin-left: 20px;"><strong> - </strong>Nombre</li> <li style="margin-left: 20px;"><strong> - </strong>AP_Paterno</li> <li style="margin-left: 20px;"><strong> - </strong>AP_Materno</li> <li style="margin-left: 20px;"><strong> - </strong>Username</li> <li style="margin-left: 20px;"><strong> - </strong>Password</li> <li style="margin-left: 20px;"><strong> - </strong>ID_carrera</li> <li style="margin-left: 20px;"><strong> - </strong>ID_tutor</li> </ul> <br /> <p><strong>ID_alumno:</strong> es el identificador de cada alumno con respecto a otros usuarios de la institución.</p> <p><strong>Matricula:</strong> es el identificador de los alumnos de la institución.</p> <p><strong>Nombre:</strong> es el nombre o nombres del alumno.</p> </div> <div class="col-sm-12 col-xl-6"> <p><strong>AP_Paterno:</strong> contiene el apellido paterno de los alumnos a importar.</p> <p><strong>AP_Materno:</strong> es el apellido materno de los alumnos, en caso de no tener, simplemente dejarlo vacío.</p> <p><strong>Username:</strong> es el nombre de usuario con el cual podrá ingresar al sistema.</p> <p><strong>Password:</strong> es la clave para acceder al sistema de acuerdo a un nombre de usuario.</p> <p><strong>ID_carrera:</strong> es una clave foránea a la tabla de carreras, es decir, a la que pertenece el alumno.</p> <p><strong>ID_tutor:</strong> es una forma de identificar al tutor del alumno, mediante una llave foránea a la tabla de tutores.</p> </div> </div> </div> <div class="row" style="margin-left:20px"> <br /><h6 class="m-b-30"><a target="_blank" href="{{asset('import_help/csv/students.csv') }}" ><i style="color:#3366BB" style="font-size:1px" class="fas fa-external-link-alt"></i>Descargar archivo csv de ejemplo</a></h6> </div> ';
-		instructions_for['Tutores']='<div class="row"><div class="col-sm-12 col-xl-12"><img src="{{asset('import_help/images/tutors.png')}}" class="img-fluid p-b-10 rounded"></div></div> <div class="row"> <div class="col-sm-12 col-xl-12"> <p><strong>NOTA: Este módulo requiere de la importación de carreras.</strong></p> <div class="col-sm-12 col-xl-6"> <p>Se necesita un archivo CSV, que contenga las siguientes columnas:</p> <ul> <li style="margin-left: 20px;"><strong> - </strong>ID_profesor</li> <li style="margin-left: 20px;"><strong> - </strong>Num_empleado</li> <li style="margin-left: 20px;"><strong> - </strong>Nombre</li> <li style="margin-left: 20px;"><strong> - </strong>AP_Paterno</li> <li style="margin-left: 20px;"><strong> - </strong>AP_Materno</li> <li style="margin-left: 20px;"><strong> - </strong>Username</li> <li style="margin-left: 20px;"><strong> - </strong>Password</li> <li style="margin-left: 20px;"><strong> - </strong>ID_carrera</li> <li style="margin-left: 20px;"><strong> - </strong>Tutor</li> </ul> <br /> <p><strong>ID_profesor:</strong> es el identificador de cada profesor o tutor con respecto a otros usuarios de la institución.</p> <p><strong>Num_empleado:</strong> es el identificador de cada empleado de la institución.</p> <p><strong>Nombre:</strong> es el nombre o nombres del tutor o profesor.</p> </div> <div class="col-sm-12 col-xl-6"> <p><strong>AP_Paterno:</strong> contiene el apellido paterno de los tutores o profesores a importar.</p> <p><strong>AP_Materno:</strong> es el apellido materno de los tutores o profesores, en caso de no tener, simplemente dejarlo vacío.</p> <p><strong>Username:</strong> es el nombre de usuario con el cual podrá ingresar al sistema.</p> <p><strong>Password:</strong> es la clave para acceder al sistema de acuerdo a un nombre de usuario.</p> <p><strong>ID_carrera:</strong> es una clave foránea a la tabla de carreras, es decir, a la que pertenece el profesor o tutor.</p> <p><strong>Tutor:</strong> es una forma de identificar si el profesor es tutor o no.</p></div> </div> <div class="row" style="margin-left: 20px;"> <br /><h6 class="m-b-30"><a target="_blank" href="{{asset('import_help/csv/tutors.csv') }}" ><i style="color:#3366BB" style="font-size:1px" class="fas fa-external-link-alt"></i>Descargar archivo .csv de ejemplo</a></h6></div></div>';
-		instructions_for['Carreras']='<div class="form-group row" style="margin-left:20px; margin-right:20px;"> <!--<h6 id="instructions_text"></h6>--> <br> <div class="row"><div class="col-sm-12 col-xl-12"><img src="{{asset('import_help/images/careers.png')}}" class="img-fluid p-b-10 rounded"></div></div> <div class="row"> <div class="col-sm-12 col-xl-12"> <p><strong>NOTA: Este módulo no depende de otros, por lo tanto, puede ser importado sin realizar revisiones previas.</strong></p> <div class="form-group"> <p>Se necesita un archivo CSV, que contenga las siguientes columnas:</p> <ul> <li style="margin-left: 20px;"><strong> - </strong>ID_carrera</li> <li style="margin-left: 20px;"><strong> - </strong>Nombre</li> <li style="margin-left: 20px;"><strong> - </strong>Abreviacion</li> </ul> <br /> <p><strong>ID_carrera</strong> es el identificador de cada carrera de la institución.</p> <p><strong>Nombre</strong> es el nombre completo de cada carrera de la institución.</p> <p><strong>Abreviacion</strong> es una forma de identificar a una carrera sin recurrir al nombre.</p> <br /><h6 class="m-b-30"><a target="_blank" href="{{asset('import_help/csv/careers.csv') }}" ><i style="color:#3366BB" style="font-size:1px" class="fas fa-external-link-alt"></i>Descargar archivo csv de ejemplo</a></h6></div> </div> </div> <br> </div>';
-		instructions_for['Materias']=' <div class="row"> <div class="col-sm-12 col-xl-6"> <p><strong>NOTA: Este módulo no depende de otros, por lo tanto, puede ser importado.</strong></p> <div class="form-group"> <p>Se necesita un archivo CSV, que contenga las siguientes columnas:</p> <ul> <li style="margin-left: 20px;"><strong> - </strong>ID_materia</li> <li style="margin-left: 20px;"><strong> - </strong>Nombre</li> </ul> <br /> <p><strong>ID_materia</strong> es el identificador de cada materia registrada en el sistema.</p> <p><strong>Nombre</strong> es el nombre completo de cada materia que se imparte en la institución.</p> <br /><h6 class="m-b-30"><a target="_blank" href="{{asset('import_help/csv/classes.csv') }}" ><i style="color:#3366BB" style="font-size:1px" class="fas fa-external-link-alt"></i>Descargar archivo .csv de ejemplo</a></h6> </div> </div> <div class="col-sm-12 col-xl-6"> <img src="{{asset('import_help/images/classes.png')}}" alt="CSV" class="img-fluid p-b-10 rounded"> </div> </div>';
-		instructions_for['Asignacion']='<div class="row"> <div class="col-sm-12 col-xl-9"> <p><strong>NOTA: Este módulo requiere de la importación de alumnos y la importación de tutores.</strong></p> <div class="form-group"> <p>Se necesita un archivo CSV, que contenga las siguientes columnas:</p> <ul> <li style="margin-left: 20px;"><strong> - </strong>ID_alumno</li> <li style="margin-left: 20px;"><strong> - </strong>ID_tutor</li> </ul> <br /> <p><strong>ID_alumno</strong> es el identificador de cada alumno registrado en el sistema.</p> <p><strong>ID_tutor</strong> es el identificador de cada tutor registrado en el sistema.</p> <br /><h6 class="m-b-30"><a target="_blank" href="{{asset('import_help/csv/assignation.csv') }}" ><i style="color:#3366BB" style="font-size:1px" class="fas fa-external-link-alt"></i>Descargar archivo csv de ejemplo</a></h6> </div> </div> <div class="col-sm-12 col-xl-3"> <img src="{{asset('import_help/images/assignations.png')}}" alt="CSV de Alumnos" class="img-fluid p-b-10 rounded" > </div> </div>';
-		instructions_for['Usuarios']=' <div class="row"><div class="col-sm-12 col-xl-12"><img src="{{asset('import_help/images/users.png')}}" class="img-fluid p-b-10 rounded"></div></div> <div class="row"> <div class="col-sm-12 col-xl-12"> <p><strong>NOTA: Este módulo no depende de otros, por lo tanto, puede ser importado.</strong></p> <div class="col-sm-12 col-xl-6"> <p>Se necesita un archivo CSV, que contenga las siguientes columnas:</p> <ul> <li style="margin-left: 20px;"><strong> - </strong>ID_usuario</li> <li style="margin-left: 20px;"><strong> - </strong>Num_empleado</li> <li style="margin-left: 20px;"><strong> - </strong>Nombre</li> <li style="margin-left: 20px;"><strong> - </strong>AP_Paterno</li> <li style="margin-left: 20px;"><strong> - </strong>AP_Materno</li> <li style="margin-left: 20px;"><strong> - </strong>Username</li> <li style="margin-left: 20px;"><strong> - </strong>Password</li> <li style="margin-left: 20px;"><strong> - </strong>Tipo_usuario</li> </ul> <br /> <p><strong>ID_usuario:</strong> es el identificador de cada empleado con respecto a otros usuarios de la institución.</p> <p><strong>Num_empleado:</strong> es el identificador de cada empleado de la institución.</p> <p><strong>Nombre:</strong> es el nombre o nombres del empleado.</p> </div> <div class="col-sm-12 col-xl-6"> <p><strong>AP_Paterno:</strong> contiene el apellido paterno de un empleado a importar.</p> <p><strong>AP_Materno:</strong> es el apellido materno de un empleado, en caso de no tener, simplemente dejarlo vacío.</p> <p><strong>Username:</strong> es el nombre de usuario con el cual podrá ingresar al sistema.</p> <p><strong>Password:</strong> es la clave para acceder al sistema de acuerdo a un nombre de usuario.</p> <p><strong>Tipo_usuario:</strong> es un identificador para conocer a que departamento pertenece tal empleado (Tutorías, Salud o Psicología)..</p> </div> </div> </div> <div class="row" style="margin-left:20px"> <br /><h6 class="m-b-30"><a target="_blank" href="{{asset('import_help/csv/users.csv') }}" ><i style="color:#3366BB" style="font-size:1px" class="fas fa-external-link-alt"></i>Descargar archivo csv de ejemplo</a></h6> </div>';
+		instructions_for['Empresas']=' <div class="row"><div class="col-sm-12 col-xl-12"><img src="{{asset('import_help/images/students.png')}}" class="img-fluid p-b-10 rounded"></div></div><div class="row"> <div class="col-sm-12 col-xl-12"> <p><strong>NOTA: Este módulo no depende de otros, por lo tanto, puede ser importado sin realizar revisiones previas.</strong></p> <div class="col-sm-12 col-xl-6"> <p>Se necesita un archivo CSV, que contenga las siguientes columnas:</p> <ul> <li style="margin-left: 20px;"><strong> - </strong>ID_empresa</li> <li style="margin-left: 20px;"><strong> - </strong>RFC</li> <li style="margin-left: 20px;"><strong> - </strong>Nombre</li> <li style="margin-left: 20px;"><strong> - </strong>Telefono</li> <li style="margin-left: 20px;"><strong> - </strong>CP</li> <li style="margin-left: 20px;"><strong> - </strong>Colonia</li> <li style="margin-left: 20px;"><strong> - </strong>Calle</li> <li style="margin-left: 20px;"><strong> - </strong>Horario</li> <li style="margin-left: 20px;"><strong> - </strong>Descripcion</li> </ul> <br /> <p><strong>ID_empresa:</strong> es el identificador de cada empresa con respecto a otras empresas.</p> <p><strong>RFC:</strong> es el Registro Federal de Contribuyentes que requiere toda persona física o moral en México para realizar cualquier actividad económica lícita.</p> <p><strong>Nombre:</strong> es el nombre de la empresa.</p> </div> <div class="col-sm-12 col-xl-6"> <p><strong>Telefono:</strong> contiene el numero telefonico de la empresa.</p> <p><strong>CP:</strong> es el codigo postal de la empresa.</p> <p><strong>Colonia:</strong> es el nombre de la colonia donde esta ubicada la empresa.</p> <p><strong>Calle:</strong> es el nombre de la calle donde esta ubicada la empresa.</p> <p><strong>Horario:</strong> es el horario de atencion que posee la empresa.</p> <p><strong>Descripcion:</strong> es una descripcion sobre la empresa.</p> </div> </div> </div> <div class="row" style="margin-left:20px"> <br /><h6 class="m-b-30"><a target="_blank" href="{{asset('import_help/csv/students.csv') }}" ><i style="color:#3366BB" style="font-size:1px" class="fas fa-external-link-alt"></i>Descargar archivo csv de ejemplo</a></h6> </div> ';
+		instructions_for['Contactos']='<div class="row"><div class="col-sm-12 col-xl-12"><img src="{{asset('import_help/images/tutors.png')}}" class="img-fluid p-b-10 rounded"></div></div> <div class="row"><div class="col-sm-12 col-xl-12"> <p><strong>NOTA: Este módulo requiere de la importación de empresas.</strong></p> <div class="col-sm-12 col-xl-6"> <p>Se necesita un archivo CSV, que contenga las siguientes columnas:</p> <ul> <li style="margin-left: 20px;"><strong> - </strong>ID_contacto</li> <li style="margin-left: 20px;"><strong> - </strong>Nombre</li> <li style="margin-left: 20px;"><strong> - </strong>APaterno</li> <li style="margin-left: 20px;"><strong> - </strong>AMaterno</li> <li style="margin-left: 20px;"><strong> - </strong>Email</li> <li style="margin-left: 20px;"><strong> - </strong>Telefono</li> <li style="margin-left: 20px;"><strong> - </strong>Cargo</li> <li style="margin-left: 20px;"><strong> - </strong>ID_empresa</li> <li style="margin-left: 20px;"><strong> - </strong>Horario</li> </ul> <br /> <p><strong>ID_contacto:</strong> es el identificador de cada contacto con respecto a otros contactos.</p> <p><strong>Nombre:</strong> es el nombre o nombres del contacto.</p> <p><strong>APaterno:</strong> contiene el apellido paterno de los contactos a importar.</p> </div> <div class="col-sm-12 col-xl-6"> +<p><strong>AMaterno:</strong> es el apellido materno de los contactos, en caso de no tener, simplemente dejarlo vacío.</p> <p><strong>Email:</strong> es el correo electronico de los contactos.</p> <p><strong>Telefono:</strong> es el numero telefonico de los contactos.</p> <p><strong>Cargo:</strong> es el cargo o posicion que tiene el contacto en la empresa.</p> <p><strong>ID_empresa:</strong> es una clave foránea a la tabla de empresas, es decir, a la que pertenece el contacto.</p> <p><strong>Horario:</strong> es el horario de atencion que posee el contacto.</p></div> </div> <div class="row" style="margin-left: 20px;"> <br /><h6 class="m-b-30"><a target="_blank" href="{{asset('import_help/csv/tutors.csv') }}" ><i style="color:#3366BB" style="font-size:1px" class="fas fa-external-link-alt"></i>Descargar archivo .csv de ejemplo</a></h6></div></div>';
+		instructions_for['Vacantes']='<div class="form-group row" style="margin-left:20px; margin-right:20px;"> <br> <div class="row"><div class="col-sm-12 col-xl-12"><img src="{{asset('import_help/images/careers.png')}}" class="img-fluid p-b-10 rounded"></div></div> <div class="row"> <div class="col-sm-12 col-xl-12"> <p><strong>NOTA: Este módulo requiere de la importacion sectores, empresas y contactos.</strong></p> <div class="form-group"> <p>Se necesita un archivo CSV, que contenga las siguientes columnas:</p> <ul> <li style="margin-left: 20px;"><strong> - </strong>ID_vacante</li> <li style="margin-left: 20px;"><strong> - </strong>Nombre</li> <li style="margin-left: 20px;"><strong> - </strong>Descripcion</li><li style="margin-left: 20px;"><strong> - </strong>Salario</li> <li style="margin-left: 20px;"><strong> - </strong>Tipo_vacante</li><li style="margin-left: 20px;"><strong> - </strong>CP</li> <li style="margin-left: 20px;"><strong> - </strong>Colonia</li> <li style="margin-left: 20px;"><strong> - </strong>Calle</li> <li style="margin-left: 20px;"><strong> - </strong>ID_sector</li> <li style="margin-left: 20px;"><strong> - </strong>ID_empresa</li> <li style="margin-left: 20px;"><strong> - </strong>ID_contacto</li> </ul> <br /> <p><strong>ID_vacante</strong> es el identificador de cada vacante.</p> <p><strong>Nombre</strong> es el nombre de cada vacante de la institución.</p> <p><strong>Descripcion</strong> es una descripcion de la vacante.</p> <p><strong>Salario</strong> es el salario mensual que ofrece la vacante, en caso de no desear mostrarlo, dejar el espacio en blanco.</p> <p><strong>Tipo_vacante</strong> es el tipo de vacante.</p> <p><strong>CP</strong> es el codigo postal donde se trabajará de acuerdo a la vacante.</p> <p><strong>Colonia</strong> es la colonia donde se trabajará de acuerdo a la vacante.</p> <p><strong>Calle</strong> es la calle donde se trabajará de acuerdo a la vacante.</p> <p><strong>ID_sector</strong> es una clave foranea a la tabla sectores, indica a que sector pertecene la vacante.</p> <p><strong>ID_empresa</strong> es una clave foranea a la tabla empresas, indica a que empresa pertecene la vacante.</p> <p><strong>ID_sector</strong> es una clave foranea a la tabla contactos, indica con que contacto se debe tener comunicación.</p> <br /><h6 class="m-b-30"><a target="_blank" href="{{asset('import_help/csv/careers.csv') }}" ><i style="color:#3366BB" style="font-size:1px" class="fas fa-external-link-alt"></i>Descargar archivo csv de ejemplo</a></h6></div> </div> </div> <br> </div>';
+    instructions_for['Sectores']=' <div class="row"> <div class="col-sm-12 col-xl-6"> <p><strong>NOTA: Este módulo no depende de otros, por lo tanto, puede ser importado.</strong></p> <div class="form-group"> <p>Se necesita un archivo CSV, que contenga las siguientes columnas:</p> <ul> <li style="margin-left: 20px;"><strong> - </strong>ID_sector</li> <li style="margin-left: 20px;"><strong> - </strong>Nombre</li> <li style="margin-left: 20px;"><strong> - </strong>Descripcion</li></ul> <br /> <p><strong>ID_sector</strong> es el identificador de cada sector a importar en el sistema.</p> <p><strong>Nombre</strong> es el nombre de cada sector.</p><p><strong>Descripcion</strong> es una descripcion de cada sector.</p> <br /><h6 class="m-b-30"><a target="_blank" href="{{asset('import_help/csv/classes.csv') }}" ><i style="color:#3366BB" style="font-size:1px" class="fas fa-external-link-alt"></i>Descargar archivo .csv de ejemplo</a></h6> </div> </div> <div class="col-sm-12 col-xl-6"> <img src="{{asset('import_help/images/classes.png')}}" alt="CSV" class="img-fluid p-b-10 rounded"> </div> </div>';
+		instructions_for['Habilidades']=' <div class="row"> <div class="col-sm-12 col-xl-6"> <p><strong>NOTA: Este módulo no depende de otros, por lo tanto, puede ser importado.</strong></p> <div class="form-group"> <p>Se necesita un archivo CSV, que contenga las siguientes columnas:</p> <ul> <li style="margin-left: 20px;"><strong> - </strong>ID_habilidad</li> <li style="margin-left: 20px;"><strong> - </strong>Nombre</li></ul> <br /> <p><strong>ID_habilidad</strong> es el identificador de cada habilidad a importar en el sistema.</p> <p><strong>Nombre</strong> es el nombre de cada habilidad.</p> <br /><h6 class="m-b-30"><a target="_blank" href="{{asset('import_help/csv/classes.csv') }}" ><i style="color:#3366BB" style="font-size:1px" class="fas fa-external-link-alt"></i>Descargar archivo .csv de ejemplo</a></h6> </div> </div> <div class="col-sm-12 col-xl-6"> <img src="{{asset('import_help/images/classes.png')}}" alt="CSV" class="img-fluid p-b-10 rounded"> </div> </div>';
+		instructions_for['Competencias']=' <div class="row"> <div class="col-sm-12 col-xl-6"> <p><strong>NOTA: Este módulo no depende de otros, por lo tanto, puede ser importado.</strong></p> <div class="form-group"> <p>Se necesita un archivo CSV, que contenga las siguientes columnas:</p> <ul> <li style="margin-left: 20px;"><strong> - </strong>ID_competencia</li> <li style="margin-left: 20px;"><strong> - </strong>Nombre</li></ul> <br /> <p><strong>ID_competencia</strong> es el identificador de cada competences a importar en el sistema.</p> <p><strong>Nombre</strong> es el nombre de cada competencia.</p> <br /><h6 class="m-b-30"><a target="_blank" href="{{asset('import_help/csv/classes.csv') }}" ><i style="color:#3366BB" style="font-size:1px" class="fas fa-external-link-alt"></i>Descargar archivo .csv de ejemplo</a></h6> </div> </div> <div class="col-sm-12 col-xl-6"> <img src="{{asset('import_help/images/classes.png')}}" alt="CSV" class="img-fluid p-b-10 rounded"> </div> </div>';
+    instructions_for['Medallas']=' <div class="row"> <div class="col-sm-12 col-xl-6"> <p><strong>NOTA: Este módulo no depende de otros, por lo tanto, puede ser importado.</strong></p> <div class="form-group"> <p>Se necesita un archivo CSV, que contenga las siguientes columnas:</p> <ul> <li style="margin-left: 20px;"><strong> - </strong>ID_medalla</li> <li style="margin-left: 20px;"><strong> - </strong>Nombre</li> <li style="margin-left: 20px;"><strong> - </strong>Descripcion</li></ul> <br /> <p><strong>ID_medalla</strong> es el identificador de cada medalla a importar en el sistema.</p> <p><strong>Nombre</strong> es el nombre de cada medalla.</p><p><strong>Descripcion</strong> es una descripcion de cada medalla.</p> <br /><h6 class="m-b-30"><a target="_blank" href="{{asset('import_help/csv/classes.csv') }}" ><i style="color:#3366BB" style="font-size:1px" class="fas fa-external-link-alt"></i>Descargar archivo .csv de ejemplo</a></h6> </div> </div> <div class="col-sm-12 col-xl-6"> <img src="{{asset('import_help/images/classes.png')}}" alt="CSV" class="img-fluid p-b-10 rounded"> </div> </div>';
+    instructions_for['Conexiones']=' <div class="row"><div class="col-sm-12 col-xl-12"><img src="{{asset('import_help/images/users.png')}}" class="img-fluid p-b-10 rounded"></div></div> <div class="row"> <div class="col-sm-12 col-xl-12"> <p><strong>NOTA: Este módulo requiere de la importación de empresas.</strong></p> <div class="col-sm-12 col-xl-6"> <p>Se necesita un archivo CSV, que contenga las siguientes columnas:</p> <ul> <li style="margin-left: 20px;"><strong> - </strong>ID_conexion</li> <li style="margin-left: 20px;"><strong> - </strong>ID_alumno</li> <li style="margin-left: 20px;"><strong> - </strong>ID_empresa</li> </ul> <br /> <p><strong>ID_conexion:</strong> es el identificador de cada conexion.</p> <p><strong>ID_alumno:</strong> es el identificador de cada alumno de la institución.</p> <p><strong>ID_empresa:</strong> es una clave foranea a la tabla empresas.</p> </div> </div> </div> <div class="row" style="margin-left:20px"> <br /><h6 class="m-b-30"><a target="_blank" href="{{asset('import_help/csv/users.csv') }}" ><i style="color:#3366BB" style="font-size:1px" class="fas fa-external-link-alt"></i>Descargar archivo csv de ejemplo</a></h6> </div>';
 
 		function resetClass() {
 			$("#tab-1").removeClass('active');
@@ -504,46 +540,60 @@
 			$("#content").click(function(e){
 				console.log(e.target.id);
 				switch(e.target.id){
-					case 'import_students_btn':
-					case 'import_students_text':
-					case 'import_students_icon':
-						actual_importation="Alumnos";
-						$("#actual_importation").val("Alumnos");
+					case 'import_companies_btn':
+					case 'import_companies_text':
+					case 'import_companies_icon':
+						actual_importation="Empresas";
+						$("#actual_importation").val("Empresas");
 						second_tab();
 						break;
-					case 'import_tutors_btn':
-					case 'import_tutors_text':
-					case 'import_tutors_icon':
-						actual_importation="Tutores";
-						$("#actual_importation").val("Tutores");
+					case 'import_contacts_btn':
+					case 'import_contacts_text':
+					case 'import_contacts_icon':
+						actual_importation="Contactos";
+						$("#actual_importation").val("Contactos");
 						second_tab();
 						break;
-					case 'import_careers_btn':
-					case 'import_careers_text':
-					case 'import_careers_icon':
-						actual_importation="Carreras";
-						$("#actual_importation").val("Carreras");
+					case 'import_jobs_btn':
+					case 'import_jobs_text':
+					case 'import_jobs_icon':
+						actual_importation="Vacantes";
+						$("#actual_importation").val("Vacantes");
 						second_tab();
 						break;
-					case 'import_classes_btn':
-					case 'import_classes_text':
-					case 'import_classes_icon':
-						actual_importation="Materias";
-						$("#actual_importation").val("Materias");
+					case 'import_sectors_btn':
+					case 'import_sectors_text':
+					case 'import_sectors_icon':
+						actual_importation="Sectores";
+						$("#actual_importation").val("Sectores");
 						second_tab();
 						break;
-					case 'import_assignation_btn':
-					case 'import_assignation_text':
-					case 'import_assignation_icon':
-						actual_importation="Asignacion";
-						$("#actual_importation").val("Asignacion");
+					case 'import_skills_btn':
+					case 'import_skills_text':
+					case 'import_skills_icon':
+						actual_importation="Habilidades";
+						$("#actual_importation").val("Habilidades");
 						second_tab();
 						break;
-					case 'import_users_btn':
-					case 'import_users_text':
-					case 'import_users_icon':
-						actual_importation="Usuarios";
-						$("#actual_importation").val("Usuarios");
+					case 'import_competences_btn':
+					case 'import_competences_text':
+					case 'import_competences_icon':
+						actual_importation="Competencias";
+						$("#actual_importation").val("Competencias");
+						second_tab();
+						break;
+          case 'import_medals_btn':
+					case 'import_medals_text':
+					case 'import_medals_icon':
+						actual_importation="Medallas";
+						$("#actual_importation").val("Medallas");
+						second_tab();
+						break;
+          case 'import_connections_btn':
+					case 'import_connections_text':
+					case 'import_connections_icon':
+						actual_importation="Conexiones";
+						$("#actual_importation").val("Conexiones");
 						second_tab();
 						break;
 					case 'tab_3_return':
@@ -596,39 +646,51 @@
 				}else{
 					$('#loading_modal').modal('show');
 					switch(actual_importation){
-						case 'Alumnos':
-							$("#importation_type").val('import_students');
-							$("#table").val('users');
-							$("#second_table").val('students');
-							$("#form").submit();
-							break;
-						case 'Carreras':
-							$("#importation_type").val('import_careers');
-							$("#table").val('careers');
+						case 'Empresas':
+							$("#importation_type").val('import_companies');
+							$("#table").val('companies');
 							$("#second_table").val('');
 							$("#form").submit();
 							break;
-						case 'Tutores':
-							$("#importation_type").val('import_teachers');
-							$("#table").val('users');
-							$("#second_table").val('teachers');
-							$("#form").submit();
-							break;
-						case 'Materias':
-							$("#importation_type").val('import_classes');
-							$("#table").val('student_classes');
+						case 'Contactos':
+							$("#importation_type").val('import_contacts');
+							$("#table").val('contacts');
 							$("#second_table").val('');
 							$("#form").submit();
 							break;
-						case 'Asignacion':
-							$("#importation_type").val('assignation');
-							$("#table").val('students');
+						case 'Vacantes':
+							$("#importation_type").val('import_jobs');
+							$("#table").val('jobs');
 							$("#second_table").val('');
 							$("#form").submit();
 							break;
-						case 'Usuarios':
-							$("#importation_type").val('import_users');
-							$("#table").val('users');
+						case 'Sectores':
+							$("#importation_type").val('import_sectors');
+							$("#table").val('sectors');
+							$("#second_table").val('');
+							$("#form").submit();
+							break;
+						case 'Habilidades':
+							$("#importation_type").val('import_skills');
+							$("#table").val('skills');
+							$("#second_table").val('');
+							$("#form").submit();
+							break;
+						case 'Competencias':
+							$("#importation_type").val('import_competences');
+							$("#table").val('competences');
+							$("#second_table").val('');
+							$("#form").submit();
+							break;
+            case 'Medallas':
+							$("#importation_type").val('import_medals');
+							$("#table").val('medals');
+							$("#second_table").val('');
+							$("#form").submit();
+							break;
+            case 'Conexiones':
+							$("#importation_type").val('import_connections');
+							$("#table").val('connections_companies');
 							$("#second_table").val('');
 							$("#form").submit();
 							break;

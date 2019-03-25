@@ -91,12 +91,12 @@ class WorkExperiencesController extends Controller
           ]);
 
           if(Input::get('country') == "0"){
-            Alert::error('Se debe seleccionar un pais', 'Error');
+            Alert::error('Se debe seleccionar un pais', 'Error')->autoclose(4000);
             return redirect()->route('work_experiences.create');
           }
           
           if(Input::get('city') == "placeholder"){
-            Alert::error('Se debe seleccionar una ciudad', 'Error');
+            Alert::error('Se debe seleccionar una ciudad', 'Error')->autoclose(4000);
             return redirect()->route('work_experiences.create');          
           }
           
@@ -104,10 +104,10 @@ class WorkExperiencesController extends Controller
           $fecha_actual=date("Y-m-d");
 
           if(Input::get('inicio')>= Input::get('fin')){
-            Alert::error('Fecha de inicio no puede ser mayor a la de finalización', 'Error');
+            Alert::error('Fecha de inicio no puede ser mayor a la de finalización', 'Error')->autoclose(4000);
             return redirect()->route('students.show', ['id' => Input::get('matricula')]);
           }else if (Input::get('fin')>$fecha_actual){
-            Alert::error('Fecha de finalización excede a la fecha actual', 'Error');
+            Alert::error('Fecha de finalización excede a la fecha actual', 'Error')->autoclose(4000);
             return redirect()->route('students.show', ['id' => Input::get('matricula')]);
           }
   
@@ -128,13 +128,13 @@ class WorkExperiencesController extends Controller
   
           //Se almacena y se muestran mensajes en caos de registro exitoso
           if ($work_experience->save()) {
-            Alert::success('Exitosamente','Experiencia Laboral Registrada');
+            Alert::success('Exitosamente','Experiencia Laboral Registrada')->autoclose(4000);
   
             insertToLog(Auth::user()->id, 'added', Input::get('id'), "experiencia laboral");
   
             return redirect()->route('students.show', ['id' => Input::get('matricula')]);
           } else {
-            Alert::error('No se registro la experiencia laboral', 'Error');
+            Alert::error('No se registro la experiencia laboral', 'Error')->autoclose(4000);
             return redirect()->route('students.show', ['id' => Input::get('matricula')]);
           }
     }
@@ -220,10 +220,10 @@ class WorkExperiencesController extends Controller
           $fecha_actual=date("Y-m-d");
 
           if(Input::get('inicio')>= Input::get('fin')){
-            Alert::error('Fecha de inicio no puede ser mayor a la de finalización', 'Error');
+            Alert::error('Fecha de inicio no puede ser mayor a la de finalización', 'Error')->autoclose(4000);
             return redirect()->route('students.show', ['id' => Input::get('matricula')]);
           }else if (Input::get('fin')>$fecha_actual){
-            Alert::error('Fecha de finalización excede a la fecha actual', 'Error');
+            Alert::error('Fecha de finalización excede a la fecha actual', 'Error')->autoclose(4000);
             return redirect()->route('students.show', ['id' => Input::get('matricula')]);
           }
   
@@ -241,13 +241,13 @@ class WorkExperiencesController extends Controller
   
           //Se almacena y se muestran mensajes en caos de registro exitoso
           if ($work_experience->update()) {
-            Alert::success('Exitosamente','Experiencia Laboral Modificada');
+            Alert::success('Exitosamente','Experiencia Laboral Modificada')->autoclose(4000);
   
             insertToLog(Auth::user()->id, 'updated', Input::get('id'), "experiencia laboral");
   
             return redirect()->route('students.show', ['id' => Input::get('matricula')]);
           } else {
-            Alert::error('No se modificó la experiencia laboral', 'Error');
+            Alert::error('No se modificó la experiencia laboral', 'Error')->autoclose(4000);
             return redirect()->route('students.show', ['id' => Input::get('matricula')]);
           }
     }
@@ -262,7 +262,7 @@ class WorkExperiencesController extends Controller
     {
         DeleteHelper::instance()->onCascadeLogicalDelete('work_experiences','id',$work_experience->id);
 
-        Alert::success('Exitosamente','Experiencia Laboral Eliminada');
+        Alert::success('Exitosamente','Experiencia Laboral Eliminada')->autoclose(4000);
 
         insertToLog(Auth::user()->id, 'deleted', $work_experience->id, "experiencia laboral");
 
@@ -273,7 +273,7 @@ class WorkExperiencesController extends Controller
     {
         DeleteHelper::instance()->restoreLogicalDelete('work_experiences','id',$request->id);
 
-        Alert::success('Exitosamente','Experiencia Laboral Restaurada');
+        Alert::success('Exitosamente','Experiencia Laboral Restaurada')->autoclose(4000);
 
         insertToLog(Auth::user()->id, 'recover', $request->id, "experiencia laboral");
         $work_experience = work_experience::find($request->id);

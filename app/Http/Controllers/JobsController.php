@@ -43,7 +43,7 @@ class JobsController extends Controller
         $num_companies = DB::table('companies')->where("deleted","=",0)->count();
       
        if($num_companies == 0){
-            Alert::error('No existen empresas para poder crear una vacante', 'Error');
+            Alert::error('No existen empresas para poder crear una vacante', 'Error')->autoclose(4000);
             return redirect()->route('companies.create');  
        }else{
          $companies = DB::table('companies')->where("deleted","=",0)->get();
@@ -57,13 +57,13 @@ class JobsController extends Controller
         $num_sectors = DB::table('sectors')->where("deleted","=",0)->count();
         $num_skills = DB::table('skills')->where('deleted',"=",0)->count();
         if($num_contacts == 0){
-            Alert::error('No existen contactos para crear una vacante de la empresa seleccionada', 'Error');
+            Alert::error('No existen contactos para crear una vacante de la empresa seleccionada', 'Error')->autoclose(4000);
             return redirect()->route('contacts.create');  
         }else if($num_sectors == 0){
-            Alert::error('No existen sectores para poder crear una vacante', 'Error');
+            Alert::error('No existen sectores para poder crear una vacante', 'Error')->autoclose(4000);
             return redirect()->route('sectors.create');  
         }else if($num_skills == 0){
-            Alert::error('No existen habilidades para poder crear una vacante', 'Error');
+            Alert::error('No existen habilidades para poder crear una vacante', 'Error')->autoclose(4000);
             return redirect()->route('skills.create');  
         }else{
           $contacts = DB::table('contacts')->where("deleted","=",0)->where("company_id","=",$id)->get();
@@ -104,17 +104,17 @@ class JobsController extends Controller
         ]);
 
        if(Input::get('country') == "0"){
-            Alert::error('Se debe seleccionar un pais', 'Error');
+            Alert::error('Se debe seleccionar un pais', 'Error')->autoclose(4000);
             return redirect()->route('jobs.create');
         }
         
         if(Input::get('city') == "placeholder"){
-            Alert::error('Se debe seleccionar una ciudad', 'Error');
+            Alert::error('Se debe seleccionar una ciudad', 'Error')->autoclose(4000);
             return redirect()->route('jobs.create');          
         }
         
         if($request->skills_required==NULL){
-            Alert::error('Se debe seleccionar almenos una habilidad para asignar', 'Error');
+            Alert::error('Se debe seleccionar almenos una habilidad para asignar', 'Error')->autoclose(4000);
             return redirect()->route('jobs.create');  
         }
         
@@ -145,11 +145,11 @@ class JobsController extends Controller
         }
       
         if($job->save()){
-            Alert::success('Exitosamente', 'Vacante Registrada');
+            Alert::success('Exitosamente', 'Vacante Registrada')->autoclose(4000);
             insertToLog(Auth::user()->id, 'added', Input::get('id'), "vacante");
             return redirect()->route('jobs.list');
         }else{
-            Alert::error('Vacante no registrada', 'Error');
+            Alert::error('Vacante no registrada', 'Error')->autoclose(4000);
             return redirect()->route('jobs.list');  
         }
     }
@@ -258,7 +258,7 @@ class JobsController extends Controller
         ]);
 
         if($request->skills_required==NULL){
-            Alert::error('Se debe seleccionar almenos una habilidad para asignar', 'Error');
+            Alert::error('Se debe seleccionar almenos una habilidad para asignar', 'Error')->autoclose(4000);
             return redirect()->route('jobs.create');  
         }
       
@@ -288,11 +288,11 @@ class JobsController extends Controller
         }
       
         if($job->update()){
-            Alert::success('Exitosamente', 'Vacante Modificada');
+            Alert::success('Exitosamente', 'Vacante Modificada')->autoclose(4000);
             insertToLog(Auth::user()->id, 'updated', Input::get('job_id'), "vacante");
             return redirect()->route('jobs.list');
         }else{
-            Alert::error('Vacante no modificada', 'Error');
+            Alert::error('Vacante no modificada', 'Error')->autoclose(4000);
             return redirect()->route('jobs.list');  
         }
     }
@@ -314,7 +314,7 @@ class JobsController extends Controller
         
         DeleteHelper::instance()->onCascadeLogicalDelete('jobs','id',$job->id);
 
-        Alert::success('Exitosamente','Vacante Eliminada');
+        Alert::success('Exitosamente','Vacante Eliminada')->autoclose(4000);
 
         insertToLog(Auth::user()->id, 'deleted', $job->id, "vacante");
 
@@ -326,12 +326,12 @@ class JobsController extends Controller
         $job = job::find($request->id);
         $company = DB::table("companies")->where("id","=",$job->id_company)->first();
         if($company->deleted == 1){
-            Alert::error('No se puede restaurar debido a que la empresa se encuentra eliminada', 'Error');
+            Alert::error('No se puede restaurar debido a que la empresa se encuentra eliminada', 'Error')->autoclose(4000);
             return redirect()->route('companies.list');
         }else{
            DeleteHelper::instance()->restoreLogicalDelete('jobs','id',$request->id);
 
-          Alert::success('Exitosamente','Vacante Restaurada');
+          Alert::success('Exitosamente','Vacante Restaurada')->autoclose(4000);
 
           insertToLog(Auth::user()->id, 'recover', $request->id, "vacante");
           return redirect()->route('jobs.list'); 

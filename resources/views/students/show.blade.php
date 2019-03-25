@@ -521,10 +521,10 @@
 								<center>  
 									@if ($medal->deleted == '0')
 										<img src="{{$medal->image}}" alt="{{$medal->name}}" title="{{$medal->name}}" width="150"><hr>
-										<h6><a href="{{ route('medals.show', ['id' => $medal->id]) }}"><strong>{{$medal->name}}</strong></a></h6>
+										<h6><a href="{{ route('medals.show', ['id' => $medal->medal_id]) }}"><strong>{{$medal->name}}</strong></a></h6>
 									@else
 										<img style="opacity: 0.4;" src="{{$medal->image}}" alt="{{$medal->name}}" title="{{$medal->name}}" width="150"><hr>
-										<h6 style="color:firebrick;"><a href="{{ route('medals.show', ['id' => $medal->id]) }}"><strong>{{$medal->name}}</strong></a></h6>
+										<h6 style="color:firebrick;"><a href="{{ route('medals.show', ['id' => $medal->medal_id]) }}"><strong>{{$medal->name}}</strong></a></h6>
 									@endif
 
 									@if($medal->deleted=='0')

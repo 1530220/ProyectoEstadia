@@ -84,11 +84,11 @@ class ContactsController extends Controller
         $contact->schedule = Input::get("horario");
       
         if($contact->save()){
-            Alert::success('Exitosamente', 'Contacto Registrado');
+            Alert::success('Exitosamente', 'Contacto Registrado')->autoclose(4000);
             insertToLog(Auth::user()->id, 'added', Input::get('id'), "contacto");
             return redirect()->route('contacts.list');
         }else{
-            Alert::error('Contacto no registrado', 'Error');
+            Alert::error('Contacto no registrado', 'Error')->autoclose(4000);
             return redirect()->route('contacts.list');  
         }
     }
@@ -160,11 +160,11 @@ class ContactsController extends Controller
         $contact->schedule = Input::get("horario");
       
         if($contact->update()){
-            Alert::success('Exitosamente', 'Contacto Modificado');
+            Alert::success('Exitosamente', 'Contacto Modificado')->autoclose(4000);
             insertToLog(Auth::user()->id, 'updated', Input::get('contact_id'), "contacto");
             return redirect()->route('contacts.list');
         }else{
-            Alert::error('Contacto no modificado', 'Error');
+            Alert::error('Contacto no modificado', 'Error')->autoclose(4000);
             return redirect()->route('contacts.list');  
         }
     }
@@ -180,7 +180,7 @@ class ContactsController extends Controller
       
         DeleteHelper::instance()->onCascadeLogicalDelete('contacts','id',$contact->id);
 
-        Alert::success('Exitosamente','Contacto Eliminado');
+        Alert::success('Exitosamente','Contacto Eliminado')->autoclose(4000);
 
         insertToLog(Auth::user()->id, 'deleted', $contact->id, "contacto");
 
@@ -192,7 +192,7 @@ class ContactsController extends Controller
     {
         DeleteHelper::instance()->restoreLogicalDelete('contacts','id',$request->id);
 
-        Alert::success('Exitosamente','Contacto Restaurado');
+        Alert::success('Exitosamente','Contacto Restaurado')->autoclose(4000);
 
         insertToLog(Auth::user()->id, 'recover', $request->id, "contacto");
 

@@ -48,7 +48,7 @@
               <div class="col-sm-3">
                 <div class="uou-block-6a"> <img src="{{ asset($company->image_url)}}" alt="{{$company->name}}" style="width:100%;max-width:275px;height:100%;max-height:200px;">
                 <a href="/egresado_perfil_empresa/{{$company->id}}"><h6><i class="fas fa-building"></i> {{$company->name}}</a></h6>
-                <p><i class="fa fa-map-marker"></i> {{$company->city}}, {{$company->country}}</p>
+                <p><i class="fas fa-map-marked"></i> {{$company->city_name}}, {{$company->country_name}}</p>
                 </div>
                 <!-- end .uou-block-6a --> 
               </div>

@@ -69,51 +69,18 @@ class EvidencesController extends Controller
 
           //Se almacena y se muestran mensajes en caos de registro exitoso
           if ($evidence->save()) {
-            Alert::success('Exitosamente','Evidencia Almacenada');
+            Alert::success('Exitosamente','Evidencia Almacenada')->autoclose(4000);
   
             insertToLog(Auth::user()->id, 'added', Input::get('id'), "evidencia");
   
             return redirect()->route('students.show', ['id' => $id]);
           } else {
-            Alert::error('No se cargo la evidencia', 'Error');
+            Alert::error('No se cargo la evidencia', 'Error')->autoclose(4000);
             return redirect()->route('students.show', ['id' => $id]);
           }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
+    
     /**
      * Remove the specified resource from storage.
      *
@@ -122,15 +89,16 @@ class EvidencesController extends Controller
      */
     public function destroy(Evidences $evidence)
     {
-          
-        
         if($evidence->delete()){
           unlink(public_path()."/".$evidence->path);
-          Alert::success('Exitosamente','Evidencia Eliminada');
+          Alert::success('Exitosamente','Evidencia Eliminada')->autoclose(4000);
 
           insertToLog(Auth::user()->id, 'deleted', $evidence->id, "evidencia");
 
           return redirect()->route('students.show', ['id' => $evidence->student_id]);  
+        }else{
+          Alert::error('No se elimino la evidencia', 'Error')->autoclose(4000);
+            return redirect()->route('students.show', ['id' => $evidence->student_id]);  
         }
     }
   

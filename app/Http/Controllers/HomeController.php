@@ -52,12 +52,12 @@ class HomeController extends Controller
             $contacts = DB::table('contacts')->count();
             $jobs = DB::table('jobs')->count();
             $sectors = DB::table('sectors')->count();
-
+            $conections = DB::table('connections_companies')->count();
             //$tutorInfo = DB::select("SELECT * FROM users WHERE id = ?", [$user_id]);
             //$tutorInfo[0]->name = "ITI";
             //dd($tutorInfo);
             //Redirecciona a ls vista home o de dashboard
-            return view('home', compact('careers', 'students','tutores','sessions','movements','skills','competences','medals','companies','contacts','jobs','sectors'));
+            return view('home', compact('careers', 'students','tutores','sessions','movements','skills','competences','medals','companies','contacts','jobs','sectors','conections'));
             break;
         case 3: //INFORMACION DASHBOARD PARA ESTUDIANTES
           $students=DB::table('siita_db.students')
@@ -65,13 +65,54 @@ class HomeController extends Controller
               ->first();
           if( $students->deleted==0){
             
-           $jobs=DB::table('jobs')
+            $skill=request('skill');
+            $sector=request('sector');
+            
+            $count_jobs=DB::table('jobs')
            ->join('companies as c','c.id','=','jobs.id_company')
           ->join('sectors as s','s.id','=','jobs.id_sector')
-          ->select('c.name as company_name', 'c.image_url','jobs.*','s.name as sector_name')
+          ->join('jobs_skills as js', 'js.job_id','=','jobs.id')
+          ->select('c.name as company_name', 'c.image_url','jobs.*','s.name as sector_name','js.skill_id')
+          ->where('js.skill_id','LIKE',"%$skill%")
+          ->where('jobs.id_sector','LIKE',"%$sector%")
+          ->latest()
+          ->count();
+           if($count_jobs==0){
+             $jobs=DB::table('jobs')
+           ->join('companies as c','c.id','=','jobs.id_company')
+          ->join('sectors as s','s.id','=','jobs.id_sector')
+          ->join('jobs_skills as js', 'js.job_id','=','jobs.id')
+          ->select('c.name as company_name', 'c.image_url','jobs.*','s.name as sector_name','js.skill_id')
+          ->where('js.skill_id','LIKE',"%$skill%")
+          ->where('jobs.id_sector','LIKE',"%$sector%")
           ->latest()
           ->get();
-          return view('egresado.inicio', compact('jobs'));
+            
+            $skills=DB::table('skills')
+              ->get();
+            
+            $sectors=DB::table('sectors')
+              ->get();
+             Alert::info('No hay vacantes disponibles');
+           }else{
+             $jobs=DB::table('jobs')
+           ->join('companies as c','c.id','=','jobs.id_company')
+          ->join('sectors as s','s.id','=','jobs.id_sector')
+          ->join('jobs_skills as js', 'js.job_id','=','jobs.id')
+          ->select('c.name as company_name', 'c.image_url','jobs.*','s.name as sector_name','js.skill_id')
+          ->where('js.skill_id','LIKE',"%$skill%")
+          ->where('jobs.id_sector','LIKE',"%$sector%")
+          ->latest()
+          ->get();
+            
+            $skills=DB::table('skills')
+              ->get();
+            
+            $sectors=DB::table('sectors')
+              ->get();
+           }
+            
+          return view('egresado.inicio', compact('jobs','skills','sectors','count_jobs'));
            break;
           }else{
             return view('noaccess');

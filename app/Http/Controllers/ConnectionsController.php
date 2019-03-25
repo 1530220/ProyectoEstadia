@@ -50,7 +50,7 @@ class ConnectionsController extends Controller
     {
          
           if($request->companies_connect==NULL){
-              Alert::error('Se debe seleccionar almenos una empresa para realizar una conexión', 'Error');
+              Alert::error('Se debe seleccionar almenos una empresa para realizar una conexión', 'Error')->autoclose(4000);
               return redirect()->route("connections.create");
           }
 
@@ -62,10 +62,10 @@ class ConnectionsController extends Controller
             $company_connect->company_id = $company;
             $company_connect->date = date("Y-m-d H:i:s");
             $company_connect->save();
-            insertToLog(Auth::user()->id, 'added', $company, "conexión");
+            insertToLog(Auth::user()->id, 'added', $company_connect->id, "conexión");
           }
       
-          Alert::success('Exitosamente','Conexión Creada');
+          Alert::success('Exitosamente','Conexión Creada')->autoclose(4000);
           return redirect()->route('connections.list');
     }
 
@@ -73,13 +73,13 @@ class ConnectionsController extends Controller
     public function destroy(connections_companies $connection)
     {
         if($connection->delete()){
-          Alert::success('Exitosamente','Conexión Eliminada');
+          Alert::success('Exitosamente','Conexión Eliminada')->autoclose(4000);
 
           insertToLog(Auth::user()->id, 'deleted', $connection->id, "conexión");
 
           return redirect()->route('connections.list');  
         }else{
-          Alert::error('No se eliminó la conexión', 'Error');
+          Alert::error('No se eliminó la conexión', 'Error')->autoclose(4000);
 
           return redirect()->route('connections.list');  
         }

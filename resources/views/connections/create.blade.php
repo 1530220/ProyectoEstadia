@@ -50,6 +50,7 @@
                   <label class="col-sm-2 col-form-label" for="matricula">Alumno :</label>
                   <div class="col-sm-10">
                       <select class="form-control" onchange="obtener_empresas(this.value)" name="matricula" id="matricula">
+                          <option value="0"> Seleccionar estudiante</option>
                           @foreach ($students as $student)
                               <option value="{{ $student->university_id}}"> {{$student->university_id}} {{$student->first_name}} {{$student->last_name}} {{$student->second_last_name}}</option>
                           @endforeach
@@ -103,6 +104,9 @@
     
     
     function obtener_empresas(matricula){
+      if(matricula != 0){
+        
+      
 			$.ajaxSetup({
 				headers: {
 					'X-CSRF-TOKEN': '{{ csrf_token() }}'
@@ -191,6 +195,10 @@
 					}
 				}
 			});
+    }else{
+      document.getElementById("instruccions").style.display = "none";
+      document.getElementById("empresas").style.display = "none";
+    }
     }
 	</script>
 @endsection

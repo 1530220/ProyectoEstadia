@@ -71,13 +71,13 @@ class MedalsController extends Controller
   
           //Se almacena y se muestran mensajes en caos de registro exitoso
           if ($medals->save()) {
-            Alert::success('Exitosamente','Medalla Registrada');
+            Alert::success('Exitosamente','Medalla Registrada')->autoclose(4000);
   
             insertToLog(Auth::user()->id, 'added', Input::get('id'), "medallla");
   
             return redirect()->route('medals.list');
           } else {
-            Alert::error('No se registro la medalla', 'Error');
+            Alert::error('No se registro la medalla', 'Error')->autoclose(4000);
             return redirect()->route('medals.list');
           }
     }
@@ -142,13 +142,13 @@ class MedalsController extends Controller
 
       //Se almacena y se muestra mensaje de exito
       if ($medal->update()) {
-        Alert::success('Exitosamente','Medalla Modificada');
+        Alert::success('Exitosamente','Medalla Modificada')->autoclose(4000);
 
         insertToLog(Auth::user()->id, 'updated', Input::get('sector_id'), "sector");
 
         return redirect()->route('medals.list');
       } else {
-        Alert::error('No se modifico el sector', 'Error');
+        Alert::error('No se modifico el sector', 'Error')->autoclose(4000);
         return redirect()->route('medals.list');
       }
     }
@@ -163,7 +163,7 @@ class MedalsController extends Controller
     {
       DeleteHelper::instance()->onCascadeLogicalDelete('medals','id',$medal->id);
 
-      Alert::success('Exitosamente','Medalla Eliminada');
+      Alert::success('Exitosamente','Medalla Eliminada')->autoclose(4000);
 
       insertToLog(Auth::user()->id, 'deleted', $medal->id, "medalla");
 
@@ -174,7 +174,7 @@ class MedalsController extends Controller
     {
         DeleteHelper::instance()->restoreLogicalDelete('medals','id',$request->id);
 
-        Alert::success('Exitosamente','Medalla Restaurada');
+        Alert::success('Exitosamente','Medalla Restaurada')->autoclose(4000);
 
         insertToLog(Auth::user()->id, 'recover', $request->id, "medalla");
         $medal = Medals::find($request->id);
@@ -213,14 +213,14 @@ class MedalsController extends Controller
 
       }
 
-      Alert::success('Exitosamente','Medallas asignadas');
+      Alert::success('Exitosamente','Medallas asignadas')->autoclose(4000);
       return redirect()->route('students.show', ['id' => $id]);
     }
 
     public function destroyStudentMedal(students_medals $medal){
       DeleteHelper::instance()->onCascadeLogicalDelete('students_medals','id',$medal->id);
 
-        Alert::success('Exitosamente','Medalla eliminada del estudiante');
+        Alert::success('Exitosamente','Medalla eliminada del estudiante')->autoclose(4000);
 
         insertToLog(Auth::user()->id, 'deleted', $medal->id, "medalla del estudiante {$medal->student_id}");
         return redirect()->route('students.show', ['id' => $medal->student_id]);
@@ -232,12 +232,12 @@ class MedalsController extends Controller
       $medal = DB::table("medals")->where("id","=",$student_medals->medal_id)->first();
       
       if($medal->deleted == 1){
-          Alert::error('No se puede reasignar debido a que la medalla se encuentra eliminada', 'Error');
+          Alert::error('No se puede reasignar debido a que la medalla se encuentra eliminada', 'Error')->autoclose(4000);
           return redirect()->route('students.show', ['id' => $student->student_id]);
       }else{
           DeleteHelper::instance()->restoreLogicalDelete('students_medals','id',$request->id);
 
-          Alert::success('Exitosamente','Medalla restaurada en el estudiante');
+          Alert::success('Exitosamente','Medalla restaurada en el estudiante')->autoclose(4000);
 
           insertToLog(Auth::user()->id, 'recover', $request->id, "medalla del estudiante {$student->student_id}");
           return redirect()->route('students.show', ['id' => $student->student_id]);

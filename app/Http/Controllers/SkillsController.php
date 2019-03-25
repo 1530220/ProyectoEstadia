@@ -67,13 +67,13 @@ class SkillsController extends Controller
   
           //Se almacena y se muestran mensajes en caos de registro exitoso
           if ($skills->save()) {
-            Alert::success('Exitosamente','Habilidad Registrada');
+            Alert::success('Exitosamente','Habilidad Registrada')->autoclose(4000);
   
             insertToLog(Auth::user()->id, 'added', Input::get('id'), "habilidad");
   
             return redirect()->route('skills.list');
           } else {
-            Alert::error('No se registro la habilidad', 'Error');
+            Alert::error('No se registro la habilidad', 'Error')->autoclose(4000);
             return redirect()->route('skills.list');
           }
     }
@@ -139,13 +139,13 @@ class SkillsController extends Controller
 
         //Se almacena y se muestra mensaje de exito
         if ($skill->update()) {
-          Alert::success('Exitosamente','Habilidad Modificada');
+          Alert::success('Exitosamente','Habilidad Modificada')->autoclose(4000);
 
           insertToLog(Auth::user()->id, 'updated', Input::get('skill_id'), "habilidad");
 
           return redirect()->route('skills.list');
         } else {
-          Alert::error('No se modifico la habilidad', 'Error');
+          Alert::error('No se modifico la habilidad', 'Error')->autoclose(4000);
           return redirect()->route('skills.list');
         }
     }
@@ -165,7 +165,7 @@ class SkillsController extends Controller
 
         DeleteHelper::instance()->onCascadeLogicalDelete('skills','id',$skill->id);
 
-        Alert::success('Exitosamente','Habilidad Eliminada');
+        Alert::success('Exitosamente','Habilidad Eliminada')->autoclose(4000);
 
         insertToLog(Auth::user()->id, 'deleted', $skill->id, "habilidad");
 
@@ -176,7 +176,7 @@ class SkillsController extends Controller
     {
         DeleteHelper::instance()->restoreLogicalDelete('skills','id',$request->id);
 
-        Alert::success('Exitosamente','Habilidad Restaurada');
+        Alert::success('Exitosamente','Habilidad Restaurada')->autoclose(4000);
 
         insertToLog(Auth::user()->id, 'recover', $request->id, "habilidad");
 
@@ -211,7 +211,7 @@ class SkillsController extends Controller
         $update_skill->update();
         insertToLog(Auth::user()->id, 'updated', $skill->id, "puntuacion de habilidad");
       }
-        Alert::success('Exitosamente','Puntuaciones Modificadas');
+        Alert::success('Exitosamente','Puntuaciones Modificadas')->autoclose(4000);
 
         return redirect()->route('students.show', ['id' => $id]);
     }
@@ -221,7 +221,7 @@ class SkillsController extends Controller
     {
       DeleteHelper::instance()->onCascadeLogicalDelete('students_skills','id',$skill->id);
 
-        Alert::success('Exitosamente','Habilidad eliminada del estudiante');
+        Alert::success('Exitosamente','Habilidad eliminada del estudiante')->autoclose(4000);
 
         insertToLog(Auth::user()->id, 'deleted', $skill->id, "habilidad del estudiante");
         $student = students_skills::where('id','=',$skill->id)->first();
@@ -232,7 +232,7 @@ class SkillsController extends Controller
     {
         DeleteHelper::instance()->restoreLogicalDelete('students_skills','id',$request->id);
 
-        Alert::success('Exitosamente','Habilidad restaurada en el estudiante');
+        Alert::success('Exitosamente','Habilidad restaurada en el estudiante')->autoclose(4000);
 
         insertToLog(Auth::user()->id, 'recover', $request->id, "habilidad del estudiante");
         $student = students_skills::find($request->id);
@@ -265,7 +265,7 @@ class SkillsController extends Controller
 
     public function guardarAsignaciones(Request $request,$id){
       if($request->skills_not_asigned==NULL){
-          Alert::error('Se debe seleccionar almenos una habilidad para asignar', 'Error');
+          Alert::error('Se debe seleccionar almenos una habilidad para asignar', 'Error')->autoclose(4000);
           return redirect()->route('skills.asignar',['id' => $id]);
       }
       
@@ -281,7 +281,7 @@ class SkillsController extends Controller
 
       }
 
-      Alert::success('Exitosamente','Habilidades asignadas');
+      Alert::success('Exitosamente','Habilidades asignadas')->autoclose(4000);
       return redirect()->route('students.show', ['id' => $id]);
     }
 

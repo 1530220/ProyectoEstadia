@@ -62,7 +62,7 @@ class AcknowledgmentsController extends Controller
           $fecha_actual=date("Y-m-d");
 
           if (Input::get('fecha')>$fecha_actual){
-            Alert::error('Fecha de finalización excede a la fecha actual', 'Error');
+            Alert::error('Fecha de finalización excede a la fecha actual', 'Error')->autoclose(4000);
             return redirect()->route('students.show', ['id' => Input::get('matricula')]);
           }
           //Se crea un nuevo reconocimiento
@@ -78,13 +78,13 @@ class AcknowledgmentsController extends Controller
   
           //Se almacena y se muestran mensajes en caos de registro exitoso
           if ($acknowledgments->save()) {
-            Alert::success('Exitosamente','Reconocimiento Registrado');
+            Alert::success('Exitosamente','Reconocimiento Registrado')->autoclose(4000);
   
             insertToLog(Auth::user()->id, 'added', Input::get('id'), "reconocimiento");
   
             return redirect()->route('students.show', ['id' => Input::get('matricula')]);
           } else {
-            Alert::error('No se registro el reconocimiento', 'Error');
+            Alert::error('No se registro el reconocimiento', 'Error')->autoclose(4000);
             return redirect()->route('students.show', ['id' => Input::get('matricula')]);
           }
     }
@@ -144,7 +144,7 @@ class AcknowledgmentsController extends Controller
       $fecha_actual=date("Y-m-d");
 
       if (Input::get('fecha')>$fecha_actual){
-        Alert::error('Fecha de finalización excede a la fecha actual', 'Error');
+        Alert::error('Fecha de finalización excede a la fecha actual', 'Error')->autoclose(4000);
         return redirect()->route('students.show', ['id' => Input::get('matricula')]);
       }
       //Se obtienen los valores de la vista
@@ -157,13 +157,13 @@ class AcknowledgmentsController extends Controller
 
       //Se almacena y se muestran mensajes en caos de registro exitoso
       if ($acknowledgment->save()) {
-        Alert::success('Exitosamente','Reconocimiento Modificado');
+        Alert::success('Exitosamente','Reconocimiento Modificado')->autoclose(4000);
 
         insertToLog(Auth::user()->id, 'updated', Input::get('id'), "reconocimiento");
 
         return redirect()->route('students.show', ['id' => Input::get('matricula')]);
       } else {
-        Alert::error('No se modificó el reconocimiento', 'Error');
+        Alert::error('No se modificó el reconocimiento', 'Error')->autoclose(4000);
         return redirect()->route('students.show', ['id' => Input::get('matricula')]);
       }
     }
@@ -178,7 +178,7 @@ class AcknowledgmentsController extends Controller
     {
       DeleteHelper::instance()->onCascadeLogicalDelete('acknowledgments','id',$acknowledgment->id);
 
-      Alert::success('Exitosamente','Reconocimiento Eliminado');
+      Alert::success('Exitosamente','Reconocimiento Eliminado')->autoclose(4000);
 
       insertToLog(Auth::user()->id, 'deleted', $acknowledgment->id, "reconocimiento");
 
@@ -189,7 +189,7 @@ class AcknowledgmentsController extends Controller
     {
         DeleteHelper::instance()->restoreLogicalDelete('acknowledgments','id',$request->id);
 
-        Alert::success('Exitosamente','Reconocimiento Restaurado');
+        Alert::success('Exitosamente','Reconocimiento Restaurado')->autoclose(4000);
 
         insertToLog(Auth::user()->id, 'recover', $request->id, "reconocimiento");
         $acknowledgment = acknowledgments::find($request->id);

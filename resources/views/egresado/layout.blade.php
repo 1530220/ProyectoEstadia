@@ -118,5 +118,6 @@
 <script src="/sweetalert/sweetalert.min.js"></script>
 @yield('scripts')
 @include('sweet::alert')
+@yield('javascriptcode')
 </body>
 </html>

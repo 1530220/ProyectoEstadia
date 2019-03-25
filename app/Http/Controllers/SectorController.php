@@ -68,13 +68,13 @@ class SectorController extends Controller
   
           //Se almacena y se muestran mensajes en caos de registro exitoso
           if ($sectors->save()) {
-            Alert::success('Exitosamente','Sector Registrado');
+            Alert::success('Exitosamente','Sector Registrado')->autoclose(4000);
   
             insertToLog(Auth::user()->id, 'added', Input::get('id'), "sector");
   
             return redirect()->route('sectors.list');
           } else {
-            Alert::error('No se registro el sector', 'Error');
+            Alert::error('No se registro el sector', 'Error')->autoclose(4000);
             return redirect()->route('sectors.list');
           }
     }
@@ -142,13 +142,13 @@ class SectorController extends Controller
 
         //Se almacena y se muestra mensaje de exito
         if ($sector->update()) {
-          Alert::success('Exitosamente','Sector Modificado');
+          Alert::success('Exitosamente','Sector Modificado')->autoclose(4000);
 
           insertToLog(Auth::user()->id, 'updated', Input::get('sector_id'), "sector");
 
           return redirect()->route('sectors.list');
         } else {
-          Alert::error('No se modifico el sector', 'Error');
+          Alert::error('No se modifico el sector', 'Error')->autoclose(4000);
           return redirect()->route('sectors.list');
         }
     }
@@ -168,7 +168,7 @@ class SectorController extends Controller
 
         DeleteHelper::instance()->onCascadeLogicalDelete('sectors','id',$sector->id);
 
-        Alert::success('Exitosamente','Sector Eliminado');
+        Alert::success('Exitosamente','Sector Eliminado')->autoclose(4000);
 
         insertToLog(Auth::user()->id, 'deleted', $sector->id, "sector");
 
@@ -180,7 +180,7 @@ class SectorController extends Controller
     {
         DeleteHelper::instance()->restoreLogicalDelete('sectors','id',$request->id);
 
-        Alert::success('Exitosamente','Sector Restaurado');
+        Alert::success('Exitosamente','Sector Restaurado')->autoclose(4000);
 
         insertToLog(Auth::user()->id, 'recover', $request->id, "sector");
 

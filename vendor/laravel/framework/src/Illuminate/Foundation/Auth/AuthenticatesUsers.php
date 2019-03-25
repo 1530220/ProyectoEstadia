@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
+use Alert;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
+
 trait AuthenticatesUsers
 {
     use RedirectsUsers, ThrottlesLogins;
@@ -118,7 +122,35 @@ trait AuthenticatesUsers
      */
     protected function authenticated(Request $request, $user)
     {
-        //
+        $date = date("Y-m-d H:i:s"); //
+        $action = 1;
+        $user_id = Auth::user()->id;
+        $type = DB::select("SELECT type FROM siita_db.users WHERE id = $user_id");
+        switch ($type[0]->type) {
+          case 1:
+                $message = "El administrador ".Auth::user()->first_name." ".Auth::user()->last_name." ".Auth::user()->second_last_name." ha iniciado sesión";
+            break;
+          case 2:
+                $message = Auth::user()->title." ".Auth::user()->first_name." ".Auth::user()->last_name." ".Auth::user()->second_last_name." ha iniciado sesión";
+            break;
+          case 3:
+                $message = "El alumno ".Auth::user()->first_name." ".Auth::user()->last_name." ".Auth::user()->second_last_name." ha iniciado sesión";
+            break;
+          case 4:
+                $message = Auth::user()->title." ".Auth::user()->first_name." ".Auth::user()->last_name." ".Auth::user()->second_last_name." ha iniciado sesión";
+            break;
+          case 5:
+                $message = Auth::user()->title." ".Auth::user()->first_name." ".Auth::user()->last_name." ".Auth::user()->second_last_name." ha iniciado sesión";
+            break;
+          case 8:
+                $message = "La ".Auth::user()->title." ".Auth::user()->first_name." ".Auth::user()->last_name." ".Auth::user()->second_last_name." ha iniciado sesión";
+            break;
+         
+        }
+
+        DB::insert('INSERT INTO log (message, date, action, user_id) values (?, ?, ?, ?)', [$message, $date, $action, $user_id]);
+
+       
     }
 
     /**
@@ -154,11 +186,38 @@ trait AuthenticatesUsers
      */
     public function logout(Request $request)
     {
+        $date = date("Y-m-d H:i:s"); //
+        $action = 2;
+        $user_id = Auth::user()->id;
+        $type = DB::select("SELECT type FROM siita_db.users WHERE id = $user_id");
+        switch ($type[0]->type) {
+          case 1:
+                $message = "El administrador ".Auth::user()->first_name." ".Auth::user()->last_name." ".Auth::user()->second_last_name." cerró sesión";
+            break;
+          case 2:
+                $message = Auth::user()->title." ".Auth::user()->first_name." ".Auth::user()->last_name." ".Auth::user()->second_last_name." cerró sesión";
+            break;
+          case 3:
+                $message = "El alumno ".Auth::user()->first_name." ".Auth::user()->last_name." ".Auth::user()->second_last_name." cerró sesión";
+            break;
+          case 4:
+                $message = Auth::user()->title." ".Auth::user()->first_name." ".Auth::user()->last_name." ".Auth::user()->second_last_name." cerró sesión";
+            break;
+          case 5:
+                $message = Auth::user()->title." ".Auth::user()->first_name." ".Auth::user()->last_name." ".Auth::user()->second_last_name." cerró sesión";
+            break;
+          case 8:
+                $message = "La ".Auth::user()->title." ".Auth::user()->first_name." ".Auth::user()->last_name." ".Auth::user()->second_last_name." cerró sesión";
+            break;
+        }
+
+        DB::insert('INSERT INTO log (message, date, action, user_id) values (?, ?, ?, ?)', [$message, $date, $action, $user_id]);
+
         $this->guard()->logout();
 
         $request->session()->invalidate();
-
-        return $this->loggedOut($request) ?: redirect('/');
+        //return $this->loggedOut($request) ?: redirect('/');
+        return $this->loggedOut($request) ?: redirect(\URL::previous());
     }
 
     /**

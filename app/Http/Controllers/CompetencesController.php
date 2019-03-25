@@ -70,13 +70,13 @@ class CompetencesController extends Controller
           //Se almacena y se muestran mensajes en caos de registro exitoso
           if ($competences->save()) {
             
-            Alert::success('Exitosamente','Competencia Registrada');
+            Alert::success('Exitosamente','Competencia Registrada')->autoclose(4000);
   
             insertToLog(Auth::user()->id, 'added', Input::get('id'), "competencia");
   
             return redirect()->route('competences.list');
           } else {
-            Alert::error('No se registro la competencia', 'Error');
+            Alert::error('No se registro la competencia', 'Error')->autoclose(4000);
             return redirect()->route('competences.list');
           }
     }
@@ -141,13 +141,13 @@ class CompetencesController extends Controller
 
         //Se almacena y se muestra mensaje de exito
         if ($competence->update()) {
-          Alert::success('Exitosamente','Competencia Modificada');
+          Alert::success('Exitosamente','Competencia Modificada')->autoclose(4000);
 
           insertToLog(Auth::user()->id, 'updated', Input::get('competence_id'), "competencia");
 
           return redirect()->route('competences.list');
         } else {
-          Alert::error('No se modifico la competencia', 'Error');
+          Alert::error('No se modifico la competencia', 'Error')->autoclose(4000);
           return redirect()->route('competences.list');
         }
     }
@@ -167,7 +167,7 @@ class CompetencesController extends Controller
 
         DeleteHelper::instance()->onCascadeLogicalDelete('competences','id',$competence->id);
 
-        Alert::success('Exitosamente','Competencia Eliminada');
+        Alert::success('Exitosamente','Competencia Eliminada')->autoclose(4000);
 
         insertToLog(Auth::user()->id, 'deleted', $competence->id, "competencia");
 
@@ -178,7 +178,7 @@ class CompetencesController extends Controller
     {
         DeleteHelper::instance()->restoreLogicalDelete('competences','id',$request->id);
 
-        Alert::success('Exitosamente','Competencia Restaurada');
+        Alert::success('Exitosamente','Competencia Restaurada')->autoclose(4000);
 
         insertToLog(Auth::user()->id, 'recover', $request->id, "competencia");
 
@@ -206,13 +206,13 @@ class CompetencesController extends Controller
       $competence->evaluated = 1;
 
       if ($competence->update()) {
-        Alert::success('Exitosamente','Puntuación Modificada');
+        Alert::success('Exitosamente','Puntuación Modificada')->autoclose(4000);
 
         insertToLog(Auth::user()->id, 'updated', $competence->id, "puntuacion");
 
         return redirect()->route('students.show', ['id' => $competence->student_id]);
       } else {
-        Alert::error('No se modifico la puntuación', 'Error');
+        Alert::error('No se modifico la puntuación', 'Error')->autoclose(4000);
         return redirect()->route('students.show', ['id' => $competence->student_id]);
       }
 
@@ -222,7 +222,7 @@ class CompetencesController extends Controller
     {
       DeleteHelper::instance()->onCascadeLogicalDelete('students_competences','id',$competence->id);
 
-        Alert::success('Exitosamente','Competencia eliminada del estudiante');
+        Alert::success('Exitosamente','Competencia eliminada del estudiante')->autoclose(4000);
 
         insertToLog(Auth::user()->id, 'deleted', $competence->id, "competencia del estudiante");
         $student = students_competences::where('id','=',$competence->id)->first();
@@ -233,7 +233,7 @@ class CompetencesController extends Controller
     {
         DeleteHelper::instance()->restoreLogicalDelete('students_competences','id',$request->id);
 
-        Alert::success('Exitosamente','Competencia restaurada en el estudiante');
+        Alert::success('Exitosamente','Competencia restaurada en el estudiante')->autoclose(4000);
 
         insertToLog(Auth::user()->id, 'recover', $request->id, "competencia del estudiante");
         $student = students_competences::find($request->id);
@@ -265,7 +265,7 @@ class CompetencesController extends Controller
 
     public function guardarAsignaciones(Request $request,$id){
       if($request->competences_not_asigned==NULL){
-          Alert::error('Se debe seleccionar almenos una competencia para asignar', 'Error');
+          Alert::error('Se debe seleccionar almenos una competencia para asignar', 'Error')->autoclose(4000);
           return redirect()->route('competences.asignar',['id' => $id]);
       }
       
@@ -282,7 +282,7 @@ class CompetencesController extends Controller
 
       }
 
-      Alert::success('Exitosamente','Competencias asignadas');
+      Alert::success('Exitosamente','Competencias asignadas')->autoclose(4000);
       return redirect()->route('students.show', ['id' => $id]);
     }
 
@@ -318,12 +318,12 @@ class CompetencesController extends Controller
     public function answerAccepted(students_competences $competence){
       $competence->status = 1;
       if($competence->update()){
-        Alert::success('Exitosamente','Solicitud aceptada');
+        Alert::success('Exitosamente','Solicitud aceptada')->autoclose(4000);
         insertToLog(Auth::user()->id, 'added', $competence->id, "competencia del estudiante");
 
         return redirect()->route('students.show', ['id' => $competence->student_id]);
       }else{
-        Alert::error('No se pudo aceptar la solicitud', 'Error');        
+        Alert::error('No se pudo aceptar la solicitud', 'Error')->autoclose(4000);        
         return redirect()->route('students.show', ['id' => $competence->student_id]);
       }
     }
@@ -331,12 +331,12 @@ class CompetencesController extends Controller
     public function answerRejected(students_competences $competence){
 
       if($competence->delete()){
-        Alert::success('Exitosamente','Solicitud rechazada');
+        Alert::success('Exitosamente','Solicitud rechazada')->autoclose(4000);
         insertToLog(Auth::user()->id, 'deleted', $competence->id, "competencia del estudiante");
 
         return redirect()->route('students.show', ['id' => $competence->student_id]);
       }else{
-        Alert::error('No se pudo rechazar la solicitud', 'Error');        
+        Alert::error('No se pudo rechazar la solicitud', 'Error')->autoclose(4000);        
         return redirect()->route('students.show', ['id' => $competence->student_id]);
       }
     }

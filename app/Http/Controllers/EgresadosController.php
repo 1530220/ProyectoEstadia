@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Alert;
+use App\StatusJob;
 use App\competence;
 use App\project;
 use App\User;
@@ -40,7 +41,10 @@ class EgresadosController extends Controller
     
     //Pagina de ofertas de trabajo
     public function ofertas_trabajo(){
-        $companies=DB::table('companies')
+        $companies=DB::table('companies as c')
+        ->join('countries as co','co.id','c.country')
+        ->join('cities as ci','ci.id','c.city')
+        ->select('c.*','co.name as country_name','ci.name as city_name')
         ->get();
         return view('egresado.lista_trabajo', compact('companies'));
     }
@@ -276,7 +280,8 @@ class EgresadosController extends Controller
             }
             $path=Input::file('image')->store('/public/students');
             $image_url = 'storage/students/'.Input::file('image')->hashName();
-            DB::update('UPDATE siita_db.users SET image_url = ? WHERE id = ?', [$image_url, $id]); 
+            DB::update('UPDATE siita_db.users SET image_url = ? WHERE id = ?', [$image_url, $id]);
+            insertToLog(Auth::user()->id, 'updated', Auth::user()->university_id, "perfil");   
             Alert::success('Se ha actualizado tu perfil','Bien Hecho!!!')->autoclose(4000);
             return back();
         }  
@@ -360,11 +365,18 @@ class EgresadosController extends Controller
         $id_job=request('id_job');
         $id_student=request('id_student');
         $status=request('status');
-
-        $query=DB::table('status_job')
+        $status_job= new StatusJob();
+        $status_job->id_student=$id_student;
+        $status_job->id_job=$id_job;
+        $status_job->status=$status;
+        $status_job->save();
+        insertToLog(Auth::user()->id, 'added',$status_job->id , "vacante");
+        /*$query=DB::table('status_job')
         ->insert(
             array('id_student' => $id_student, 'id_job' => $id_job, 'status' => $status)
-        );
+        );*/
+        
+        
         Alert::success('La solicitud se ha enviado correctamente','Bien Hecho!!!')->autoclose(4000);
         return back();
     }
@@ -374,12 +386,18 @@ class EgresadosController extends Controller
         ->where('user_id',auth()->user()->id)
         ->first();
         
+        
       
-        $query=DB::table('status_job')
+        $status=DB::table('status_job')
+        ->where('id_job',$id)
+        ->where('id_student','=',$id_student->university_id)
+        ->first();
+        $status_job=DB::table('status_job')
         ->where('id_job',$id)
         ->where('id_student','=',$id_student->university_id)
         ->delete();
-      
+        
+        insertToLog(Auth::user()->id, 'deleted',$status->id , "vacante");
         Alert::success('Tu solicitud ha sido cancelada','Bien Hecho!!!')->autoclose(4000);
         return back();
     }
@@ -440,6 +458,7 @@ class EgresadosController extends Controller
             $students_competences->student_id=auth()->user()->university_id;
             $students_competences->competence_id=$id;
             $students_competences->save();
+          insertToLog(Auth::user()->id, 'added', $students_competences->id, "competencia");
         }
         Alert::success('La solicitud de competencias de ha enviado correctamente','Bien Hecho!!!')->autoclose(4000);
         return back();
@@ -538,6 +557,7 @@ class EgresadosController extends Controller
           $project->save();
         //Se almacena y se muestran mensajes en caos de registro exitoso
           if ($project->save()) {
+            insertToLog(Auth::user()->id, 'added', $project->id, "proyecto");
             Alert::success('El proyecto ha sido agregado correctamente correctamente','Bien Hecho!!!')->autoclose(4000);
             return redirect()->route('profile_student',[auth()->user()->id]);
           } else {
@@ -583,6 +603,7 @@ class EgresadosController extends Controller
         ->select('projects.*')
         ->where('projects.id',$id)
         ->update(['name' => request('name'),'start_date' => request('start_date'),'finish_date' => request('finish_date'),'description' => request('description'),'boss' => request('boss'),'company' => request('company')]);
+        insertToLog(Auth::user()->id, 'updated', $id, "proyecto");
         Alert::success('El proyecto ha sido actualizada correctamente','Bien Hecho!!!')->autoclose(4000);
         return back();
     }
@@ -596,6 +617,7 @@ class EgresadosController extends Controller
         ->select('projects.*')
         ->where('projects.id',$id)
         ->update(['deleted' => request('delete')]);
+        insertToLog(Auth::user()->id, 'deleted', $id, "proyecto");
         Alert::success('El proyecto ha sido eliminado correctamente','Bien Hecho!!!')->autoclose(4000);
         return back();
         }else{
@@ -604,6 +626,7 @@ class EgresadosController extends Controller
         ->select('projects.*')
         ->where('projects.id',$id)
         ->update(['deleted' => request('delete')]);
+        insertToLog(Auth::user()->id, 'recover', $id, "proyecto");
         Alert::success('El proyecto ha sido restaurado correctamente','Bien Hecho!!!')->autoclose(4000);
         return back();
         }
@@ -652,7 +675,9 @@ class EgresadosController extends Controller
             $students_skills->user_id=auth()->user()->university_id;
             $students_skills->skill_id=$id;
             $students_skills->save();
+            insertToLog(Auth::user()->id, 'added', $students_skills->id, "habilidad");
         }
+        
         Alert::success('Tus habilidades han sido agregadas correctamente','Bien Hecho!!!')->autoclose(4000);
         return back(); 
        }
@@ -687,11 +712,11 @@ class EgresadosController extends Controller
           Alert::error('La puntuación de esta habilidad debe ser entre 0 y 100','Mal Hecho!!!')->autoclose(4000);
           return back();
         }else{
-          $skills=project::find($id);
           $skills=DB::table('students_skills as ss')
           ->select('ss.*')
           ->where('ss.id',$id)
           ->update(['score' => request('score')]);
+          insertToLog(Auth::user()->id, 'updated', $id, "habilidad");
           //swal("Good job!", "You clicked the button!", "success");
           Alert::success('La puntuación de esta habilidad ha sido actualizada correctamente','Bien Hecho!!!')->autoclose(4000);
           return back();
@@ -724,7 +749,7 @@ class EgresadosController extends Controller
         $skill=DB::table('students_skills')
         ->where('id',$id)
         ->delete();
-      
+        insertToLog(Auth::user()->id, 'deleted', $id, "habilidad");
         Alert::success('Tu habilidad ha sido eliminada','Bien Hecho!!!')->autoclose(4000);
         return redirect()->route('profile_student',[auth()->user()->id]);
         
@@ -795,6 +820,7 @@ class EgresadosController extends Controller
           
         //Se almacena y se muestran mensajes en caos de registro exitoso
           if ($work_experience->save()) {
+            insertToLog(Auth::user()->id, 'added', $work_experience->id, "experiencia laboral");
             Alert::success('La experiencia laboral ha sido agregado correctamente correctamente','Bien Hecho!!!')->autoclose(4000);
             
             return redirect()->route('profile_student',[auth()->user()->id]);
@@ -842,7 +868,8 @@ class EgresadosController extends Controller
           ->select('we.*')
           ->where('we.id',$id)
           ->update(['position' => request('position'),'company' => request('company'),'country' => request('country'),'state' => request('state'),'city' => request('city'),'start_date' => request('start_date'),'finish_date' => request('finish_date'),'description' => request('description')]);
-          //swal("Good job!", "You clicked the button!", "success");
+          insertToLog(Auth::user()->id, 'updated', $id, "experiencia laboral");      
+    //swal("Good job!", "You clicked the button!", "success");
           Alert::success('La experiencia laboral ha sido actualizado correctamente correctamente','Bien Hecho!!!')->autoclose(4000);
           return back();
          
@@ -877,12 +904,14 @@ class EgresadosController extends Controller
           $work_experience=DB::table('work_experiences')
            ->where('id',$id)
            ->update(['deleted' => 1]);
+          insertToLog(Auth::user()->id, 'deleted', $id, "experiencia laboral");   
           Alert::success('Tu experiencia laboral ha sido eliminada','Bien Hecho!!!')->autoclose(4000);
           return redirect()->route('profile_student',[auth()->user()->id]);
         }else{
           $work_experience=DB::table('work_experiences')
            ->where('id',$id)
            ->update(['deleted' => 0]);
+          insertToLog(Auth::user()->id, 'recover', $id, "experiencia laboral");   
           Alert::success('Tu experiencia laboral ha sido restaurada','Bien Hecho!!!')->autoclose(4000);
           return redirect()->route('profile_student',[auth()->user()->id]);
         }
@@ -937,6 +966,7 @@ class EgresadosController extends Controller
           
         //Se almacena y se muestran mensajes en caos de registro exitoso
           if ($acknowledgment->save()) {
+            insertToLog(Auth::user()->id, 'added', $acknowledgment->id, "reconocimiento");   
             Alert::success('El reconocimiento ha sido agregado correctamente correctamente','Bien Hecho!!!')->autoclose(4000);
             
             return redirect()->route('profile_student',[auth()->user()->id]);
@@ -974,7 +1004,7 @@ class EgresadosController extends Controller
           ->select('a.*')
           ->where('a.id',$id)
           ->update(['title' => request('title'),'transmitter' => request('transmitter'),'date' => request('date'),'description' => request('description')]);
-          //swal("Good job!", "You clicked the button!", "success");
+          insertToLog(Auth::user()->id, 'updated', $id, "reconocimiento");   
           Alert::success('El reconocimiento ha sido actualizado correctamente correctamente','Bien Hecho!!!')->autoclose(4000);
           return back();
          
@@ -1009,12 +1039,14 @@ class EgresadosController extends Controller
           $acknowledgment=DB::table('acknowledgments')
            ->where('id',$id)
            ->update(['deleted' => 1]);
+          insertToLog(Auth::user()->id, 'deleted', $id, "reconocimiento");   
           Alert::success('Tu reconocimiento ha sido eliminado','Bien Hecho!!!')->autoclose(4000);
           return redirect()->route('profile_student',[auth()->user()->id]);
         }else{
           $acknowledgment=DB::table('acknowledgments')
            ->where('id',$id)
            ->update(['deleted' => 0]);
+          insertToLog(Auth::user()->id, 'recover', $id, "reconocimiento");   
           Alert::success('Tu reconocimiento ha sido restaurado','Bien Hecho!!!')->autoclose(4000);
           return redirect()->route('profile_student',[auth()->user()->id]);
         }
@@ -1067,6 +1099,7 @@ class EgresadosController extends Controller
           
         //Se almacena y se muestran mensajes en caos de registro exitoso
           if ($evidence->save()) {
+            insertToLog(Auth::user()->id, 'added', $evidence->id, "evidencia");   
             Alert::success('La evidencia ha sido agregado correctamente correctamente','Bien Hecho!!!')->autoclose(4000);
             
             return redirect()->route('profile_student',[auth()->user()->id]);
@@ -1142,12 +1175,14 @@ class EgresadosController extends Controller
           $evidence=DB::table('evidences')
            ->where('id',$id)
            ->update(['deleted' => 1]);
+          insertToLog(Auth::user()->id, 'deleted', $id, "evidencia");   
           Alert::success('Tu evidencia ha sido eliminada','Bien Hecho!!!')->autoclose(4000);
           return redirect()->route('profile_student',[auth()->user()->id]);
         }else{
           $evidence=DB::table('evidences')
            ->where('id',$id)
            ->update(['deleted' => 0]);
+          insertToLog(Auth::user()->id, 'recover', $id, "evidencia");   
           Alert::success('Tu evidencia ha sido restaurada','Bien Hecho!!!')->autoclose(4000);
           return redirect()->route('profile_student',[auth()->user()->id]);
         }
