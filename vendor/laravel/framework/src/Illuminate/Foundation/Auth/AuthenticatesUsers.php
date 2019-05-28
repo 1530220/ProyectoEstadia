@@ -145,11 +145,13 @@ trait AuthenticatesUsers
           case 8:
                 $message = "La ".Auth::user()->title." ".Auth::user()->first_name." ".Auth::user()->last_name." ".Auth::user()->second_last_name." ha iniciado sesión";
             break;
+          default:
+            $message = Auth::user()->title." ".Auth::user()->first_name." ".Auth::user()->last_name." ".Auth::user()->second_last_name." ha iniciado sesión";
+            break;
          
         }
 
         DB::insert('INSERT INTO log (message, date, action, user_id) values (?, ?, ?, ?)', [$message, $date, $action, $user_id]);
-
        
     }
 
@@ -208,6 +210,9 @@ trait AuthenticatesUsers
             break;
           case 8:
                 $message = "La ".Auth::user()->title." ".Auth::user()->first_name." ".Auth::user()->last_name." ".Auth::user()->second_last_name." cerró sesión";
+            break;
+          default:
+            $message = Auth::user()->title." ".Auth::user()->first_name." ".Auth::user()->last_name." ".Auth::user()->second_last_name." cerró sesión";
             break;
         }
 
