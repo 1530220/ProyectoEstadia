@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 28-05-2019 a las 17:20:02
+-- Tiempo de generación: 21-06-2019 a las 17:04:06
 -- Versión del servidor: 5.7.26-0ubuntu0.18.04.1
--- Versión de PHP: 7.2.17-0ubuntu0.18.04.1
+-- Versión de PHP: 7.2.19-0ubuntu0.18.04.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -37,6 +37,14 @@ CREATE TABLE `acknowledgments` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `acknowledgments`
+--
+
+INSERT INTO `acknowledgments` (`id`, `title`, `transmitter`, `date`, `description`, `user_id`, `deleted`, `created_at`, `updated_at`) VALUES
+(1, 'sqgfuyteqfgyewqvhgasuvh', 'fewqRGETGT', '2018-05-02', 'DAGATHWSEYJHETJ', 1130080, 0, '2019-05-28 13:27:54', '2019-05-28 13:27:54'),
+(2, 'aSFAQ', 'SAG', '2018-12-20', 'ASFASGWEAS', 1130080, 0, '2019-05-28 14:49:36', '2019-05-28 14:49:36');
 
 -- --------------------------------------------------------
 
@@ -48065,7 +48073,7 @@ CREATE TABLE `companies` (
 --
 
 INSERT INTO `companies` (`id`, `rfc`, `name`, `phone`, `image_url`, `country`, `state`, `city`, `zip`, `colony`, `street`, `schedule`, `description`, `deleted`, `created_at`, `updated_at`) VALUES
-(5, 'XAXX010101000', 'Oracle', '8341501502', 'storage/no_image.png', '231', '3924', '43070', '87000', 'Liberal', 'Guerrero', 'sagsag', 'asgsa', 0, '2019-05-28 11:00:40', '2019-05-28 11:00:40'),
+(5, 'XAXX010101000', 'Oracle', '8341501502', 'storage/companies/f3EsK4d3cmCbh4iCbAk30ZY0DmSQghezHO7H30LO.png', '231', '3924', '43070', '87000', 'Liberal', 'Guerrero', 'sagsag', 'asgsa', 0, '2019-05-28 11:00:40', '2019-05-28 11:00:40'),
 (7, 'ROHR9707025A0', 'IBM', '8341501502', 'storage/companies/aGvEqLGMX0J6lmloprLC0LmIjQXrmgrjJL1ATC6o.png', '231', '3924', '43240', '87000', 'Liberal', 'Guerrero', 'saf', 'sagsag', 0, '2019-05-28 11:11:30', '2019-05-28 11:11:30');
 
 -- --------------------------------------------------------
@@ -48087,7 +48095,10 @@ CREATE TABLE `competences` (
 --
 
 INSERT INTO `competences` (`id`, `name`, `deleted`, `created_at`, `updated_at`) VALUES
-(1, 'Poder', 0, '2019-05-28 12:14:13', '2019-05-28 12:14:25');
+(1, 'Poder', 0, '2019-05-28 12:14:13', '2019-05-28 12:14:25'),
+(2, 'Liderazgo', 0, '2019-05-28 13:06:35', '2019-05-28 13:06:35'),
+(3, 'siahfg', 0, '2019-05-28 13:10:42', '2019-05-28 13:10:42'),
+(4, 'qwqretf', 0, '2019-05-28 13:10:51', '2019-05-28 13:10:51');
 
 -- --------------------------------------------------------
 
@@ -48104,6 +48115,13 @@ CREATE TABLE `connections_companies` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `connections_companies`
+--
+
+INSERT INTO `connections_companies` (`id`, `student_id_login`, `company_id`, `date`, `deleted`, `created_at`, `updated_at`) VALUES
+(3, 1130080, 5, '2019-05-28', 0, '2019-05-28 14:21:21', '2019-05-28 14:21:21');
 
 -- --------------------------------------------------------
 
@@ -48140,6 +48158,14 @@ CREATE TABLE `contacts` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `contacts`
+--
+
+INSERT INTO `contacts` (`id`, `first_name`, `last_name`, `second_last_name`, `email`, `phone`, `position`, `company_id`, `schedule`, `deleted`, `created_at`, `updated_at`) VALUES
+(1, 'safas', 'qawfsa', 'asffa', 'oracle1@origin.com', '8341501502', 'Jefe de Administración', 5, 'sfagarweGRAWgREW', 0, '2019-05-28 13:43:57', '2019-05-28 13:44:19'),
+(2, 'saf', 'safg', 'sga', 'oracle2@system.com', '8341501502', 'ewga<rgr', 7, 'edbgahgjehwakjgbjesbndgjk<arf', 0, '2019-05-28 13:59:30', '2019-05-28 13:59:30');
 
 -- --------------------------------------------------------
 
@@ -48422,6 +48448,13 @@ CREATE TABLE `evidences` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Volcado de datos para la tabla `evidences`
+--
+
+INSERT INTO `evidences` (`id`, `student_id`, `name`, `path`, `deleted`, `created_at`, `updated_at`) VALUES
+(2, '1130080', 'SQRTFQW', 'storage/evidences/8xiaY0T0mtGLBtwoggI4DRF6ZE9x7wcN9j64uIcg.pdf', 0, '2019-05-28 14:50:36', '2019-05-28 14:50:36');
+
 -- --------------------------------------------------------
 
 --
@@ -48442,10 +48475,18 @@ CREATE TABLE `jobs` (
   `street` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `id_sector` int(10) UNSIGNED NOT NULL,
   `id_company` int(10) UNSIGNED NOT NULL,
+  `id_contact` int(10) UNSIGNED NOT NULL,
   `deleted` int(11) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `jobs`
+--
+
+INSERT INTO `jobs` (`id`, `name`, `description`, `salary`, `job_type`, `country`, `state`, `city`, `zip`, `colony`, `street`, `id_sector`, `id_company`, `id_contact`, `deleted`, `created_at`, `updated_at`) VALUES
+(1, 'saga', 'dasgsd<', 'Hasta $5,000', 'Medio Tiempo', '16', '322', '7254', '87000', 'Liberal', 'Guerrero', 1, 5, 1, 0, '2019-05-28 13:48:14', '2019-05-28 13:48:14');
 
 -- --------------------------------------------------------
 
@@ -48461,6 +48502,18 @@ CREATE TABLE `jobs_skills` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `jobs_skills`
+--
+
+INSERT INTO `jobs_skills` (`id`, `job_id`, `skill_id`, `deleted`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 0, '2019-05-28 13:45:54', '2019-05-28 13:45:54'),
+(2, 1, 2, 0, '2019-05-28 13:45:54', '2019-05-28 13:45:54'),
+(3, 1, 1, 0, '2019-05-28 13:46:59', '2019-05-28 13:46:59'),
+(4, 1, 2, 0, '2019-05-28 13:46:59', '2019-05-28 13:46:59'),
+(5, 1, 1, 0, '2019-05-28 13:48:14', '2019-05-28 13:48:14'),
+(6, 1, 2, 0, '2019-05-28 13:48:14', '2019-05-28 13:48:14');
 
 -- --------------------------------------------------------
 
@@ -48541,7 +48594,114 @@ INSERT INTO `log` (`id`, `message`, `date`, `action`, `user_id`, `created_at`, `
 (56, 'El administrador Admin Bolsa  elimino competencia con el id 1', '2019-05-28 12:14:33', 5, 4, NULL, NULL),
 (57, 'El administrador Admin Bolsa  restauro competencia con el id 1', '2019-05-28 12:14:37', 6, 4, NULL, NULL),
 (58, 'El administrador Admin Bolsa  registro evidencia con el id 1', '2019-05-28 12:16:48', 3, 4, NULL, NULL),
-(59, 'El administrador Admin Bolsa  elimino evidencia con el id 1', '2019-05-28 12:17:45', 5, 4, NULL, NULL);
+(59, 'El administrador Admin Bolsa  elimino evidencia con el id 1', '2019-05-28 12:17:45', 5, 4, NULL, NULL),
+(60, 'El administrador Admin Bolsa  registro habilidad con el id 1', '2019-05-28 12:47:27', 3, 4, NULL, NULL),
+(61, 'El administrador Admin Bolsa  registro habilidad del estudiante con el id 1', '2019-05-28 12:58:17', 3, 4, NULL, NULL),
+(62, 'El administrador Admin Bolsa  actualizo puntuacion de habilidad con el id 4', '2019-05-28 12:58:46', 4, 4, NULL, NULL),
+(63, 'El administrador Admin Bolsa  elimino habilidad del estudiante con el id 4', '2019-05-28 12:58:53', 5, 4, NULL, NULL),
+(64, 'El administrador Admin Bolsa  restauro habilidad del estudiante con el id 4', '2019-05-28 12:59:07', 6, 4, NULL, NULL),
+(65, 'El administrador Admin Bolsa  registro habilidad con el id 2', '2019-05-28 12:59:38', 3, 4, NULL, NULL),
+(66, 'El administrador Admin Bolsa  registro habilidad con el id 3', '2019-05-28 12:59:47', 3, 4, NULL, NULL),
+(67, 'El administrador Admin Bolsa  registro habilidad con el id 4', '2019-05-28 13:00:01', 3, 4, NULL, NULL),
+(68, 'El administrador Admin Bolsa  registro habilidad del estudiante con el id 2', '2019-05-28 13:00:41', 3, 4, NULL, NULL),
+(69, 'El administrador Admin Bolsa  registro habilidad del estudiante con el id 3', '2019-05-28 13:00:41', 3, 4, NULL, NULL),
+(70, 'El administrador Admin Bolsa  elimino competencia con el id 1', '2019-05-28 13:01:22', 5, 4, NULL, NULL),
+(71, 'El administrador Admin Bolsa  registro competencia con el id 2', '2019-05-28 13:06:35', 3, 4, NULL, NULL),
+(72, 'El administrador Admin Bolsa  restauro competencia con el id 1', '2019-05-28 13:07:31', 6, 4, NULL, NULL),
+(73, 'El administrador Admin Bolsa  registro competencia del estudiante 1130080 con el id 2', '2019-05-28 13:10:06', 3, 4, NULL, NULL),
+(74, 'El administrador Admin Bolsa  actualizo puntuacion con el id 2', '2019-05-28 13:10:27', 4, 4, NULL, NULL),
+(75, 'El administrador Admin Bolsa  registro competencia con el id 3', '2019-05-28 13:10:42', 3, 4, NULL, NULL),
+(76, 'El administrador Admin Bolsa  registro competencia con el id 4', '2019-05-28 13:10:51', 3, 4, NULL, NULL),
+(77, 'El administrador Admin Bolsa  registro competencia del estudiante 1130080 con el id 1', '2019-05-28 13:11:03', 3, 4, NULL, NULL),
+(78, 'El administrador Admin Bolsa  registro competencia del estudiante 1130080 con el id 3', '2019-05-28 13:11:03', 3, 4, NULL, NULL),
+(79, 'El administrador Admin Bolsa  actualizo puntuacion con el id 2', '2019-05-28 13:11:12', 4, 4, NULL, NULL),
+(80, 'El administrador Admin Bolsa  actualizo puntuacion con el id 3', '2019-05-28 13:11:20', 4, 4, NULL, NULL),
+(81, 'El administrador Admin Bolsa  elimino competencia del estudiante con el id 3', '2019-05-28 13:11:32', 5, 4, NULL, NULL),
+(82, 'El administrador Admin Bolsa  restauro competencia del estudiante con el id 3', '2019-05-28 13:11:39', 6, 4, NULL, NULL),
+(83, 'El administrador Admin Bolsa  registro medallla con el id 1', '2019-05-28 13:14:10', 3, 4, NULL, NULL),
+(84, 'El administrador Admin Bolsa  registro medallla con el id 2', '2019-05-28 13:15:53', 3, 4, NULL, NULL),
+(85, 'El administrador Admin Bolsa  registro medallla con el id 3', '2019-05-28 13:16:08', 3, 4, NULL, NULL),
+(86, 'El administrador Admin Bolsa  registro medalla a estudiante 1130080 con el id 1', '2019-05-28 13:16:27', 3, 4, NULL, NULL),
+(87, 'El administrador Admin Bolsa  registro medalla a estudiante 1130080 con el id 2', '2019-05-28 13:16:27', 3, 4, NULL, NULL),
+(88, 'El administrador Admin Bolsa  elimino medalla del estudiante 1130080 con el id 2', '2019-05-28 13:20:29', 5, 4, NULL, NULL),
+(89, 'El administrador Admin Bolsa  restauro medalla del estudiante 1130080 con el id 2', '2019-05-28 13:20:34', 6, 4, NULL, NULL),
+(90, 'El administrador Admin Bolsa  registro proyecto con el id 1', '2019-05-28 13:23:27', 3, 4, NULL, NULL),
+(91, 'El administrador Admin Bolsa  actualizo proyecto con el id 1', '2019-05-28 13:23:53', 4, 4, NULL, NULL),
+(92, 'El administrador Admin Bolsa  actualizo proyecto con el id 1', '2019-05-28 13:24:46', 4, 4, NULL, NULL),
+(93, 'El administrador Admin Bolsa  elimino proyecto con el id 1', '2019-05-28 13:24:58', 5, 4, NULL, NULL),
+(94, 'El administrador Admin Bolsa  restauro proyecto con el id 1', '2019-05-28 13:25:04', 6, 4, NULL, NULL),
+(95, 'El administrador Admin Bolsa  registro reconocimiento con el id 1', '2019-05-28 13:27:54', 3, 4, NULL, NULL),
+(96, 'El administrador Admin Bolsa  elimino reconocimiento con el id 1', '2019-05-28 13:28:17', 5, 4, NULL, NULL),
+(97, 'El administrador Admin Bolsa  restauro reconocimiento con el id 1', '2019-05-28 13:28:21', 6, 4, NULL, NULL),
+(98, 'El administrador Admin Bolsa  registro experiencia laboral con el id 1', '2019-05-28 13:32:20', 3, 4, NULL, NULL),
+(99, 'El administrador Admin Bolsa  actualizo experiencia laboral con el id 1', '2019-05-28 13:32:44', 4, 4, NULL, NULL),
+(100, 'El administrador Admin Bolsa  elimino experiencia laboral con el id 1', '2019-05-28 13:32:56', 5, 4, NULL, NULL),
+(101, 'El administrador Admin Bolsa  restauro experiencia laboral con el id 1', '2019-05-28 13:33:00', 6, 4, NULL, NULL),
+(102, 'El administrador Admin Bolsa  registro contacto con el id 1', '2019-05-28 13:43:57', 3, 4, NULL, NULL),
+(103, 'El administrador Admin Bolsa  actualizo contacto con el id 1', '2019-05-28 13:44:19', 4, 4, NULL, NULL),
+(104, 'El administrador Admin Bolsa  elimino contacto con el id 1', '2019-05-28 13:44:32', 5, 4, NULL, NULL),
+(105, 'El administrador Admin Bolsa  restauro contacto con el id 1', '2019-05-28 13:44:36', 6, 4, NULL, NULL),
+(106, 'El administrador Admin Bolsa  registro sector con el id 1', '2019-05-28 13:45:05', 3, 4, NULL, NULL),
+(107, 'El administrador Admin Bolsa  registro vacante con el id 1', '2019-05-28 13:48:14', 3, 4, NULL, NULL),
+(108, 'La  Empresa IBM  ha iniciado sesión', '2019-05-28 13:50:08', 1, 7, NULL, NULL),
+(109, 'La  Empresa IBM  cerró sesión', '2019-05-28 13:50:21', 2, 7, NULL, NULL),
+(110, 'El administrador Admin Bolsa  actualizo empresa con el id ', '2019-05-28 13:51:32', 4, 4, NULL, NULL),
+(111, 'La  Empresa Oracle  ha iniciado sesión', '2019-05-28 13:51:59', 1, 5, NULL, NULL),
+(112, 'La  Empresa Oracle  cerró sesión', '2019-05-28 13:54:53', 2, 5, NULL, NULL),
+(113, 'La  Empresa IBM  ha iniciado sesión', '2019-05-28 13:59:04', 1, 7, NULL, NULL),
+(114, 'La  Empresa IBM  cerró sesión', '2019-05-28 13:59:51', 2, 7, NULL, NULL),
+(115, 'La  Empresa IBM  ha iniciado sesión', '2019-05-28 14:03:01', 1, 7, NULL, NULL),
+(116, 'El administrador Admin Bolsa  registro conexión con el id 2', '2019-05-28 14:14:01', 3, 4, NULL, NULL),
+(117, 'El administrador Admin Bolsa  elimino conexión con el id 2', '2019-05-28 14:14:08', 5, 4, NULL, NULL),
+(118, 'El alumno RODRIGO ROJAS HUERTA ha iniciado sesión', '2019-05-28 14:14:51', 1, 4600, NULL, NULL),
+(119, 'El alumno RODRIGO ROJAS HUERTA registro vacante con el id 1', '2019-05-28 14:16:37', 3, 4600, NULL, NULL),
+(120, 'El administrador Admin Bolsa  actualizo postulación con el id 1', '2019-05-28 14:16:52', 4, 4, NULL, NULL),
+(121, 'El alumno RODRIGO ROJAS HUERTA cerró sesión', '2019-05-28 14:17:19', 2, 4600, NULL, NULL),
+(122, 'El administrador Admin Bolsa  registro conexión con el id 3', '2019-05-28 14:21:21', 3, 4, NULL, NULL),
+(123, 'El administrador Admin Bolsa  cerró sesión', '2019-05-28 14:28:25', 2, 4, NULL, NULL),
+(124, 'El alumno RODRIGO ROJAS HUERTA ha iniciado sesión', '2019-05-28 14:28:32', 1, 4600, NULL, NULL),
+(125, 'El alumno RODRIGO ROJAS HUERTA cerró sesión', '2019-05-28 14:35:06', 2, 4600, NULL, NULL),
+(126, 'El administrador Admin Bolsa  ha iniciado sesión', '2019-05-28 14:36:09', 1, 4, NULL, NULL),
+(127, 'El administrador Admin Bolsa  cerró sesión', '2019-05-28 14:37:26', 2, 4, NULL, NULL),
+(128, 'Lic. Rosa María Martínez Zavala ha iniciado sesión', '2019-05-28 14:38:09', 1, 101, NULL, NULL),
+(129, 'Lic. Rosa María Martínez Zavala cerró sesión', '2019-05-28 14:38:59', 2, 101, NULL, NULL),
+(130, ' YAHIR HERNÁNDEZ MIER ha iniciado sesión', '2019-05-28 14:39:13', 1, 530, NULL, NULL),
+(131, ' YAHIR HERNÁNDEZ MIER cerró sesión', '2019-05-28 14:39:17', 2, 530, NULL, NULL),
+(132, 'E. Salud Salud Salud ha iniciado sesión', '2019-05-28 14:39:38', 1, 1001, NULL, NULL),
+(133, 'E. Salud Salud Salud cerró sesión', '2019-05-28 14:40:37', 2, 1001, NULL, NULL),
+(134, 'El administrador Admin Bolsa  ha iniciado sesión', '2019-05-28 14:40:57', 1, 4, NULL, NULL),
+(135, 'El administrador Admin Bolsa  cerró sesión', '2019-05-28 14:41:28', 2, 4, NULL, NULL),
+(136, ' YAHIR HERNÁNDEZ MIER ha iniciado sesión', '2019-05-28 14:43:28', 1, 530, NULL, NULL),
+(137, 'YAHIR HERNÁNDEZ MIER registro competencia del estudiante 1530081 con el id 1', '2019-05-28 14:44:05', 3, 530, NULL, NULL),
+(138, 'YAHIR HERNÁNDEZ MIER registro competencia del estudiante 1530081 con el id 2', '2019-05-28 14:44:05', 3, 530, NULL, NULL),
+(139, 'YAHIR HERNÁNDEZ MIER registro medalla a estudiante 1530081 con el id 1', '2019-05-28 14:44:17', 3, 530, NULL, NULL),
+(140, 'YAHIR HERNÁNDEZ MIER actualizo puntuacion con el id 5', '2019-05-28 14:44:35', 4, 530, NULL, NULL),
+(141, 'YAHIR HERNÁNDEZ MIER elimino competencia del estudiante con el id 5', '2019-05-28 14:44:39', 5, 530, NULL, NULL),
+(142, 'YAHIR HERNÁNDEZ MIER restauro competencia del estudiante con el id 5', '2019-05-28 14:44:44', 6, 530, NULL, NULL),
+(143, 'YAHIR HERNÁNDEZ MIER elimino medalla del estudiante 1530081 con el id 3', '2019-05-28 14:44:50', 5, 530, NULL, NULL),
+(144, 'YAHIR HERNÁNDEZ MIER restauro medalla del estudiante 1530081 con el id 3', '2019-05-28 14:44:56', 6, 530, NULL, NULL),
+(145, ' YAHIR HERNÁNDEZ MIER cerró sesión', '2019-05-28 14:46:29', 2, 530, NULL, NULL),
+(146, 'El administrador Admin Bolsa  ha iniciado sesión', '2019-05-28 14:46:38', 1, 4, NULL, NULL),
+(147, 'El administrador Admin Bolsa  cerró sesión', '2019-05-28 14:47:05', 2, 4, NULL, NULL),
+(148, 'El alumno ALAN ALFREDO RETA RAMIREZ ha iniciado sesión', '2019-05-28 14:47:10', 1, 4461, NULL, NULL),
+(149, 'El alumno ALAN ALFREDO RETA RAMIREZ registro competencia con el id 7', '2019-05-28 14:47:25', 3, 4461, NULL, NULL),
+(150, 'El alumno ALAN ALFREDO RETA RAMIREZ cerró sesión', '2019-05-28 14:47:50', 2, 4461, NULL, NULL),
+(151, ' YAHIR HERNÁNDEZ MIER ha iniciado sesión', '2019-05-28 14:48:03', 1, 530, NULL, NULL),
+(152, 'YAHIR HERNÁNDEZ MIER registro competencia del estudiante con el id 7', '2019-05-28 14:48:09', 3, 530, NULL, NULL),
+(153, ' YAHIR HERNÁNDEZ MIER cerró sesión', '2019-05-28 14:48:48', 2, 530, NULL, NULL),
+(154, 'El alumno RICARDO GUADALUPE URISTA GONZALEZ ha iniciado sesión', '2019-05-28 14:48:55', 1, 1912, NULL, NULL),
+(155, 'El alumno RICARDO GUADALUPE URISTA GONZALEZ registro reconocimiento con el id 2', '2019-05-28 14:49:36', 3, 1912, NULL, NULL),
+(156, 'El alumno RICARDO GUADALUPE URISTA GONZALEZ elimino reconocimiento con el id 1', '2019-05-28 14:49:50', 5, 1912, NULL, NULL),
+(157, 'El alumno RICARDO GUADALUPE URISTA GONZALEZ restauro reconocimiento con el id 1', '2019-05-28 14:50:01', 6, 1912, NULL, NULL),
+(158, 'El alumno RICARDO GUADALUPE URISTA GONZALEZ registro evidencia con el id 2', '2019-05-28 14:50:36', 3, 1912, NULL, NULL),
+(159, 'El alumno RICARDO GUADALUPE URISTA GONZALEZ elimino evidencia con el id 2', '2019-05-28 14:51:00', 5, 1912, NULL, NULL),
+(160, 'El alumno RICARDO GUADALUPE URISTA GONZALEZ restauro evidencia con el id 2', '2019-05-28 14:51:05', 6, 1912, NULL, NULL),
+(161, 'El alumno RICARDO GUADALUPE URISTA GONZALEZ registro habilidad con el id 7', '2019-05-28 14:51:32', 3, 1912, NULL, NULL),
+(162, 'El alumno RICARDO GUADALUPE URISTA GONZALEZ actualizo habilidad con el id 4', '2019-05-28 14:51:58', 4, 1912, NULL, NULL),
+(163, 'El alumno RICARDO GUADALUPE URISTA GONZALEZ elimino habilidad con el id 4', '2019-05-28 14:52:06', 5, 1912, NULL, NULL),
+(164, 'El alumno RICARDO GUADALUPE URISTA GONZALEZ registro experiencia laboral con el id 2', '2019-05-28 14:53:10', 3, 1912, NULL, NULL),
+(165, 'El alumno RICARDO GUADALUPE URISTA GONZALEZ elimino experiencia laboral con el id 2', '2019-05-28 14:53:22', 5, 1912, NULL, NULL),
+(166, 'El alumno RICARDO GUADALUPE URISTA GONZALEZ restauro experiencia laboral con el id 2', '2019-05-28 14:53:28', 6, 1912, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -48558,6 +48718,15 @@ CREATE TABLE `medals` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `medals`
+--
+
+INSERT INTO `medals` (`id`, `name`, `description`, `image`, `deleted`, `created_at`, `updated_at`) VALUES
+(1, 'Oracle Oro', 'sfqqeq', '/img/medals/oro1.jpg', 0, '2019-05-28 13:14:10', '2019-05-28 13:14:10'),
+(2, 'sfdaf', 'sga', '/img/medals/plata1.jpg', 0, '2019-05-28 13:15:53', '2019-05-28 13:15:53'),
+(3, 'adqaw', 'wqrqw', '/img/medals/bronce1.jpg', 0, '2019-05-28 13:16:08', '2019-05-28 13:16:08');
 
 -- --------------------------------------------------------
 
@@ -48617,6 +48786,13 @@ CREATE TABLE `projects` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Volcado de datos para la tabla `projects`
+--
+
+INSERT INTO `projects` (`id`, `name`, `start_date`, `finish_date`, `description`, `user_id`, `boss`, `company`, `deleted`, `created_at`, `updated_at`) VALUES
+(1, 'fqdkhbfehq', '2018-08-01', '2018-09-02', 'sfafqewgteqyweryhr', 1130080, 'qegq', 'wtqyueauquqa', 0, '2019-05-28 13:23:27', '2019-05-28 13:24:46');
+
 -- --------------------------------------------------------
 
 --
@@ -48632,6 +48808,13 @@ CREATE TABLE `sectors` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Volcado de datos para la tabla `sectors`
+--
+
+INSERT INTO `sectors` (`id`, `name`, `description`, `deleted`, `created_at`, `updated_at`) VALUES
+(1, 'Tecnologias de la Información', 'dfqeferqgreq', 0, '2019-05-28 13:45:05', '2019-05-28 13:45:05');
+
 -- --------------------------------------------------------
 
 --
@@ -48645,6 +48828,16 @@ CREATE TABLE `skills` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `skills`
+--
+
+INSERT INTO `skills` (`id`, `name`, `deleted`, `created_at`, `updated_at`) VALUES
+(1, 'Programación web', 0, '2019-05-28 12:47:27', '2019-05-28 12:47:27'),
+(2, 'sabhfbak', 0, '2019-05-28 12:59:38', '2019-05-28 12:59:38'),
+(3, 'qwerqr', 0, '2019-05-28 12:59:47', '2019-05-28 12:59:47'),
+(4, 'wqrewqtq', 0, '2019-05-28 13:00:01', '2019-05-28 13:00:01');
 
 -- --------------------------------------------------------
 
@@ -52772,6 +52965,13 @@ CREATE TABLE `status_job` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Volcado de datos para la tabla `status_job`
+--
+
+INSERT INTO `status_job` (`id`, `id_student`, `id_job`, `status`, `deleted`, `created_at`, `updated_at`) VALUES
+(1, '1530219', 1, 'Aceptado', 0, '2019-05-28 14:16:37', '2019-05-28 14:16:52');
+
 -- --------------------------------------------------------
 
 --
@@ -52801,11 +53001,23 @@ CREATE TABLE `students_competences` (
   `competence_id` int(10) UNSIGNED NOT NULL,
   `score` int(11) NOT NULL DEFAULT '100',
   `status` int(11) NOT NULL DEFAULT '0',
-  `evaluated` int(11) NOT NULL,
+  `evaluated` int(11) NOT NULL DEFAULT '100',
   `deleted` int(11) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `students_competences`
+--
+
+INSERT INTO `students_competences` (`id`, `student_id`, `competence_id`, `score`, `status`, `evaluated`, `deleted`, `created_at`, `updated_at`) VALUES
+(2, 1130080, 2, 86, 1, 1, 0, '2019-05-28 13:10:06', '2019-05-28 13:11:12'),
+(3, 1130080, 1, 62, 1, 1, 0, '2019-05-28 13:11:03', '2019-05-28 13:11:20'),
+(4, 1130080, 3, 100, 1, 100, 0, '2019-05-28 13:11:03', '2019-05-28 13:11:03'),
+(5, 1530081, 1, 82, 1, 1, 0, '2019-05-28 14:44:05', '2019-05-28 14:44:35'),
+(6, 1530081, 2, 100, 1, 100, 0, '2019-05-28 14:44:05', '2019-05-28 14:44:05'),
+(7, 1530081, 3, 100, 1, 100, 0, '2019-05-28 14:47:25', '2019-05-28 14:48:09');
 
 -- --------------------------------------------------------
 
@@ -52822,6 +53034,15 @@ CREATE TABLE `students_medals` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Volcado de datos para la tabla `students_medals`
+--
+
+INSERT INTO `students_medals` (`id`, `student_id`, `medal_id`, `deleted`, `created_at`, `updated_at`) VALUES
+(1, 1130080, 1, 0, '2019-05-28 13:16:27', '2019-05-28 13:16:27'),
+(2, 1130080, 2, 0, '2019-05-28 13:16:27', '2019-05-28 13:16:27'),
+(3, 1530081, 1, 0, '2019-05-28 14:44:17', '2019-05-28 14:44:17');
+
 -- --------------------------------------------------------
 
 --
@@ -52837,6 +53058,15 @@ CREATE TABLE `students_skills` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `students_skills`
+--
+
+INSERT INTO `students_skills` (`id`, `user_id`, `skill_id`, `score`, `deleted`, `created_at`, `updated_at`) VALUES
+(5, 1130080, 2, 100, 0, '2019-05-28 13:00:41', '2019-05-28 13:00:41'),
+(6, 1130080, 3, 100, 0, '2019-05-28 13:00:41', '2019-05-28 13:00:41'),
+(7, 1130080, 4, 100, 0, '2019-05-28 14:51:32', '2019-05-28 14:51:32');
 
 -- --------------------------------------------------------
 
@@ -54522,6 +54752,7 @@ CREATE TABLE `work_experiences` (
   `company` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `country` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `state` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `city` int(11) NOT NULL,
   `start_date` date NOT NULL,
   `finish_date` date NOT NULL,
   `description` varchar(500) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -54529,6 +54760,14 @@ CREATE TABLE `work_experiences` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `work_experiences`
+--
+
+INSERT INTO `work_experiences` (`id`, `user_id`, `position`, `company`, `country`, `state`, `city`, `start_date`, `finish_date`, `description`, `deleted`, `created_at`, `updated_at`) VALUES
+(1, 1130080, 'afedser', 'qefqfqw', '142', '2455', 29124, '2018-05-02', '2018-06-02', 'sagagewthejsjsdt', 0, '2019-05-28 13:32:20', '2019-05-28 13:32:44'),
+(2, 1130080, 'Jefe de Recursos Humanos', 'SFAF', '14', '290', 7099, '2018-05-02', '2018-06-02', 'SFAEWQG', 0, '2019-05-28 14:53:10', '2019-05-28 14:53:10');
 
 --
 -- Índices para tablas volcadas
@@ -54728,7 +54967,7 @@ ALTER TABLE `work_experiences`
 -- AUTO_INCREMENT de la tabla `acknowledgments`
 --
 ALTER TABLE `acknowledgments`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT de la tabla `cities`
 --
@@ -54743,12 +54982,12 @@ ALTER TABLE `companies`
 -- AUTO_INCREMENT de la tabla `competences`
 --
 ALTER TABLE `competences`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT de la tabla `connections_companies`
 --
 ALTER TABLE `connections_companies`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT de la tabla `connections_students`
 --
@@ -54758,7 +54997,7 @@ ALTER TABLE `connections_students`
 -- AUTO_INCREMENT de la tabla `contacts`
 --
 ALTER TABLE `contacts`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT de la tabla `countries`
 --
@@ -54768,27 +55007,27 @@ ALTER TABLE `countries`
 -- AUTO_INCREMENT de la tabla `evidences`
 --
 ALTER TABLE `evidences`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT de la tabla `jobs`
 --
 ALTER TABLE `jobs`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT de la tabla `jobs_skills`
 --
 ALTER TABLE `jobs_skills`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT de la tabla `log`
 --
 ALTER TABLE `log`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=167;
 --
 -- AUTO_INCREMENT de la tabla `medals`
 --
 ALTER TABLE `medals`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT de la tabla `migrations`
 --
@@ -54798,17 +55037,17 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT de la tabla `projects`
 --
 ALTER TABLE `projects`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT de la tabla `sectors`
 --
 ALTER TABLE `sectors`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT de la tabla `skills`
 --
 ALTER TABLE `skills`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT de la tabla `states`
 --
@@ -54818,43 +55057,36 @@ ALTER TABLE `states`
 -- AUTO_INCREMENT de la tabla `status_job`
 --
 ALTER TABLE `status_job`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT de la tabla `students_competences`
 --
 ALTER TABLE `students_competences`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT de la tabla `students_medals`
 --
 ALTER TABLE `students_medals`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT de la tabla `students_skills`
 --
 ALTER TABLE `students_skills`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT de la tabla `work_experiences`
 --
 ALTER TABLE `work_experiences`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- Restricciones para tablas volcadas
 --
 
 --
--- Filtros para la tabla `acknowledgments`
---
-ALTER TABLE `acknowledgments`
-  ADD CONSTRAINT `acknowledgments_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `students` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
 -- Filtros para la tabla `connections_companies`
 --
 ALTER TABLE `connections_companies`
-  ADD CONSTRAINT `connections_companies_company_id_foreign` FOREIGN KEY (`company_id`) REFERENCES `companies` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `connections_companies_student_id_login_foreign` FOREIGN KEY (`student_id_login`) REFERENCES `students` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `connections_companies_company_id_foreign` FOREIGN KEY (`company_id`) REFERENCES `companies` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `connections_students`
@@ -54877,12 +55109,6 @@ ALTER TABLE `jobs`
   ADD CONSTRAINT `jobs_id_sector_foreign` FOREIGN KEY (`id_sector`) REFERENCES `sectors` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Filtros para la tabla `projects`
---
-ALTER TABLE `projects`
-  ADD CONSTRAINT `projects_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `students` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
 -- Filtros para la tabla `students`
 --
 ALTER TABLE `students`
@@ -54894,34 +55120,25 @@ ALTER TABLE `students`
 -- Filtros para la tabla `students_competences`
 --
 ALTER TABLE `students_competences`
-  ADD CONSTRAINT `students_competences_competence_id_foreign` FOREIGN KEY (`competence_id`) REFERENCES `competences` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `students_competences_student_id_foreign` FOREIGN KEY (`student_id`) REFERENCES `students` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `students_competences_competence_id_foreign` FOREIGN KEY (`competence_id`) REFERENCES `competences` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `students_medals`
 --
 ALTER TABLE `students_medals`
-  ADD CONSTRAINT `students_medals_medal_id_foreign` FOREIGN KEY (`medal_id`) REFERENCES `medals` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `students_medals_student_id_foreign` FOREIGN KEY (`student_id`) REFERENCES `students` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `students_medals_medal_id_foreign` FOREIGN KEY (`medal_id`) REFERENCES `medals` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `students_skills`
 --
 ALTER TABLE `students_skills`
-  ADD CONSTRAINT `students_skills_skill_id_foreign` FOREIGN KEY (`skill_id`) REFERENCES `skills` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `students_skills_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `students` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `students_skills_skill_id_foreign` FOREIGN KEY (`skill_id`) REFERENCES `skills` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `users`
 --
 ALTER TABLE `users`
   ADD CONSTRAINT `users_type_foreign` FOREIGN KEY (`type`) REFERENCES `user_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Filtros para la tabla `work_experiences`
---
-ALTER TABLE `work_experiences`
-  ADD CONSTRAINT `work_experiences_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `students` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

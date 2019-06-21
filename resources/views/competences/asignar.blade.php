@@ -72,6 +72,7 @@
 									<p><strong>Sin competencias disponibles</strong></p>
 									<p>No existe alguna competencia que pueda ser asignada al estudiante.</p>
 								</div>
+                <center><a href="{{ route('competences.create') }}" class="btn btn-success"><i class="fa fa-plus"></i>Agregar Competencias</a></center>
 							@endif
                             @foreach ($competences_not_asigned as $competences)
                                 <div class="col-sm-5 checkbox-fade fade-in-inverse">

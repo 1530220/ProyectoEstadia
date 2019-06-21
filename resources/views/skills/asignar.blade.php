@@ -71,6 +71,7 @@
 									<p><strong>Sin habilidades disponibles</strong></p>
 									<p>No existe alguna habilidad que pueda ser asignada al estudiante.</p>
 								</div>
+                <center><a href="{{ route('skills.create') }}" class="btn btn-success"><i class="fa fa-plus"></i>Agregar Habilidades</a></center>
 							@endif
                             @foreach ($skills_not_asigned as $skills)
                                 <div class="col-sm-5 checkbox-fade fade-in-inverse">

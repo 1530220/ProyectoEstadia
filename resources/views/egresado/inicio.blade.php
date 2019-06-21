@@ -64,7 +64,7 @@
                 <dl>
                   @foreach($skills as $skill)
                   {!! Form::open(['route' => 'dashboard', 'method' => 'GET']) !!}
-                  <dt><button  type="submit" class="btn mb20 btn-small btn-transparent-primary" value="{{$skill->id}}" name="skill">{{$skill->name}}</button></dt><br>
+                  <dt><button  type="submit" class="btn mb20 btn-small btn-transparent-primary" value="{{$skill->id}}" name="skill">{{$skill->name}}</button></dt>
                   {!! Form::close() !!}
                   @endforeach
                 </dl>
@@ -74,7 +74,7 @@
                 <dl>
                   @foreach($sectors as $sector)
                   {!! Form::open(['route' => 'dashboard', 'method' => 'GET']) !!}
-                  <dt><button  type="submit" class="btn mb20 btn-small btn-transparent-primary" value="{{$sector->id}}" name="sector">{{$sector->name}}</button></dt><br>
+                  <dt><button  type="submit" class="btn mb20 btn-small btn-transparent-primary" value="{{$sector->id}}" name="sector">{{$sector->name}}</button></dt>
                   {!! Form::close() !!}
                   @endforeach
                 </dl>

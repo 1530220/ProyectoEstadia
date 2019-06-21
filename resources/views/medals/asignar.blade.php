@@ -72,6 +72,7 @@
 									<p><strong>Sin medallas disponibles</strong></p>
 									<p>No existe alguna medalla que pueda ser asignada al estudiante.</p>
 								</div>
+              <center><a href="{{ route('medals.create') }}" class="btn btn-success"><i class="fa fa-plus"></i>Agregar Medallas</a></center>
 							@endif
                             @foreach ($medals_not_asigned as $medals)
                                 <img src="{{$medals->image}}" alt="{{$medals->name}}" title="{{$medals->name}}" width="150">
